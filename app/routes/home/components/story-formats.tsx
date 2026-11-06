@@ -1,4 +1,3 @@
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formats } from "~/routes/home/content";
 import { ChalkBubble } from "~/components/chalk-bubble";
 import { MascotCut } from "~/components/mascot-cut";
@@ -49,9 +48,7 @@ export function StoryFormats() {
               <br />
               {m.home_formats_title_two()}
             </h2>
-            <p className="mt-4 max-w-xs text-lg leading-8 text-foreground/80">
-              {m.home_formats_line({ trainer: HEAD_TRAINER.firstName })}
-            </p>
+            <p className="mt-4 max-w-xs text-lg leading-8 text-foreground/80">{m.home_formats_line()}</p>
           </div>
 
           {/* On phones each place is a row, its scene beside the words, so the three fit on about one screen

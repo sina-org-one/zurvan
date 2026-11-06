@@ -14,10 +14,12 @@ export function toPartnerProfile({
   record,
   commissionTiers,
   payingCustomers,
+  terms,
 }: {
   record: PartnerProfileRecord;
   commissionTiers: CommissionTier[];
   payingCustomers: number;
+  terms: PartnerProfile["terms"];
 }): PartnerProfile {
   return {
     shebaNumber: record.shebaNumber,
@@ -25,6 +27,7 @@ export function toPartnerProfile({
     isActive: record.isActive,
     commissionTiers,
     payingCustomers,
+    terms,
   };
 }
 
@@ -40,6 +43,12 @@ export function toPhonePerson({ fact, stage }: { fact: LeadFact; stage: PartnerP
     id: fact.id,
     source: "phone",
     phoneNumber: fact.phoneNumber,
+    details: {
+      guardianName: fact.guardianName,
+      dogName: fact.dogName,
+      dogBreed: fact.dogBreed,
+      dogAge: fact.dogAge,
+    },
     customerName: customer?.name ?? null,
     stage,
     createdAt: fact.createdAt,
@@ -55,6 +64,7 @@ export function toLinkPerson({ fact }: { fact: LinkCustomerFact }): PartnerPerso
     id: fact.id,
     source: "link",
     phoneNumber: null,
+    details: null,
     customerName: fact.name,
     stage: fact.boughtAt ? "bought" : "registered",
     createdAt: fact.createdAt,
@@ -95,6 +105,9 @@ export function toAdminPartner({
     code: record.code,
     shebaNumber: record.shebaNumber,
     isActive: record.isActive,
+    businessName: record.businessName,
+    businessType: record.businessType,
+    termsAcceptedAt: record.termsAcceptedAt,
     createdAt: record.createdAt,
     counts,
     commissions: {

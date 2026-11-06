@@ -6,7 +6,6 @@ import { EnrollmentStatusBadge } from "~/components/enrollment-status-badge";
 import { Link } from "~/components/link";
 import { PlaceChip } from "~/components/place-chip";
 import { formatToman } from "~/lib/course-format";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { Payment } from "~/orpc/checkout/contract";
 import { ENROLLMENT_STATUSES, type EnrollmentStatus } from "~/orpc/enrollment/constants";
 import type { Media } from "~/orpc/media/contract";
@@ -42,7 +41,7 @@ function EnrollmentLine({
   return (
     <p className="flex max-w-lg basis-full items-start gap-2 rounded-2xl border border-primary/45 bg-primary/[0.06] px-3 py-2 text-sm text-pretty">
       <InfoIcon aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
-      <span>{m.account_purchases_line_no_enrollment({ trainer: HEAD_TRAINER.firstName })}</span>
+      <span>{m.account_purchases_line_no_enrollment()}</span>
     </p>
   );
 }

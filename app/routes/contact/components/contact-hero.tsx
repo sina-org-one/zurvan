@@ -6,7 +6,6 @@ import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { CENTER_PHONE, CENTER_PHONE_SECOND } from "~/lib/contact";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/contact/column";
 
@@ -30,11 +29,9 @@ export function ContactHero() {
         {/* Bottom-aligned with the plate (the plate column also holds the dog's headroom), so neither column ends empty. */}
         <div className="lg:col-span-6 lg:self-end">
           <h1 id="contact-title" className={`${DISPLAY_HEADING} text-h1 text-balance lg:text-[3.4rem]`}>
-            {m.contact_hero_title({ trainer: HEAD_TRAINER.firstName })}
+            {m.contact_hero_title()}
           </h1>
-          <p className="mt-4 max-w-md text-lead text-pretty text-muted-foreground">
-            {m.contact_hero_lead()}
-          </p>
+          <p className="mt-4 max-w-md text-lead text-pretty text-muted-foreground">{m.contact_hero_lead()}</p>
         </div>
 
         {/*===== Phone Plate =====*/}
@@ -43,7 +40,7 @@ export function ContactHero() {
           <div className="relative">
             {/*------ The Dog on the Plate ------*/}
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-full">
-              <div className="relative ms-[4%] max-lg:ltr:ms-auto max-lg:ltr:me-[4%] w-36 translate-y-[2%] sm:ms-[8%] lg:ms-[6%] lg:w-48">
+              <div className="relative ms-[4%] w-36 translate-y-[2%] sm:ms-[8%] lg:ms-[6%] lg:w-48 max-lg:ltr:ms-auto max-lg:ltr:me-[4%]">
                 {/* The pool of light he stands in. */}
                 <div className="absolute -inset-x-[70%] bottom-0 h-[130%] bg-[radial-gradient(ellipse_45%_60%_at_50%_85%,rgb(255_194_26/0.08),transparent)]" />
                 <MascotCut name="plants" className="lively-sway absolute bottom-0 left-[84%] w-[58%]" />
@@ -67,7 +64,11 @@ export function ContactHero() {
               </p>
               <a
                 href={`tel:${CENTER_PHONE.tel}`}
-                className={buttonVariants({ variant: "solid", size: "lg", className: "mt-6 w-full sm:w-auto sm:px-10" })}
+                className={buttonVariants({
+                  variant: "solid",
+                  size: "lg",
+                  className: "mt-6 w-full sm:w-auto sm:px-10",
+                })}
               >
                 <PhoneIcon aria-hidden strokeWidth={2} />
                 {m.contact_hero_call()}

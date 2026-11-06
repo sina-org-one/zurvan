@@ -4,7 +4,6 @@ import Snap from "lenis/snap";
 import { motion, useMotionTemplate, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { Fragment, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { services, type ServiceId } from "~/routes/home/content";
 import { ChalkBubble } from "~/components/chalk-bubble";
@@ -35,11 +34,7 @@ const SCENES: Record<ServiceId, { pose: MascotCutName; rise: number; bubbleAt?: 
 function teachItems() {
   const words: Record<ServiceId, { points: string[]; says: string }> = {
     basic: {
-      points: [
-        m.home_service_basic_point_one(),
-        m.home_service_basic_point_two(),
-        m.home_service_basic_point_three(),
-      ],
+      points: [m.home_service_basic_point_one(), m.home_service_basic_point_two(), m.home_service_basic_point_three()],
       says: m.home_service_basic_says(),
     },
     behavior: {
@@ -59,7 +54,11 @@ function teachItems() {
       says: m.home_service_competition_says(),
     },
     advice: {
-      points: [m.home_service_advice_point_one(), m.home_service_advice_point_two(), m.home_service_advice_point_three()],
+      points: [
+        m.home_service_advice_point_one(),
+        m.home_service_advice_point_two(),
+        m.home_service_advice_point_three(),
+      ],
       says: m.home_service_advice_says(),
     },
   };
@@ -295,7 +294,7 @@ export function StoryTeach() {
                 style={{ fontSize: FLUID.intro }}
                 className="mt-3 hidden max-w-[28em] leading-[1.75] text-foreground/70 md:block lg:[@media(max-height:46rem)]:hidden"
               >
-                {m.home_teach_intro({ trainer: HEAD_TRAINER.firstName })}
+                {m.home_teach_intro()}
               </p>
             </header>
 
@@ -350,7 +349,10 @@ export function StoryTeach() {
                   className="fill-[color-mix(in_srgb,var(--foreground)_12%,var(--background))]"
                 />
               </svg>
-              <MascotCut name="hedge" className="lively-sway absolute -bottom-[2%] -left-[6%] hidden w-[44%] lg:block" />
+              <MascotCut
+                name="hedge"
+                className="lively-sway absolute -bottom-[2%] -left-[6%] hidden w-[44%] lg:block"
+              />
               <MascotCut
                 name="hedge"
                 className="lively-sway-2 absolute -right-[6%] -bottom-[2%] hidden w-[40%] -scale-x-100 lg:block"
@@ -405,7 +407,10 @@ export function StoryTeach() {
                             item.bubbleAt ?? "bottom-[86%] left-[64%]",
                           )}
                         >
-                          <ChalkBubble tail="left" className="lively-float whitespace-pre-line xl:px-5 xl:py-3 xl:text-xl">
+                          <ChalkBubble
+                            tail="left"
+                            className="lively-float whitespace-pre-line xl:px-5 xl:py-3 xl:text-xl"
+                          >
                             {item.says}
                           </ChalkBubble>
                         </motion.div>

@@ -5,7 +5,6 @@ import { CommissionStairs } from "~/components/commission-stairs";
 import { MascotCut } from "~/components/mascot-cut";
 import { commissionPercentFor, type CommissionTier } from "~/lib/business-rules";
 import { formatToman } from "~/lib/course-format";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber, formatTimestamp } from "~/lib/locale-format";
 import type { PartnerCommission } from "~/orpc/commission/contract";
 import { m } from "~/paraglide/messages";
@@ -20,9 +19,9 @@ const STAGGERED = 5;
 
 /*===== Commission Plate =====*/
 /**
- * «پورسانت‌هات»: what the partner is owed and what was paid, in Toman, the rule, the commission steps with the one his
+ * «هدیه‌های معرفیت»: what the partner is owed and what was paid, in Toman, the rule, the commission steps with the one his
  * next customer lands on marked (and a sentence saying how many paying customers he has and what the next one earns),
- * and one slip per commission, newest first (the customer's name and day, the amount, paid or waiting). The head trainer pays by bank
+ * and one slip per commission, newest first (the customer's name and day, the amount, paid or waiting). Zurvann pays by bank
  * transfer and texts the partner, which is why the rule says so: a partner shouldn't wonder when the money comes. Only
  * names and amounts (F12): no prices, dogs or courses, because the API sends nothing more.
  *
@@ -121,7 +120,7 @@ export function CommissionPlate({
 
         {/*===== The Rule =====*/}
         <p className="mt-5 text-sm leading-relaxed text-pretty text-muted-foreground sm:text-base">
-          {m.account_partner_commission_rule({ trainer: HEAD_TRAINER.firstName })}
+          {m.account_partner_commission_rule()}
         </p>
 
         {/*===== The Steps =====*/}

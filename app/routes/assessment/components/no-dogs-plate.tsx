@@ -4,7 +4,6 @@ import { PlusIcon } from "lucide-react";
 import { Link } from "~/components/link";
 import { buttonVariants } from "~/components/ui/button";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { NEW_DOG_LINK } from "~/routes/assessment/components/dog-picker";
 import { PLATE } from "~/routes/assessment/components/form-plate";
@@ -31,9 +30,7 @@ export function NoDogsPlate() {
           <h2 id="no-dogs-title" className={cn(DISPLAY_HEADING, "text-h2 text-balance")}>
             {m.assessment_no_dogs_title()}
           </h2>
-          <p className="mt-3 max-w-md text-pretty text-muted-foreground">
-            {m.assessment_no_dogs_description({ trainer: HEAD_TRAINER.firstName })}
-          </p>
+          <p className="mt-3 max-w-md text-pretty text-muted-foreground">{m.assessment_no_dogs_description()}</p>
           <Link
             {...NEW_DOG_LINK}
             className={buttonVariants({ variant: "solid", size: "lg", className: "mt-7 w-full sm:w-fit sm:min-w-48" })}

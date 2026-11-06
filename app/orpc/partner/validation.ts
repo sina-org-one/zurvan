@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 import { formatNumberFa, toLatinDigits } from "~/lib/digits";
+import { formatNumber } from "~/lib/locale-format";
+import { LEAD_AGE_MAX_LENGTH, LEAD_TEXT_MAX_LENGTH } from "~/orpc/partner/lead-limits";
 import { isNormalizedPhoneNumber, normalizePhoneNumber } from "~/lib/phone";
 import { m } from "~/paraglide/messages";
 
@@ -59,8 +61,28 @@ export const phoneNumberSchema = z
   .transform((value) => normalizePhoneNumber(value) ?? value)
   .refine(isNormalizedPhoneNumber, { error: () => m.server_partner_phone_invalid() });
 
+/*===== Lead Details =====*/
+// The guardian's and dog's details asked with every number (the owner, 2026-11-06), so a lead is a person the partner
+// really talked to and not a bank of numbers. Free text: the partner writes what the customer told him.
+
+const leadTextSchema = ({ max, required }: { max: number; required: () => string }) =>
+  z
+    .string()
+    .trim()
+    .min(1, { error: required })
+    .max(max, { error: () => m.server_partner_lead_too_long({ count: formatNumber(max) }) });
+
 /** A phone lead as the service accepts it. */
-export const addLeadInputSchema = z.object({ phoneNumber: phoneNumberSchema });
+export const addLeadInputSchema = z.object({
+  phoneNumber: phoneNumberSchema,
+  guardianName: leadTextSchema({
+    max: LEAD_TEXT_MAX_LENGTH,
+    required: () => m.server_partner_lead_guardian_required(),
+  }),
+  dogName: leadTextSchema({ max: LEAD_TEXT_MAX_LENGTH, required: () => m.server_partner_lead_dog_name_required() }),
+  dogBreed: leadTextSchema({ max: LEAD_TEXT_MAX_LENGTH, required: () => m.server_partner_lead_dog_breed_required() }),
+  dogAge: leadTextSchema({ max: LEAD_AGE_MAX_LENGTH, required: () => m.server_partner_lead_dog_age_required() }),
+});
 
 /*===== New Partner =====*/
 // The Admin's form, so its own messages stay Persian (the Admin has no English pages).

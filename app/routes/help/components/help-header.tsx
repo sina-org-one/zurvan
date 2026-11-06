@@ -7,7 +7,7 @@ import { m } from "~/paraglide/messages";
 /*===== Help Header =====*/
 /**
  * The page's top: the headline and one line of help, with the dog thinking in front of the notice board, as if the
- * questions were pinned up on it. The page's key fact ("after you ask, the trainer calls") is the road's dog's line,
+ * questions were pinned up on it. The page's key fact ("after you ask, the center calls") is the road's dog's line,
  * not this one: here he only invites you to start.
  *
  * Wide: words at the start, the stage (board, dog, bush, bubble) at the end. Phones: the stage on top, the words under.

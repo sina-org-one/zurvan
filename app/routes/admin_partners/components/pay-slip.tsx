@@ -174,12 +174,12 @@ export function PaySlip({
             >
               <span>مشتری</span>
               <span>خرید</span>
-              <span>حساب پورسانت</span>
-              <span className="text-end">پورسانت</span>
+              <span>حساب هدیه‌ی معرفی</span>
+              <span className="text-end">هدیه‌ی معرفی</span>
             </div>
 
             {/*------ Lines ------*/}
-            <ul aria-label={`پورسانت‌های ${name}`} className={cn("flex flex-col divide-y", ADMIN_HAIRLINE)}>
+            <ul aria-label={`هدیه‌های معرفی ${name}`} className={cn("flex flex-col divide-y", ADMIN_HAIRLINE)}>
               {lines.map((commission) => {
                 const playing = motion.playing.has(commission.id);
                 return (
@@ -202,14 +202,14 @@ export function PaySlip({
               )}
             >
               {paidBefore.count === 0 ? (
-                "هنوز پورسانتی بهش پرداخت نکردی."
+                "هنوز هدیه‌ای بهش پرداخت نکردی."
               ) : (
                 <>
                   تا حالا{" "}
                   <PopNumber value={paidBefore.count} delay={0.1}>
                     {formatNumberFa(paidBefore.count)}
                   </PopNumber>{" "}
-                  پورسانت بهش دادی، جمعاً{" "}
+                  هدیه‌ی معرفی بهش دادی، جمعاً{" "}
                   <PopNumber value={paidBefore.amount} delay={0.1} className="whitespace-nowrap text-foreground/85">
                     {formatToman(paidBefore.amount)}
                   </PopNumber>

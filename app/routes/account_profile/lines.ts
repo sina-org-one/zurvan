@@ -1,4 +1,3 @@
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import type { ProfileCard, VoiceMood } from "~/routes/account_profile/hooks/use-card-voice";
 
@@ -7,10 +6,9 @@ import type { ProfileCard, VoiceMood } from "~/routes/account_profile/hooks/use-
 // description says the same thing in words a screen reader reads, so the bubbles are for the eyes only. Read when
 // called, so they follow the page's language.
 function introLine(card: ProfileCard): string {
-  const trainer = HEAD_TRAINER.firstName;
-  if (card === "name") return m.account_profile_voice_intro_name({ trainer });
+  if (card === "name") return m.account_profile_voice_intro_name();
   if (card === "password") return m.account_profile_voice_intro_password();
-  return m.account_profile_voice_intro_sheba({ trainer });
+  return m.account_profile_voice_intro_sheba();
 }
 
 /** What a card's dog says in a mood. */

@@ -21,7 +21,7 @@ export type PostHeadData = {
 
 const LOGO_PATH = "/brand/k9-logo-256.webp";
 
-/** The `BlogPosting`: the head trainer is the author (with her About page), the center the publisher. */
+/** The `BlogPosting`: the head trainer is the author (with the About page, where Zurvan lists its trainers), the center the publisher. */
 export function blogPostingJsonLd(post: PostHeadData): Record<string, unknown> {
   const url = absoluteAddress({ path: `/blog/${post.slug}` });
   return {

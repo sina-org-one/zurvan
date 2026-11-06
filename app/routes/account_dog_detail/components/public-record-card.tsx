@@ -9,7 +9,6 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { Spinner } from "~/components/ui/spinner";
 import { toast } from "~/components/ui/toast";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatTimestamp } from "~/lib/locale-format";
 import type { PublicRecordConsent } from "~/lib/public-record";
 import { orpc } from "~/orpc/client";
@@ -124,7 +123,7 @@ export function PublicRecordCard({
             <li>{m.account_dog_detail_public_visible_1()}</li>
             <li>{m.account_dog_detail_public_visible_2()}</li>
             <li>{m.account_dog_detail_public_visible_3()}</li>
-            <li>{m.account_dog_detail_public_visible_4({ trainer: HEAD_TRAINER.firstName })}</li>
+            <li>{m.account_dog_detail_public_visible_4()}</li>
           </ul>
         </div>
         <div>

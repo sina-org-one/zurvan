@@ -3,10 +3,12 @@ import { base } from "~/orpc/implementer.server";
 import { requireRoleMiddleware } from "~/orpc/middleware/auth/auth.middleware";
 import { provideDbMiddleware } from "~/orpc/middleware/db/db.middleware";
 import {
+  acceptPartnerTerms,
   addLead,
   adminListPartners,
   createPartner,
   getPartnerProfile,
+  isPartnerPhone,
   listMyPeople,
   setPartnerActive,
   updatePartnerProfile,
@@ -38,6 +40,25 @@ export const updateMyPartnerProfileProcedure = base.partner.updateMine
 
     return result.profile;
   });
+
+export const acceptMyTermsProcedure = base.partner.acceptTerms
+  .use(requireRoleMiddleware("partner"))
+  .use(provideDbMiddleware)
+  .handler(async ({ context, errors }) => {
+    const result = await acceptPartnerTerms({ db: context.db, userId: context.user.id });
+
+    if (result.kind === "not-found") throw errors.NOT_FOUND({ data: { errors: [], fields: {} } });
+
+    return result.profile;
+  });
+
+/*===== Partner Sign-in =====*/
+// Public: asked before the sign-in code is sent, by someone who isn't signed in yet.
+export const isPartnerPhoneProcedure = base.partner.isPartnerPhone
+  .use(provideDbMiddleware)
+  .handler(async ({ context, input }) => ({
+    isPartner: await isPartnerPhone({ db: context.db, phoneNumber: input.phoneNumber }),
+  }));
 
 /*===== Leads =====*/
 export const listMyLeadsProcedure = base.partner.leads.list

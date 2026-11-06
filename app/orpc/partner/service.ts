@@ -3,7 +3,9 @@ import { randomInt, randomUUID } from "node:crypto";
 import type { Database, DatabaseOrTransaction } from "~/db/client.server";
 import { phonePlaceholderEmail } from "~/lib/phone";
 import { issuesToErrorData } from "~/lib/schema-issues";
+import { PARTNER_TERMS_VERSION } from "~/lib/partner-terms";
 import { countPayingCustomers, findCommissionTiers } from "~/orpc/commission/repository";
+import { findStandingConsents, insertConsent } from "~/orpc/consent/repository";
 import type { AdminPartner, PartnerPerson, PartnerPersonStage, PartnerProfile } from "~/orpc/partner/contract";
 import { toAdminPartner, toLinkPerson, toPartnerProfile, toPhonePerson } from "~/orpc/partner/mapper";
 import {
@@ -12,6 +14,7 @@ import {
   findPartners,
   findPeople,
   findUserIdByPhone,
+  findUserRoleByPhone,
   insertLeadOnce,
   insertPartnerOnce,
   insertPartnerUserOnce,
@@ -20,7 +23,12 @@ import {
   type LeadFact,
   type PartnerProfileRecord,
 } from "~/orpc/partner/repository";
-import { addLeadInputSchema, createPartnerInputSchema, partnerProfileInputSchema } from "~/orpc/partner/validation";
+import {
+  addLeadInputSchema,
+  createPartnerInputSchema,
+  partnerProfileInputSchema,
+  phoneNumberSchema,
+} from "~/orpc/partner/validation";
 import { m } from "~/paraglide/messages";
 
 /*===== Types =====*/
@@ -46,11 +54,39 @@ async function withCommission({
   userId: string;
   record: PartnerProfileRecord;
 }) {
-  const [commissionTiers, payingCustomers] = await Promise.all([
+  const [commissionTiers, payingCustomers, accepted] = await Promise.all([
     findCommissionTiers({ db }),
     countPayingCustomers({ db, partnerId: userId }),
+    hasAcceptedPartnerTerms({ db, userId }),
   ]);
-  return toPartnerProfile({ record, commissionTiers, payingCustomers });
+  return toPartnerProfile({
+    record,
+    commissionTiers,
+    payingCustomers,
+    terms: { version: PARTNER_TERMS_VERSION, accepted },
+  });
+}
+
+/*===== Terms =====*/
+/** Whether this partner accepted exactly the version of the terms in force. */
+export async function hasAcceptedPartnerTerms({ db, userId }: Own): Promise<boolean> {
+  const standing = await findStandingConsents({ db, userId, kind: "partner-terms" });
+  return standing.some((record) => record.version === PARTNER_TERMS_VERSION);
+}
+
+type AcceptTermsResult = { kind: "success"; profile: PartnerProfile } | NotFoundResult;
+
+/** Records the partner's acceptance of the terms in force now. Again is the same as once. */
+export async function acceptPartnerTerms({
+  db,
+  userId,
+  now = new Date(),
+}: Own & { now?: Date }): Promise<AcceptTermsResult> {
+  const record = await findPartnerProfile({ db, userId });
+  if (!record) return { kind: "not-found" };
+
+  await insertConsent({ db, userId, kind: "partner-terms", version: PARTNER_TERMS_VERSION, acceptedAt: now });
+  return { kind: "success", profile: await withCommission({ db, userId, record }) };
 }
 
 type GetProfileResult = { kind: "success"; profile: PartnerProfile } | NotFoundResult;
@@ -145,23 +181,33 @@ type AddLeadResult = { kind: "success"; person: PartnerPerson } | InvalidResult 
  * not, and the list says `lost` at once if he is not. Leads are never edited or deleted, so earliest-wins cannot be
  * gamed.
  */
-export async function addLead({ db, userId, input }: Own & { input: { phoneNumber: string } }): Promise<AddLeadResult> {
+export async function addLead({
+  db,
+  userId,
+  input,
+}: Own & {
+  input: { phoneNumber: string; guardianName: string; dogName: string; dogBreed: string; dogAge: string };
+}): Promise<AddLeadResult> {
   /*------ Validate ------*/
   const parsed = addLeadInputSchema.safeParse(input);
   if (!parsed.success) return { kind: "invalid", ...issuesToErrorData(parsed.error.issues) };
-  const { phoneNumber } = parsed.data;
+  const { phoneNumber, ...details } = parsed.data;
 
   /*------ Who may add ------*/
   const profile = await findPartnerProfile({ db, userId });
   if (!profile) return { kind: "not-found" };
   if (!profile.isActive) return { kind: "invalid", errors: [m.server_partner_inactive()], fields: {} };
+  // The terms say what a lead may be; nobody enters one before accepting the version in force.
+  if (!(await hasAcceptedPartnerTerms({ db, userId }))) {
+    return { kind: "invalid", errors: [m.server_partner_terms_needed()], fields: {} };
+  }
 
   if (await findUserIdByPhone({ db, phoneNumber })) {
     return { kind: "invalid", errors: [], fields: { phoneNumber: m.server_partner_lead_registered() } };
   }
 
   /*------ Store ------*/
-  const leadId = await insertLeadOnce({ db, partnerId: userId, phoneNumber });
+  const leadId = await insertLeadOnce({ db, partnerId: userId, phoneNumber, details });
   if (!leadId) return { kind: "invalid", errors: [], fields: { phoneNumber: m.server_partner_lead_repeat() } };
 
   // Read back through the same stage logic as the list, so the form shows what the list will.
@@ -169,6 +215,20 @@ export async function addLead({ db, userId, input }: Own & { input: { phoneNumbe
   const person = people.get(userId)?.find((entry) => entry.id === leadId);
   if (!person) throw new Error(`addLead: lead ${leadId} was not found after it was stored`);
   return { kind: "success", person };
+}
+
+/*===== Partner Sign-in =====*/
+/** Whether the number (as typed) belongs to a partner account. A number that isn't a phone number is simply no. */
+export async function isPartnerPhone({
+  db,
+  phoneNumber,
+}: {
+  db: DatabaseOrTransaction;
+  phoneNumber: string;
+}): Promise<boolean> {
+  const parsed = phoneNumberSchema.safeParse(phoneNumber);
+  if (!parsed.success) return false;
+  return (await findUserRoleByPhone({ db, phoneNumber: parsed.data })) === "partner";
 }
 
 /*===== Admin List =====*/
@@ -226,12 +286,14 @@ async function tryCreatePartner({
   lastName,
   phoneNumber,
   code,
+  business,
 }: {
-  db: Database;
+  db: DatabaseOrTransaction;
   firstName: string;
   lastName: string;
   phoneNumber: string;
   code: string;
+  business?: { businessName: string; businessType: string };
 }): Promise<CreateAttempt> {
   const id = randomUUID();
 
@@ -254,7 +316,7 @@ async function tryCreatePartner({
       });
       if (!wroteUser) return { kind: "phone-taken" };
 
-      if (!(await insertPartnerOnce({ db: tx, userId: id, code }))) throw new RollbackCreate();
+      if (!(await insertPartnerOnce({ db: tx, userId: id, code, business }))) throw new RollbackCreate();
       return { kind: "created", id };
     });
   } catch (error) {
@@ -264,6 +326,48 @@ async function tryCreatePartner({
 }
 
 type CreatePartnerResult = { kind: "success"; partner: AdminPartner } | InvalidResult;
+
+type CreateAccountResult = { kind: "created"; id: string } | InvalidResult;
+
+/**
+ * Writes the user and partner rows, generating a code (retried on collision) unless one was typed. Shared by the
+ * Admin's own form and the approval of an application; runs inside the caller's transaction when given one.
+ */
+export async function createPartnerAccount({
+  db,
+  firstName,
+  lastName,
+  phoneNumber,
+  code: typedCode,
+  business,
+}: {
+  db: DatabaseOrTransaction;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  code?: string | undefined;
+  business?: { businessName: string; businessType: string };
+}): Promise<CreateAccountResult> {
+  for (let attempt = 0; attempt < (typedCode ? 1 : GENERATED_CODE_ATTEMPTS); attempt += 1) {
+    const outcome = await tryCreatePartner({
+      db,
+      firstName,
+      lastName,
+      phoneNumber,
+      code: typedCode ?? generatePartnerCode(),
+      business,
+    });
+
+    if (outcome.kind === "phone-taken") {
+      return { kind: "invalid", errors: [], fields: { phoneNumber: PARTNER_PHONE_TAKEN_MESSAGE } };
+    }
+    if (outcome.kind === "created") return outcome;
+    // `code-taken`: a typed code is refused below; a generated one is retried with a fresh draw.
+  }
+
+  if (typedCode) return { kind: "invalid", errors: [], fields: { code: PARTNER_CODE_TAKEN_MESSAGE } };
+  throw new Error("createPartnerAccount: could not generate a free partner code");
+}
 
 /**
  * F7: the Admin creates a partner's account: a `user` with the `partner` role and its `partner` row, in one transaction
@@ -283,28 +387,12 @@ export async function createPartner({
   const { firstName, lastName, phoneNumber, code: typedCode } = parsed.data;
 
   /*------ Write ------*/
-  for (let attempt = 0; attempt < (typedCode ? 1 : GENERATED_CODE_ATTEMPTS); attempt += 1) {
-    const outcome = await tryCreatePartner({
-      db,
-      firstName,
-      lastName,
-      phoneNumber,
-      code: typedCode ?? generatePartnerCode(),
-    });
+  const outcome = await createPartnerAccount({ db, firstName, lastName, phoneNumber, code: typedCode });
+  if (outcome.kind === "invalid") return outcome;
 
-    if (outcome.kind === "phone-taken") {
-      return { kind: "invalid", errors: [], fields: { phoneNumber: PARTNER_PHONE_TAKEN_MESSAGE } };
-    }
-    if (outcome.kind === "created") {
-      const [created] = await loadAdminPartners({ db, partnerId: outcome.id });
-      if (!created) throw new Error(`createPartner: partner ${outcome.id} was not found after it was stored`);
-      return { kind: "success", partner: created };
-    }
-    // `code-taken`: a typed code is refused below; a generated one is retried with a fresh draw.
-  }
-
-  if (typedCode) return { kind: "invalid", errors: [], fields: { code: PARTNER_CODE_TAKEN_MESSAGE } };
-  throw new Error("createPartner: could not generate a free partner code");
+  const [created] = await loadAdminPartners({ db, partnerId: outcome.id });
+  if (!created) throw new Error(`createPartner: partner ${outcome.id} was not found after it was stored`);
+  return { kind: "success", partner: created };
 }
 
 /*===== Admin Set Active =====*/

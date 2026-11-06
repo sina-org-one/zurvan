@@ -1,7 +1,6 @@
 import { MascotCut } from "~/components/mascot-cut";
 import { BRICK } from "~/lib/brick";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/account_home/column";
@@ -10,13 +9,11 @@ import { COLUMN } from "~/routes/account_home/column";
 // What happens from here, in order, from the Help page's answers and app-spec F2–F6. It is a sequence, so it is
 // numbered. No timings, no promise of a result. A function: the messages are read while rendering, in the page's language.
 function steps() {
-  const trainer = HEAD_TRAINER.firstName;
-
   return [
     { title: m.account_home_next_intro_title(), line: m.account_home_next_intro_line() },
-    { title: m.account_home_next_eval_title(), line: m.account_home_next_eval_line({ trainer }) },
+    { title: m.account_home_next_eval_title(), line: m.account_home_next_eval_line() },
     { title: m.account_home_next_buy_title(), line: m.account_home_next_buy_line() },
-    { title: m.account_home_next_train_title(), line: m.account_home_next_train_line({ trainer }) },
+    { title: m.account_home_next_train_title(), line: m.account_home_next_train_line() },
   ];
 }
 

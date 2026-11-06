@@ -11,7 +11,6 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { Spinner } from "~/components/ui/spinner";
 import { formatToman } from "~/lib/course-format";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 import { PLATE } from "~/routes/account_cart/column";
@@ -161,7 +160,6 @@ export function CartCounter({
               percent: formatNumber(depositPercent),
               total: unbroken(formatToman(total)),
               left: unbroken(formatToman(total - dueNow)),
-              trainer: HEAD_TRAINER.firstName,
             })}
           </p>
         )}
@@ -176,7 +174,7 @@ export function CartCounter({
         )}
 
         <p className="mt-5 border-t border-dashed border-foreground/20 pt-5 text-sm leading-relaxed text-pretty text-muted-foreground">
-          {m.account_cart_counter_after_pay({ trainer: HEAD_TRAINER.firstName })}
+          {m.account_cart_counter_after_pay()}
         </p>
 
         {/*------ Actions ------*/}

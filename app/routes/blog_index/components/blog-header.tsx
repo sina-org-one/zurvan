@@ -1,16 +1,17 @@
 import { cn } from "cn";
 
 import { BLOG_COLUMN } from "~/components/blog/column";
+import { BrandEmblem } from "~/components/brand-emblem";
 import { MascotCut } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
-import { formatNumber } from "~/lib/locale-format";
+import { CENTER } from "~/lib/contact";
 import { m } from "~/paraglide/messages";
 
 /*===== Blog Header =====*/
 /**
- * The page's top: «نوشته‌های طلا», one line on what she writes about and her face and years, beside the reading corner:
+ * The page's top: «نوشته‌های زروان», one line on what Zurvan's trainers write about and the center's emblem and name
+ * (the posts are the center's notes since 2026-11-06; each post still names its author), beside the reading corner:
  * the dog lies on the shelf's coping with an open book, in front of the dimmed writing desk where the posts are written,
  * under a chalk night sky, a bush either side and a pool of warm light, and says he has read them all.
  *
@@ -22,8 +23,6 @@ import { m } from "~/paraglide/messages";
  * The page's one load moment (`bi-*`): he rises from behind the coping, then his bubble pops.
  */
 export function BlogHeader() {
-  const trainer = HEAD_TRAINER.firstName;
-
   return (
     <section
       aria-labelledby="blog-title"
@@ -32,26 +31,18 @@ export function BlogHeader() {
       {/*===== Words =====*/}
       <div className="pb-6 md:col-span-7 md:pb-14">
         <h1 id="blog-title" className={cn(DISPLAY_HEADING, "text-[2rem] text-balance md:text-[3.25rem]")}>
-          {m.blog_index_title({ trainer })}
+          {m.blog_index_title()}
         </h1>
         <p className="mt-3 max-w-lg text-[0.95rem] leading-8 text-pretty text-muted-foreground md:mt-4 md:text-lead">
-          {m.blog_index_text({ trainer })}
+          {m.blog_index_text()}
         </p>
 
         {/*------ Byline ------*/}
         <p className="mt-5 flex items-center gap-3 md:mt-7">
-          <img
-            src={HEAD_TRAINER.photos.avatar.src}
-            alt=""
-            width={HEAD_TRAINER.photos.avatar.width}
-            height={HEAD_TRAINER.photos.avatar.height}
-            className="size-12 shrink-0 rounded-full object-cover ring-2 ring-primary/70"
-          />
+          <BrandEmblem className="size-12" />
           <span className="flex flex-col leading-snug">
-            <span className="font-bold">{HEAD_TRAINER.name}</span>
-            <span className="text-sm text-muted-foreground">
-              {m.blog_article_author_years({ years: formatNumber(HEAD_TRAINER.years), since: HEAD_TRAINER.sinceYear })}
-            </span>
+            <span className="font-bold">{CENTER.name}</span>
+            <span className="text-sm text-muted-foreground">{CENTER.descriptor}</span>
           </span>
         </p>
       </div>
@@ -88,7 +79,7 @@ export function BlogHeader() {
         {/* Placed in the stage's own width (`cqw`), as the dog is: his head is about 30% in from his picture's start
             edge and the bubble's tail 2.75rem in from its own, so the tail sits over his head, just above it. */}
         <p className="bi-pop absolute start-[calc(8cqw+min(50cqw,16rem)*0.3-2.75rem)] bottom-[calc(min(50cqw,16rem)*0.69+0.4rem)] w-max max-w-[min(16rem,80%)] rounded-[1.4rem] border-2 border-foreground bg-background px-4 py-2.5 font-hand text-[15px] leading-snug text-pretty text-foreground md:text-lg">
-          {m.blog_index_bubble({ trainer })}
+          {m.blog_index_bubble()}
           <span
             aria-hidden
             className="absolute start-9 -bottom-[9px] size-4 rotate-45 border-r-2 border-b-2 border-foreground bg-background"

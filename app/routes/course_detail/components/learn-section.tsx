@@ -4,7 +4,6 @@ import { BoardingCostNote } from "~/components/boarding-cost-note";
 import { GroundStrip } from "~/components/ground-strip";
 import { MascotCut } from "~/components/mascot-cut";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { COURSE_PLACE_LABELS } from "~/orpc/course/constants";
 import type { Course } from "~/orpc/course/contract";
@@ -14,7 +13,7 @@ import { ChalkCheck } from "~/routes/course_detail/components/chalk-check";
 /**
  * What the course teaches, in the dog's voice: the owner's own card as a flat two-column list, one line about where the
  * training happens (the customer picks the place in the cart), and boarding when the course offers it, with its cost
- * left to the head trainer's call (F5).
+ * left to the center's call (F5).
  *
  * Working and sport courses have no ages, sessions or commands yet, only branches, so they get pills and a note
  * instead of a list of commands: ticking a branch would promise a program that is decided after the evaluation.
@@ -134,7 +133,7 @@ function BranchPills({ branches }: { branches: string[] }) {
 /*===== Boarding =====*/
 /**
  * Boarding is one of the places a customer can pick in the cart. It costs extra, and that is never charged on the site:
- * the head trainer calls to arrange it and agree on the price, so the card says that instead of a number.
+ * the center calls to arrange it and agree on the price, so the card says that instead of a number.
  */
 function Boarding() {
   return (
@@ -161,15 +160,14 @@ function Boarding() {
 /*===== Copy =====*/
 /** One line on where the lessons happen: picked in the cart, or told after the evaluation when the course names none. */
 function placeLine({ places }: Course): string {
-  const trainer = HEAD_TRAINER.firstName;
-  if (places.length === 0) return m.course_detail_learn_place_later({ trainer });
+  if (places.length === 0) return m.course_detail_learn_place_later();
   const [only] = places;
   if (places.length === 1 && only) {
-    return m.course_detail_learn_place_one({ trainer, place: COURSE_PLACE_LABELS[only] });
+    return m.course_detail_learn_place_one({ place: COURSE_PLACE_LABELS[only] });
   }
-  return m.course_detail_learn_place_pick({ trainer });
+  return m.course_detail_learn_place_pick();
 }
 
 function branchesLine(): string {
-  return m.course_detail_learn_branches_line({ trainer: HEAD_TRAINER.firstName });
+  return m.course_detail_learn_branches_line();
 }

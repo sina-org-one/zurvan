@@ -12,6 +12,9 @@ export const SMS_KINDS = [
   "enrollment-cancelled",
   "commission-paid",
   "refund-paid",
+  "partner-applied",
+  "partner-approved",
+  "partner-rejected",
 ] as const;
 
 export type SmsKind = (typeof SMS_KINDS)[number];
@@ -25,7 +28,10 @@ export const SMS_KIND_LABELS: Record<SmsKind, string> = {
   "payment-paid-admin": "خرید تازه (به مدیر)",
   "enrollment-completed": "تمام شد",
   "enrollment-cancelled": "لغو شد",
-  "commission-paid": "پورسانت پرداخت شد",
+  "commission-paid": "هدیه‌ی معرفی پرداخت شد",
+  "partner-applied": "درخواست همکاری تازه (به مدیر)",
+  "partner-approved": "همکاری تأیید شد",
+  "partner-rejected": "درخواست همکاری رد شد",
   "refund-paid": "بازپرداخت پرداخت شد",
 };
 

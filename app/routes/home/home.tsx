@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { GroundStrip } from "~/components/ground-strip";
 import { CENTER } from "~/lib/contact";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { ZURVAN_SINCE } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { pageHead } from "~/lib/seo";
 import { StoryClosing } from "~/routes/home/components/story-closing";
@@ -11,7 +11,7 @@ import { StoryHero } from "~/routes/home/components/story-hero";
 import { StoryRunner } from "~/routes/home/components/story-runner";
 import { StoryTeach } from "~/routes/home/components/story-teach";
 import { StoryTrail } from "~/routes/home/components/story-trail";
-import { StoryTrainer } from "~/routes/home/components/story-trainer";
+import { StoryTrainers } from "~/routes/home/components/story-trainers";
 import { m } from "~/paraglide/messages";
 
 /*===== Route =====*/
@@ -20,10 +20,9 @@ export const Route = createFileRoute("/_public/")({
   head: () =>
     pageHead({
       path: "/",
-      title: m.home_meta_title({ name: HEAD_TRAINER.name }),
+      title: m.home_meta_title(),
       description: m.home_meta_description({
-        name: HEAD_TRAINER.name,
-        years: formatNumber(HEAD_TRAINER.years),
+        years: formatNumber(ZURVAN_SINCE.years),
         area: CENTER.serviceArea,
       }),
     }),
@@ -48,7 +47,7 @@ function HomePage() {
       <StoryRunner />
       <StoryTeach />
       <StoryFormats />
-      <StoryTrainer />
+      <StoryTrainers />
       <StoryClosing />
     </>
   );

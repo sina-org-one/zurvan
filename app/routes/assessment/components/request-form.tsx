@@ -6,7 +6,6 @@ import { useForm, useWatch, type FieldErrors, type UseFormSetError } from "react
 import { FormAlert } from "~/components/form-alert";
 import { Button } from "~/components/ui/button";
 import { Spinner } from "~/components/ui/spinner";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { errorDataSchema } from "~/orpc/errors";
 import type { Evaluation } from "~/orpc/evaluation/contract";
 import { m } from "~/paraglide/messages";
@@ -76,7 +75,6 @@ export function RequestForm({
   /** The server says a dog already has an open request: the page reloads the dogs' states. */
   onNotRequestable: () => void;
 }) {
-  const trainer = HEAD_TRAINER.firstName;
   const requestEvaluation = useRequestEvaluation();
   const {
     register,
@@ -173,7 +171,7 @@ export function RequestForm({
           number={1}
           titleId="plate-dog-title"
           title={m.assessment_form_dog_title()}
-          description={m.assessment_form_dog_description({ trainer })}
+          description={m.assessment_form_dog_description()}
           done={!!dogId}
           onEnter={() => setFocused(1)}
         >
@@ -185,7 +183,7 @@ export function RequestForm({
           number={2}
           titleId="plate-when-title"
           title={m.assessment_form_when_title()}
-          description={m.assessment_form_when_description({ trainer })}
+          description={m.assessment_form_when_description()}
           done={whenDone}
           dog={CALENDAR_DOG}
           speech={whenSpeech}
@@ -208,7 +206,7 @@ export function RequestForm({
               </span>
             </>
           }
-          description={m.assessment_form_files_description({ trainer })}
+          description={m.assessment_form_files_description()}
           done={fileCount > 0}
           last
           dog={CAMERA_DOG}

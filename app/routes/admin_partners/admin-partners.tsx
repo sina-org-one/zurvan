@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { cn } from "cn";
-import { CheckCheckIcon, HandshakeIcon, PlusIcon, WalletIcon } from "lucide-react";
+import { CheckCheckIcon, HandshakeIcon, InboxIcon, PlusIcon, WalletIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { AdminEmptyState } from "~/components/admin-empty-state";
@@ -14,6 +14,7 @@ import { formatToman } from "~/lib/course-format";
 import { formatNumberFa } from "~/lib/digits";
 import type { AdminCommission } from "~/orpc/commission/contract";
 import { orpc } from "~/orpc/client";
+import { ApplicationsList } from "~/routes/admin_partners/components/applications-list";
 import { CreateSheet } from "~/routes/admin_partners/components/create-sheet";
 import { DeactivateDialog } from "~/routes/admin_partners/components/deactivate-dialog";
 import { LEAVE_MS, PageMotion } from "~/routes/admin_partners/components/page-motion";
@@ -35,6 +36,7 @@ const VIEW_LABELS: Record<PartnerView, string> = {
   unpaid: "پرداخت‌نشده",
   paid: "پرداخت‌شده",
   partners: "همکاران",
+  applications: "درخواست‌ها",
 };
 
 /** The stagger between slips or rows as a view arrives; after the sixth they come together. */
@@ -44,6 +46,7 @@ const MAX_STAGGERED = 5;
 /*===== Queries =====*/
 const partnersQuery = () => orpc.partner.admin.list.queryOptions();
 const commissionsQuery = () => orpc.commission.admin.list.queryOptions({ input: {} });
+const applicationsQuery = () => orpc.partnerApplication.admin.list.queryOptions();
 // The site's origin, only for showing the referral link as it will be printed.
 const siteQuery = () => orpc.site.config.queryOptions();
 
@@ -56,6 +59,7 @@ export const Route = createFileRoute("/admin/partners")({
     Promise.all([
       queryClient.ensureQueryData(partnersQuery()),
       queryClient.ensureQueryData(commissionsQuery()),
+      queryClient.ensureQueryData(applicationsQuery()),
       queryClient.ensureQueryData(siteQuery()),
     ]),
   head: () => ({ meta: [{ title: "همکاران | مدیریت زروان" }] }),
@@ -78,6 +82,8 @@ export const Route = createFileRoute("/admin/partners")({
 function AdminPartnersPage() {
   const { data: partners, isFetching: partnersFetching } = useSuspenseQuery(partnersQuery());
   const { data: commissions, isFetching: commissionsFetching } = useSuspenseQuery(commissionsQuery());
+  const { data: applications } = useSuspenseQuery(applicationsQuery());
+  const pendingApplications = applications.filter((application) => application.status === "pending").length;
   const {
     data: { origin: siteOrigin },
   } = useSuspenseQuery(siteQuery());
@@ -162,6 +168,7 @@ function AdminPartnersPage() {
     { value: "unpaid", label: VIEW_LABELS.unpaid, count: unpaidCount },
     { value: "paid", label: VIEW_LABELS.paid, count: paidCommissions.length },
     { value: "partners", label: VIEW_LABELS.partners, count: partners.length },
+    { value: "applications", label: VIEW_LABELS.applications, count: pendingApplications },
   ];
 
   // The drawer looks in the full list, so a write that changes the partner doesn't close it.
@@ -239,8 +246,8 @@ function AdminPartnersPage() {
         title="همکاران"
         summary={
           unpaidCount > 0
-            ? `${formatNumberFa(unpaidCount)} پورسانت منتظر پرداخته · جمعش ${formatToman(unpaidTotal)}`
-            : "پورسانتی منتظر نیست"
+            ? `${formatNumberFa(unpaidCount)} هدیه‌ی معرفی منتظر پرداخته · جمعش ${formatToman(unpaidTotal)}`
+            : "هدیه‌ای منتظر نیست"
         }
       >
         {/* Outline, not gold: on this page gold stays for the money waiting. */}
@@ -255,10 +262,11 @@ function AdminPartnersPage() {
         </Button>
       </AdminPageHeader>
 
-      {partners.length === 0 ? (
+      {partners.length === 0 && applications.length === 0 ? (
         /*===== Nothing at All =====*/
         <AdminEmptyState title="هنوز همکاری نیست" icon={HandshakeIcon}>
           کلینیک، آرایشگاه یا پت‌شاپی که باهاش قرار گذاشتی رو با «همکار تازه» بساز؛ لینک و QR خودش رو می‌گیره.
+          درخواست‌هایی که از صفحه‌ی همکاری میان هم این‌جا میان.
         </AdminEmptyState>
       ) : (
         <>
@@ -280,12 +288,12 @@ function AdminPartnersPage() {
             {view === "unpaid" &&
               (unpaidBlocks.length === 0 ? (
                 <div key={`${arrival}-${settled}`} className={cn((arrival > 0 || settled > 0) && "answer-in")}>
-                  <AdminEmptyState title="پورسانتی منتظر نیست" icon={CheckCheckIcon}>
-                    هر بار مشتریِ یکی از همکارها خرید کنه، پورسانتش این‌جا میاد تا پرداختش کنی.
+                  <AdminEmptyState title="هدیه‌ای منتظر نیست" icon={CheckCheckIcon}>
+                    هر بار مشتریِ یکی از همکارها خرید کنه، هدیه‌ش این‌جا میاد تا پرداختش کنی.
                   </AdminEmptyState>
                 </div>
               ) : (
-                <ul key={arrival} aria-label="همکارهایی که پورسانت طلب دارن" className="-mb-4 flex flex-col">
+                <ul key={arrival} aria-label="همکارهایی که هدیه‌ی معرفی طلب دارن" className="-mb-4 flex flex-col">
                   {unpaidBlocks.map((block, index) => (
                     <PaySlip
                       key={block.partnerId}
@@ -304,12 +312,30 @@ function AdminPartnersPage() {
             {view === "paid" &&
               (paidCommissions.length === 0 ? (
                 <div key={arrival} className={cn(arrival > 0 && "answer-in")}>
-                  <AdminEmptyState title="هنوز پورسانتی پرداخت نشده" icon={WalletIcon}>
-                    هر پورسانتی که «پرداخت شد» بزنی، با روزش این‌جا می‌مونه.
+                  <AdminEmptyState title="هنوز هدیه‌ای پرداخت نشده" icon={WalletIcon}>
+                    هر هدیه‌ای که «پرداخت شد» بزنی، با روزش این‌جا می‌مونه.
                   </AdminEmptyState>
                 </div>
               ) : (
                 <PaidLedger key={arrival} commissions={paidCommissions} searchFor={searchFor} rise={rise} />
+              ))}
+
+            {/*===== Applications =====*/}
+            {view === "applications" &&
+              (applications.length === 0 ? (
+                <div key={arrival} className={cn(arrival > 0 && "answer-in")}>
+                  <AdminEmptyState title="درخواستی نیست" icon={InboxIcon}>
+                    هر کی از صفحه‌ی «همکاری با زروان» درخواست بده، این‌جا میاد تا تأییدش کنی یا ردش کنی.
+                  </AdminEmptyState>
+                </div>
+              ) : (
+                <ApplicationsList
+                  key={arrival}
+                  applications={applications}
+                  onOpenPartner={(partnerId) =>
+                    void navigate({ search: (prev) => ({ ...prev, partner: partnerId }), resetScroll: false })
+                  }
+                />
               ))}
 
             {/*===== Roster =====*/}

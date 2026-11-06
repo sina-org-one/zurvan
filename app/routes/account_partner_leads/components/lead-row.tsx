@@ -48,11 +48,25 @@ function commissionState(commission: NonNullable<PartnerPerson["commission"]>): 
     : m.account_partner_leads_row_awaiting();
 }
 
+/*===== Details =====*/
+/**
+ * Who a phone lead is about, as the partner wrote it: «سارا · پاپی، ژرمن شپرد، ۸ ماه». Null for a link customer and for
+ * leads from before the details were asked (empty strings).
+ */
+function describeDetails(details: PartnerPerson["details"]): string | null {
+  if (!details) return null;
+  const dog = [details.dogName, details.dogBreed, details.dogAge]
+    .filter(Boolean)
+    .join(m.account_partner_leads_row_identity_joiner());
+  const parts = [details.guardianName, dog].filter(Boolean);
+  return parts.length > 0 ? parts.join(" · ") : null;
+}
+
 /*===== Lead Row =====*/
 /**
  * One person of the partner's, a small card: who (the number he typed, and once registered the customer's name; or a
  * link customer's name) with where they came from, the road they are on, and where they stand as a chip. For a buyer, a
- * stub under a dashed rule says what the partner has earned from all their purchases and whether it was paid. Never prices or dogs, and a lost
+ * stub under a dashed rule says what the partner has earned from all their purchases and whether it was paid. Never prices or the customer's own dogs (only what the partner wrote with the number), and a lost
  * person shows no name: the card is grey and dashed (F12).
  *
  * From `xl` it is one line of three parts in fixed columns, so every row's road sits in the same column; below that the
@@ -74,10 +88,11 @@ export function LeadRow({
   const lost = person.stage === "lost";
   const number = person.phoneNumber ? formatPhone(person.phoneNumber) : null;
   const name = person.customerName;
+  const details = describeDetails(person.details);
   const delay = Math.min(index, MAX_STAGGERED) * ROW_STEP_S;
 
   // Who the sentence names: the customer's name and the number he typed, whichever exist.
-  const identity = [name, number].filter(Boolean).join(m.account_partner_leads_row_identity_joiner());
+  const identity = [name, number, details].filter(Boolean).join(m.account_partner_leads_row_identity_joiner());
 
   return (
     <li
@@ -122,6 +137,7 @@ export function LeadRow({
               </bdi>
             )}
           </span>
+          {details && <span className="text-xs text-pretty text-muted-foreground">{details}</span>}
         </div>
 
         {/*------ Road ------*/}

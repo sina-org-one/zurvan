@@ -1,6 +1,7 @@
 import { cn } from "cn";
 import { CakeIcon, ChevronLeftIcon, ClockIcon, KeyRoundIcon, MapPinIcon, type LucideIcon } from "lucide-react";
 
+import { BrandEmblem } from "~/components/brand-emblem";
 import { GroundStrip } from "~/components/ground-strip";
 import { Link } from "~/components/link";
 import { MascotCut } from "~/components/mascot-cut";
@@ -14,7 +15,6 @@ import {
 } from "~/lib/course-format";
 import { courseScene } from "~/lib/course-scenes";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { COURSE_PLACE_LABELS } from "~/orpc/course/constants";
 import type { Course } from "~/orpc/course/contract";
@@ -89,18 +89,13 @@ export function CourseHero({ course, children }: { course: Course; children: Rea
           <p className="mt-4 max-w-xl text-lead text-pretty text-foreground/85">{course.summary}</p>
 
           {/*------ Trainer ------*/}
-          {/* The site sells a named person, so he sits before the facts. The kind of class is not promised here: it is
-              arranged with him (help page, «کلاس‌ها چه جوری برگزار می‌شن؟»). */}
+          {/* Who teaches it is the center, not a named person (the owner, 2026-11-06: there may be more than one
+              trainer), so the center's emblem sits before the facts. The kind of class is not promised here: it is
+              arranged on the call (help page, «کلاس‌ها چه جوری برگزار می‌شن؟»). */}
           <p className="mt-6 flex items-center gap-3">
-            <img
-              src={HEAD_TRAINER.photos.avatar.src}
-              alt=""
-              width={HEAD_TRAINER.photos.avatar.width}
-              height={HEAD_TRAINER.photos.avatar.height}
-              className="size-12 shrink-0 rounded-full object-cover ring-1 ring-foreground/25"
-            />
+            <BrandEmblem className="size-12" />
             <span className="flex flex-col leading-snug">
-              <span className="font-bold">{m.course_detail_hero_with({ name: HEAD_TRAINER.name })}</span>
+              <span className="font-bold">{m.course_detail_hero_with()}</span>
               <span className="text-sm text-muted-foreground">{m.course_detail_hero_arrange()}</span>
             </span>
           </p>
@@ -186,10 +181,7 @@ function Facts({ course }: { course: Course }) {
             label={m.course_detail_facts_place()}
             note={
               course.recommendedPlace
-                ? m.course_detail_facts_place_recommended({
-                    trainer: HEAD_TRAINER.firstName,
-                    place: COURSE_PLACE_LABELS[course.recommendedPlace],
-                  })
+                ? m.course_detail_facts_place_recommended({ place: COURSE_PLACE_LABELS[course.recommendedPlace] })
                 : undefined
             }
           >

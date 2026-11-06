@@ -857,8 +857,56 @@ export const partner = pgTable("partner", {
   shebaNumber: text("sheba_number"),
   /** An inactive partner's link and leads attribute no one. */
   isActive: boolean("is_active").notNull().default(true),
+  /** The shop, clinic or kennel's name, from the partner's application; null for a partner the Admin added by hand. */
+  businessName: text("business_name"),
+  /** One of `PARTNER_BUSINESS_TYPES` (`app/lib/partner-terms.ts`), from the application; null when added by hand. */
+  businessType: text("business_type"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+/**
+ * A request to become a partner (the owner, 2026-11-06): besides the Admin adding a partner by hand, after a call or a
+ * marketer's visit, a clinic, groomer or pet shop can apply on `/join/partner` with their own and their business's
+ * details. The terms are accepted on the form, so the version and time are kept here until there is an account to hold
+ * them. The Admin approves (which creates the partner's account and copies the acceptance into `consent`) or rejects.
+ * Rows are never deleted.
+ */
+export const partnerApplication = pgTable(
+  "partner_application",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    firstName: text("first_name").notNull(),
+    lastName: text("last_name").notNull(),
+    /** Normalized `09xxxxxxxxx`: the number the partner will sign in with. */
+    phoneNumber: text("phone_number").notNull(),
+    businessName: text("business_name").notNull(),
+    /** One of `PARTNER_BUSINESS_TYPES`. */
+    businessType: text("business_type").notNull(),
+    /** City and neighbourhood, as typed. */
+    address: text("address").notNull(),
+    /** Anything else the applicant wants to say; empty when nothing. */
+    note: text("note").notNull().default(""),
+    /** The marketer who visited them, if one did; empty otherwise. */
+    marketerName: text("marketer_name").notNull().default(""),
+    termsVersion: text("terms_version").notNull(),
+    termsAcceptedAt: timestamp("terms_accepted_at").notNull(),
+    /** `pending` → `approved` or `rejected`; both are final. */
+    status: text("status").notNull().default("pending"),
+    /** The Admin's reason, sent in the SMS; null unless rejected. */
+    rejectReason: text("reject_reason"),
+    /** The account the approval created. */
+    partnerId: text("partner_id").references(() => partner.userId, { onDelete: "restrict" }),
+    reviewedAt: timestamp("reviewed_at"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    index("partner_application_status_idx").on(table.status, table.createdAt),
+    // One waiting application per number, held by the database so a double submit can't make two.
+    uniqueIndex("partner_application_pending_phone_idx")
+      .on(table.phoneNumber)
+      .where(sql`${table.status} = 'pending'`),
+  ],
+);
 
 /** A phone number a partner entered before the customer signed up. The earliest lead wins when several partners did. */
 export const partnerLead = pgTable(
@@ -869,6 +917,15 @@ export const partnerLead = pgTable(
       .notNull()
       .references(() => partner.userId, { onDelete: "restrict" }),
     phoneNumber: text("phone_number").notNull(),
+    // Who the number belongs to, as the partner wrote it (the owner, 2026-11-06): the guardian's name and the dog's name,
+    // breed and age. Asking for a real person and a real dog keeps a partner from pasting a bank of numbers in the hope
+    // that some of them buy one day. Free text, never matched against the customer's own profile. Leads written before
+    // these were asked have empty strings.
+    guardianName: text("guardian_name").notNull().default(""),
+    dogName: text("dog_name").notNull().default(""),
+    dogBreed: text("dog_breed").notNull().default(""),
+    /** As typed («۸ ماه», «۲ سال»): the partner rarely knows a birth date. */
+    dogAge: text("dog_age").notNull().default(""),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => [

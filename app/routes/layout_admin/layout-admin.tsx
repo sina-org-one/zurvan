@@ -41,7 +41,7 @@ function AdminLayout() {
   const badges: Partial<Record<AdminNavPath, Pick<AdminNavItem, "badge" | "badgeLabel">>> = {
     "/admin/evaluations": { badge: waiting.evaluationRequests, badgeLabel: "درخواست منتظر جواب" },
     "/admin/payments": { badge: waiting.paidNotEnrolled.count, badgeLabel: "خرید ثبت‌نام‌نشده" },
-    "/admin/partners": { badge: money.unpaidCommissions.count, badgeLabel: "پورسانت پرداخت‌نشده" },
+    "/admin/partners": { badge: money.unpaidCommissions.count, badgeLabel: "هدیه‌ی معرفی پرداخت‌نشده" },
   };
   const navItems = ADMIN_NAV_ITEMS.map((item) => ({ ...item, ...badges[item.to] }));
 

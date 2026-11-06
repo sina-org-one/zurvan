@@ -67,8 +67,13 @@ export function SiteHeader({ viewer }: { viewer: Viewer | null }) {
             <ViewerControls viewer={viewer} />
           ) : (
             <>
+              {/* Two doors on desktop: customers sign in or up; partners sign in with an approved partner's number. The
+                  phone's account button opens the same page, whose switch has both. */}
               <Link to="/auth" className={cn(NAV_LINK, "hidden lg:block")}>
                 {m.layout_public_sign_in()}
+              </Link>
+              <Link to="/auth" search={{ as: "partner" }} className={cn(NAV_LINK, "hidden lg:block")}>
+                {m.layout_public_sign_in_partner()}
               </Link>
               {/* The app bar's account button. */}
               <Link

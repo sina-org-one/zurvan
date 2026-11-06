@@ -8,22 +8,23 @@ English, never more.
 
 ## Names
 
-| Persian                                 | English                              | Notes                                                                                                                                           |
-| --------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| زروان (the wordmark, the center)        | **Zurvann**                          | Double "n" (owner's choice, 2026-10-22). The header and footer wordmark, page titles (`Zurvann \| …`), "Partner with Zurvann", "Reach Zurvann". |
-| مجموعه تربیتی و رفتارشناسی سگ زروان     | **Dog training and behavior center** | The descriptor under the wordmark (`shared_contact_descriptor`). The name is already beside it, so it isn't repeated.                           |
-| آموزش K9 (retired 2026-10-23)           | not used                             | The old name; the Persian site now says زروان too. «K9» stays on the emblem only.                                                               |
-| طلا راستی / طلا                         | **Tala Rasti** / **Tala**            | The head trainer, the owner, the only trainer. **She/her.** Never "our trainers", "a verified trainer", "the team".                             |
-| زروان (the mascot, «سلام، من زروانم!»)  | **Zurvann**                          | The cartoon Belgian Malinois shares the center's name. **He/him.**                                                                              |
-| فندق (the running dog chasing his ball) | (not named on the page)              | The internal name of the runner; the page never says it.                                                                                        |
-| فدراسیون جهانی سگ                       | World Dog Federation                 | «مدرک بین‌المللی از فدراسیون جهانی سگ» → "International certificate from the World Dog Federation".                                             |
-| تهران / تمام نقاط تهران                 | Tehran / All of Tehran               | "Working all over Tehran" in the footer, "wherever you are in Tehran" in copy.                                                                  |
-| تلگرام، اینستاگرام، واتساپ              | Telegram, Instagram, WhatsApp        |                                                                                                                                                 |
+| Persian                                 | English                                            | Notes                                                                                                                                           |
+| --------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| زروان (the wordmark, the center)        | **Zurvann**                                        | Double "n" (owner's choice, 2026-10-22). The header and footer wordmark, page titles (`Zurvann \| …`), "Partner with Zurvann", "Reach Zurvann". |
+| مجموعه تربیتی و رفتارشناسی سگ زروان     | **Dog training and behavior center**               | The descriptor under the wordmark (`shared_contact_descriptor`). The name is already beside it, so it isn't repeated.                           |
+| آموزش K9 (retired 2026-10-23)           | not used                                           | The old name; the Persian site now says زروان too. «K9» stays on the emblem only.                                                               |
+| طلا راستی / طلا                         | **Tala Rasti** / **Tala**                          | One named trainer: «مربی ارشد زروان», "Zurvann's head trainer" (her card, a post's byline). **She/her.** Never the only trainer or the subject. |
+| مربی‌های زروان / مربی‌مون / ما          | **Zurvann's trainers** / **your trainer** / **we** | Since 2026-11-06 Zurvann (the center) is the subject: "we call you", "a Zurvann trainer meets your dog". Never "a verified trainer".            |
+| زروان (the mascot, «سلام، من زروانم!»)  | **Zurvann**                                        | The cartoon Belgian Malinois shares the center's name. **He/him.**                                                                              |
+| فندق (the running dog chasing his ball) | (not named on the page)                            | The internal name of the runner; the page never says it.                                                                                        |
+| فدراسیون جهانی سگ                       | World Dog Federation                               | «مدرک بین‌المللی از فدراسیون جهانی سگ» → "International certificate from the World Dog Federation".                                             |
+| تهران / تمام نقاط تهران                 | Tehran / All of Tehran                             | "Working all over Tehran" in the footer, "wherever you are in Tehran" in copy.                                                                  |
+| تلگرام، اینستاگرام، واتساپ              | Telegram, Instagram, WhatsApp                      |                                                                                                                                                 |
 
 ## Voice
 
-**Who reads it.** A foreigner living in Iran (decision 1): fluent in English, maybe not in Persian, here for one
-person to train their dog. Plain, warm, concrete. No marketing gloss ("world-class", "passionate", "unleash"), no
+**Who reads it.** A foreigner living in Iran (decision 1): fluent in English, maybe not in Persian, here for Zurvann
+to train their dog. Plain, warm, concrete. No marketing gloss ("world-class", "passionate", "unleash"), no
 promises of results, and never "every dog takes CGC / BMC".
 
 **American English.** behavior, center, color, program, canceled. Sentence case for headings and buttons ("Where do
@@ -34,7 +35,7 @@ examples with "e.g." ("e.g. 12.5").
 
 **The visitor is "you".** The Persian's informal «تو» becomes a friendly "you"; there is no formal/informal split in
 English. The visitor's dog is **"your dog"**, and **"it"** when a pronoun can't be avoided (the mascot is the only
-"he", Tala the only "she"). Prefer repeating "your dog" or rephrasing over "it" when it reads cold.
+"he"; Tala is "she" where she is named). Prefer repeating "your dog" or rephrasing over "it" when it reads cold.
 
 **The dog speaks** (speech bubbles and the headlines that are his: Home's «چی می‌تونم یاد بگیرم؟»): first person,
 short, spoken, a little playful, one or two short sentences. He describes how things work and how he feels; he never
@@ -61,7 +62,7 @@ course". Section headings may be the dog's ("What can I learn?") or plain ("Basi
 | سؤال داری؟ گوش می‌دم.                    | Got a question? I'm listening.                |
 | جای تو یا جای ما؟                        | Your place or ours?                           |
 | از این بالا همه‌چی معلومه!               | I can see everything from up here!            |
-| طلا مربی منه!                            | Tala is my trainer!                           |
+| مربی‌های زروان رفیقای منن!               | Zurvann's trainers are my buddies!            |
 | بریم؟                                    | Shall we go?                                  |
 | همه‌جا رو کندم؛ فقط یه استخون پیدا کردم! | I dug everywhere and all I found was a bone!  |
 
@@ -72,13 +73,13 @@ The course pages' dogs (`shared_course_mascot_*`) and the buy card's verdicts (`
 
 ### The blog
 
-| Persian                                      | English                                                | Notes                                                                                              |
-| -------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-| وبلاگ                                        | Blog                                                   | The nav link and the page.                                                                         |
-| نوشته / نوشته‌های طلا                        | post / Tala's notes                                    | A single article is a "post"; the blog page's heading is "Tala's notes". Not "article" in buttons. |
-| بخش (رفتار، آموزش، نگهداری و سلامت، توله‌ها) | section (Behavior, Training, Care and health, Puppies) | The four categories.                                                                               |
-| {n} دقیقه مطالعه                             | {n} min read                                           |                                                                                                    |
-| سگ می‌گه                                     | (the tip bubble)                                       | The mascot's aside in a post; in English it is just his bubble, no label.                          |
+| Persian                                      | English                                                | Notes                                                                                                 |
+| -------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| وبلاگ                                        | Blog                                                   | The nav link and the page.                                                                            |
+| نوشته / نوشته‌های زروان                      | post / Zurvann's notes                                 | A single article is a "post"; the blog page's heading is "Zurvann's notes". Not "article" in buttons. |
+| بخش (رفتار، آموزش، نگهداری و سلامت، توله‌ها) | section (Behavior, Training, Care and health, Puppies) | The four categories.                                                                                  |
+| {n} دقیقه مطالعه                             | {n} min read                                           |                                                                                                       |
+| سگ می‌گه                                     | (the tip bubble)                                       | The mascot's aside in a post; in English it is just his bubble, no label.                             |
 
 ### The journey
 
@@ -102,8 +103,8 @@ The course pages' dogs (`shared_course_mascot_*`) and the buy card's verdicts (`
 | پرداخت                                     | payment; "Pay" (button)                                |                                                                                                                                               |
 | درگاه پرداخت                               | the bank's payment gateway                             |                                                                                                                                               |
 | کد پیگیری                                  | reference number                                       |                                                                                                                                               |
-| بازپرداخت                                  | refund                                                 | Only as a fact (Tala returns the money outside the site); never a policy.                                                                     |
-| تماس می‌گیره / زنگ می‌زنه                  | calls you                                              | "Tala calls you".                                                                                                                             |
+| بازپرداخت                                  | refund                                                 | Only as a fact (Zurvann returns the money outside the site); never a policy.                                                                  |
+| تماس می‌گیریم / زنگ می‌زنیم                | we call you                                            | "We call you", "Zurvann will call"; never one person as the caller.                                                                           |
 | جلسه                                       | session                                                | "About 8 sessions" (`shared_course_sessions_*`). Never "lesson".                                                                              |
 | کلاس / نوع کلاس (private, group, …)        | the sessions / the format                              | "You arrange the format and the session times". Never "class" except "a group class".                                                         |
 | پیامک / کد پیامکی                          | text message, "a text" / text code                     | "We'll text the sign-in code". Never "SMS" on the page.                                                                                       |
@@ -173,7 +174,7 @@ The families are `shared_family_*`; the course text is in the database (`title_e
 | لینک مخصوص تو               | your own link              |
 | QR برای پیشخوان             | a QR code for your counter |
 | شماره‌ی مشتری               | a customer's number        |
-| کمیسیون / پورسانت           | commission                 |
+| هدیه‌ی معرفی                | referral gift              |
 | شماره‌ی شبا                 | IBAN (Sheba number)        |
 
 ### Signed-in pages
@@ -181,34 +182,36 @@ The families are `shared_family_*`; the course text is in the database (`title_e
 Added in Phase 4a. The labels are already in `messages/shared` (`shared_…_status_*`, `shared_dog_status_*`, …) and
 `messages/layout_account`: use them, don't reword them per page.
 
-| Persian                                                        | English                                                           | Notes                                                                |
-| -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
-| سگ‌های من / سبد / خریدها / تنظیمات حساب                        | My dogs / Cart / Purchases / Account settings                     | The account's navigation.                                            |
-| همکاری من / شماره‌ها و مشتری‌ها                                | My partnership / Numbers and customers                            | The partner's; "Customers" on the tab.                               |
-| در انتظار ارزیابی / ارزیابی شد / رد شد / پس گرفته شد           | Waiting for evaluation / Evaluated / Declined / Withdrawn         | An evaluation's status. Never "Rejected" or "Pending".               |
-| پس گرفتن درخواست                                               | Withdraw request                                                  | Confirm: "Withdraw" / "No, keep it".                                 |
-| ارزیابی دوباره                                                 | Request another evaluation                                        | After a declined one.                                                |
-| از چه روزی؟ (the earliest date)                                | earliest date                                                     | Entered in Gregorian on the English pages (`entryCalendar`).         |
-| روزها / زمان‌هایی که آزادی                                     | the days and times you're usually free                            | A preference for the call, never a booking or an appointment.        |
-| صبح / بعدازظهر / عصر و شب                                      | Morning / Afternoon / Evening and night                           | The week starts on Saturday, as in Persian.                          |
-| تاریخ تولد / حدوداً                                            | birth date / about                                                | "Male, about 3 years old, 32.5 kg" (`describeDog`); "About …" alone. |
-| نر / ماده · نژاد · وزن (کیلو) · عقیم‌شده · میکروچیپ            | Male / Female · breed · weight (kg) · neutered · microchip number |                                                                      |
-| واکسن: کامل / ناقص / نمی‌دانم                                  | Vaccinations: Complete / Partial / I don't know                   |                                                                      |
-| نوع نژاد: خالص / دورگه / میکس                                  | Breed type: Purebred / Crossbreed / Mixed                         | A cross shows as «A × B»; mixed as "Mixed, looks like a …"           |
-| هدف آموزش: خانگی / ورزشی / کاری                                | Training goals: House dog / Sport / Working                       | Several allowed                                                      |
-| قد · رنگ پوشش · علائم ظاهری · تاریخ کاشت میکروچیپ · تتو        | height · coat color · markings · microchip date · tattoo          |                                                                      |
-| مشکلات رفتاری                                                  | behavior problems                                                 | One per line                                                         |
-| دوره‌های گذرانده                                               | passed courses; "has passed"                                      | A course passed counts for prerequisites.                            |
-| افزودن به سبد                                                  | Add to cart                                                       | "Sign in and add to cart" signed out.                                |
-| پرداخت (button)                                                | Pay                                                               |                                                                      |
-| در انتظار پرداخت / پرداخت شد / ناموفق (a payment)              | Awaiting payment / Paid / Failed                                  |                                                                      |
-| پیش‌پرداخت ٪۵۰ از … · بقیه …                                   | 50% deposit of … · the remaining …                                | `describeDeposit`, `describeBalance`.                                |
-| ثبت‌نام (in a course): در حال آموزش / تمام شد / لغو شد         | enrollment: In training / Completed / Canceled                    |                                                                      |
-| بازپرداخت: در انتظار پرداخت / پرداخت شد / لغو شد               | refund: Awaiting payment / Paid / Canceled                        | A recorded fact; the money moves by bank transfer, outside the site. |
-| منتظر ثبت‌نام / ثبت‌نام کرد / خرید کرد / از دست رفت (a lead)   | Waiting to sign up / Signed up / Bought / Lost                    | A lead is a customer's number the partner entered.                   |
-| کمیسیون: پرداخت شد / پرداخت نشده                               | commission: Paid / Unpaid                                         | One per paid purchase, at the partner's step (F7).                   |
-| اسم · شماره‌ی ورود · رمز عبور · رمز عبور تازه · تکرار رمز عبور | name · mobile number · password · new password · confirm password | "Show password" / "Hide password".                                   |
-| کپی لینک / کپی شد                                              | Copy link / Copied                                                |                                                                      |
+| Persian                                                        | English                                                           | Notes                                                                  |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| سگ‌های من / سبد / خریدها / تنظیمات حساب                        | My dogs / Cart / Purchases / Account settings                     | The account's navigation.                                              |
+| همکاری من / مشتری‌های معرفی‌شده                                | My partnership / Customers I introduced                           | The partner's; "Customers" on the tab.                                 |
+| ورود مشتری / ورود همکار                                        | Customer sign-in / Partner sign-in                                | The two doors in the header and on `/auth`.                            |
+| درخواست همکاری / قوانین و ضوابط همکاری                         | Apply to partner / partnership terms                              | The application on `/join/partner` and the terms every partner ticks.  |
+| در انتظار ارزیابی / ارزیابی شد / رد شد / پس گرفته شد           | Waiting for evaluation / Evaluated / Declined / Withdrawn         | An evaluation's status. Never "Rejected" or "Pending".                 |
+| پس گرفتن درخواست                                               | Withdraw request                                                  | Confirm: "Withdraw" / "No, keep it".                                   |
+| ارزیابی دوباره                                                 | Request another evaluation                                        | After a declined one.                                                  |
+| از چه روزی؟ (the earliest date)                                | earliest date                                                     | Entered in Gregorian on the English pages (`entryCalendar`).           |
+| روزها / زمان‌هایی که آزادی                                     | the days and times you're usually free                            | A preference for the call, never a booking or an appointment.          |
+| صبح / بعدازظهر / عصر و شب                                      | Morning / Afternoon / Evening and night                           | The week starts on Saturday, as in Persian.                            |
+| تاریخ تولد / حدوداً                                            | birth date / about                                                | "Male, about 3 years old, 32.5 kg" (`describeDog`); "About …" alone.   |
+| نر / ماده · نژاد · وزن (کیلو) · عقیم‌شده · میکروچیپ            | Male / Female · breed · weight (kg) · neutered · microchip number |                                                                        |
+| واکسن: کامل / ناقص / نمی‌دانم                                  | Vaccinations: Complete / Partial / I don't know                   |                                                                        |
+| نوع نژاد: خالص / دورگه / میکس                                  | Breed type: Purebred / Crossbreed / Mixed                         | A cross shows as «A × B»; mixed as "Mixed, looks like a …"             |
+| هدف آموزش: خانگی / ورزشی / کاری                                | Training goals: House dog / Sport / Working                       | Several allowed                                                        |
+| قد · رنگ پوشش · علائم ظاهری · تاریخ کاشت میکروچیپ · تتو        | height · coat color · markings · microchip date · tattoo          |                                                                        |
+| مشکلات رفتاری                                                  | behavior problems                                                 | One per line                                                           |
+| دوره‌های گذرانده                                               | passed courses; "has passed"                                      | A course passed counts for prerequisites.                              |
+| افزودن به سبد                                                  | Add to cart                                                       | "Sign in and add to cart" signed out.                                  |
+| پرداخت (button)                                                | Pay                                                               |                                                                        |
+| در انتظار پرداخت / پرداخت شد / ناموفق (a payment)              | Awaiting payment / Paid / Failed                                  |                                                                        |
+| پیش‌پرداخت ٪۵۰ از … · بقیه …                                   | 50% deposit of … · the remaining …                                | `describeDeposit`, `describeBalance`.                                  |
+| ثبت‌نام (in a course): در حال آموزش / تمام شد / لغو شد         | enrollment: In training / Completed / Canceled                    |                                                                        |
+| بازپرداخت: در انتظار پرداخت / پرداخت شد / لغو شد               | refund: Awaiting payment / Paid / Canceled                        | A recorded fact; the money moves by bank transfer, outside the site.   |
+| منتظر ثبت‌نام / ثبت‌نام کرد / خرید کرد / از دست رفت (a lead)   | Waiting to sign up / Signed up / Bought / Lost                    | A lead is a customer's number the partner entered.                     |
+| هدیه‌ی معرفی: پرداخت شد / پرداخت نشده                          | referral gift: Paid / Unpaid                                      | One per paid purchase, at the partner's step (F7). Never "commission". |
+| اسم · شماره‌ی ورود · رمز عبور · رمز عبور تازه · تکرار رمز عبور | name · mobile number · password · new password · confirm password | "Show password" / "Hide password".                                     |
+| کپی لینک / کپی شد                                              | Copy link / Copied                                                |                                                                        |
 
 ### The site
 

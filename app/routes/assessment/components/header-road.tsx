@@ -1,18 +1,17 @@
 import { cn } from "cn";
 import { CheckIcon } from "lucide-react";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Stops =====*/
-// The road a dog walks to its courses, as the help page tells it: introduced, the request, the head trainer's call,
+// The road a dog walks to its courses, as the help page tells it: introduced, the request, the center's call,
 // the courses open. Short labels, so all four fit one row on a phone. A function: the labels are messages and must be
 // read while rendering.
 function stops(): readonly string[] {
   return [
     m.assessment_road_intro(),
     m.assessment_road_request(),
-    m.assessment_road_call({ trainer: HEAD_TRAINER.firstName }),
+    m.assessment_road_call(),
     m.assessment_road_courses(),
   ];
 }

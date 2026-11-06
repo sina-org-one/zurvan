@@ -1,4 +1,3 @@
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Content =====*/
@@ -10,24 +9,22 @@ import { m } from "~/paraglide/messages";
 
 /** The path from a new dog to training (app-spec F3, F5, F6). A real sequence, so the trail numbers it. */
 export function steps() {
-  const trainer = HEAD_TRAINER.firstName;
   return [
     { title: m.home_step_request_title(), detail: m.home_step_request_detail() },
-    { title: m.home_step_call_title({ trainer }), detail: m.home_step_call_detail({ trainer }) },
+    { title: m.home_step_call_title(), detail: m.home_step_call_detail() },
     { title: m.home_step_open_title(), detail: m.home_step_open_detail() },
-    { title: m.home_step_train_title(), detail: m.home_step_train_detail({ trainer }) },
+    { title: m.home_step_train_title(), detail: m.home_step_train_detail() },
   ];
 }
 
 /** The five services from the owner's business card. All breeds and ages. `id` keys each one's scene. */
 export function services() {
-  const trainer = HEAD_TRAINER.firstName;
   return [
     { id: "basic", title: m.home_service_basic_title(), detail: m.home_service_basic_detail() },
     { id: "behavior", title: m.home_service_behavior_title(), detail: m.home_service_behavior_detail() },
     { id: "specialist", title: m.home_service_specialist_title(), detail: m.home_service_specialist_detail() },
     { id: "competition", title: m.home_service_competition_title(), detail: m.home_service_competition_detail() },
-    { id: "advice", title: m.home_service_advice_title(), detail: m.home_service_advice_detail({ trainer }) },
+    { id: "advice", title: m.home_service_advice_title(), detail: m.home_service_advice_detail() },
   ] as const;
 }
 
@@ -38,9 +35,8 @@ export type ServiceId = ReturnType<typeof services>[number]["id"];
  * boarding is only by prior arrangement.
  */
 export function formats() {
-  const trainer = HEAD_TRAINER.firstName;
   return [
-    { title: m.home_format_home_title(), detail: m.home_format_home_detail({ trainer }) },
+    { title: m.home_format_home_title(), detail: m.home_format_home_detail() },
     { title: m.home_format_center_title(), detail: m.home_format_center_detail() },
     { title: m.home_format_boarding_title(), detail: m.home_format_boarding_detail() },
   ];

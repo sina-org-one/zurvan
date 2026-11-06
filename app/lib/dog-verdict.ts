@@ -1,6 +1,5 @@
 import { type LinkOptions, linkOptions } from "@tanstack/react-router";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { IneligibilityKind } from "~/lib/eligibility";
 import { m } from "~/paraglide/messages";
 
@@ -12,7 +11,7 @@ import { m } from "~/paraglide/messages";
 /** The dog's first-person line for the reason it can't take the course, in the page's language (`messages/shared/`). */
 const PROBLEM_LINES: Record<IneligibilityKind, () => string> = {
   "not-for-sale": () => m.shared_verdict_not_for_sale(),
-  "not-evaluated": () => m.shared_verdict_not_evaluated({ trainer: HEAD_TRAINER.firstName }),
+  "not-evaluated": () => m.shared_verdict_not_evaluated(),
   prerequisite: () => m.shared_verdict_prerequisite(),
   "too-young": () => m.shared_verdict_too_young(),
   "too-old": () => m.shared_verdict_too_old(),
@@ -52,7 +51,10 @@ export function getDogVerdict({ dogId, eligible, problems }: VerdictInput): DogV
       message: problem.message,
       way:
         problem.kind === "not-evaluated"
-          ? { label: m.shared_verdict_way_evaluation(), link: linkOptions({ to: "/assessment", search: { dog: dogId } }) }
+          ? {
+              label: m.shared_verdict_way_evaluation(),
+              link: linkOptions({ to: "/assessment", search: { dog: dogId } }),
+            }
           : problem.kind === "prerequisite" && problem.courseSlug
             ? {
                 label: m.shared_verdict_way_course(),

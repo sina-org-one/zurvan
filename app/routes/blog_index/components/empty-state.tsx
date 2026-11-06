@@ -8,7 +8,6 @@ import { MascotCut, type MascotCutName } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { WithQuery } from "~/routes/blog_index/components/with-query";
 
@@ -22,7 +21,6 @@ export type EmptyKind = { kind: "none" } | { kind: "category"; label: string } |
 type Stage = { dog: MascotCutName; dogClass: string; scenery: MascotCutName; sceneryClass: string; bubble: string };
 
 function stageFor(empty: EmptyKind): Stage {
-  const trainer = HEAD_TRAINER.firstName;
   switch (empty.kind) {
     case "none":
       return {
@@ -30,7 +28,7 @@ function stageFor(empty: EmptyKind): Stage {
         dogClass: "start-[10%] w-[52%] max-w-64",
         scenery: "desk",
         sceneryClass: "end-[6%] w-[34%] max-w-44",
-        bubble: m.blog_index_empty_none_bubble({ trainer }),
+        bubble: m.blog_index_empty_none_bubble(),
       };
     case "category":
       return {
@@ -110,7 +108,7 @@ export function EmptyState({ empty }: { empty: EmptyKind }) {
           )}
         </h2>
         <p className="mt-3 max-w-lg text-pretty text-muted-foreground">
-          {empty.kind === "none" && m.blog_index_empty_none_text({ trainer: HEAD_TRAINER.firstName })}
+          {empty.kind === "none" && m.blog_index_empty_none_text()}
           {empty.kind === "category" && m.blog_index_empty_category_text()}
           {empty.kind === "query" && m.blog_index_empty_query_text()}
         </p>

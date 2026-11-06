@@ -25,8 +25,12 @@ const DEFAULT_REDIRECT = "/account";
 
 /*===== Search =====*/
 // `redirectTo`: the page to return to after signing in (the guards and sign-out send it). A partner's `?ref=` code is
-// remembered by the server before the page renders (`app/start.ts`), so the page itself doesn't read it.
-const authSearchSchema = z.object({ redirectTo: z.string().optional().catch(undefined) });
+// remembered by the server before the page renders (`app/start.ts`), so the page itself doesn't read it. `as`: which
+// door, «ورود مشتری» (the default) or «ورود همکار» (`partner`), chosen by the switch at the top of the form.
+const authSearchSchema = z.object({
+  redirectTo: z.string().optional().catch(undefined),
+  as: z.enum(["customer", "partner"]).optional().catch(undefined),
+});
 
 /*===== Route =====*/
 export const Route = createFileRoute("/auth")({
@@ -64,6 +68,44 @@ function safeRedirect(value: string | undefined) {
   return value?.startsWith("/") && !value.startsWith("//") ? value : DEFAULT_REDIRECT;
 }
 
+/*===== Door Switch =====*/
+/**
+ * «ورود مشتری» and «ورود همکار», two pills over the welcome. They change only `?as=` (and keep `redirectTo`), so the
+ * same page and flow serve both: a customer signs in or up as before; a partner signs in only with a partner's number.
+ */
+function DoorSwitch({ asPartner, redirectTo }: { asPartner: boolean; redirectTo: string | undefined }) {
+  const pill =
+    "inline-flex h-10 items-center rounded-full px-4 text-sm font-bold transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50";
+  const on = "bg-primary text-primary-foreground";
+  const off = "text-foreground/75 hover:text-foreground";
+
+  return (
+    <nav
+      aria-label={m.auth_door_label()}
+      className="mb-5 inline-flex rounded-full border border-foreground/15 bg-card p-1"
+    >
+      <Link
+        to="/auth"
+        search={{ redirectTo, as: undefined }}
+        replace
+        aria-current={!asPartner ? "page" : undefined}
+        className={`${pill} ${asPartner ? off : on}`}
+      >
+        {m.auth_door_customer()}
+      </Link>
+      <Link
+        to="/auth"
+        search={{ redirectTo, as: "partner" }}
+        replace
+        aria-current={asPartner ? "page" : undefined}
+        className={`${pill} ${asPartner ? on : off}`}
+      >
+        {m.auth_door_partner()}
+      </Link>
+    </nav>
+  );
+}
+
 /*===== Page =====*/
 /**
  * The dog meets you at the door. The form is one grained plate on the paper, and the page's other half is a drawn night
@@ -81,7 +123,10 @@ function safeRedirect(value: string | undefined) {
  */
 function AuthPage() {
   const { showcase, needsName, rulesPublished } = Route.useLoaderData();
-  const redirectTo = safeRedirect(Route.useSearch().redirectTo);
+  const search = Route.useSearch();
+  const redirectTo = safeRedirect(search.redirectTo);
+  // A new account can't be named in partner mode (only a partner's number gets a code), so the name step is a customer's.
+  const asPartner = search.as === "partner" && !needsName;
   // Which dog is up follows the flow's step; the flow reports each change.
   const firstStep: AuthStepName = needsName ? "name" : "phone";
   const [step, setStep] = useState<AuthStepName>(firstStep);
@@ -111,15 +156,37 @@ function AuthPage() {
           <div className="flex flex-col max-lg:pt-7 lg:my-auto">
             {/*------ Welcome ------*/}
             <header>
+              {!needsName && <DoorSwitch asPartner={asPartner} redirectTo={search.redirectTo} />}
               <h1 className={`${DISPLAY_HEADING} text-h1 text-balance`}>
-                {m.auth_welcome_lead()} <span className="text-primary">{m.auth_welcome_accent()}</span>
+                {asPartner ? m.auth_partner_welcome_lead() : m.auth_welcome_lead()}{" "}
+                <span className="text-primary">
+                  {asPartner ? m.auth_partner_welcome_accent() : m.auth_welcome_accent()}
+                </span>
               </h1>
-              <p className="mt-3 text-pretty text-muted-foreground">{m.auth_welcome_note()}</p>
+              <p className="mt-3 text-pretty text-muted-foreground">
+                {asPartner ? (
+                  <>
+                    {m.auth_partner_welcome_note()}{" "}
+                    <Link
+                      to="/join/partner"
+                      hash="apply"
+                      className="font-bold text-primary underline-offset-4 hover:underline"
+                    >
+                      {m.auth_partner_apply_link()}
+                    </Link>
+                  </>
+                ) : (
+                  m.auth_welcome_note()
+                )}
+              </p>
             </header>
 
             {/*------ Steps ------*/}
             <div className="mt-6 lg:mt-8">
               <SignInFlow
+                // A new flow for the other door, so a half-typed number or an error doesn't carry across.
+                key={asPartner ? "partner" : "customer"}
+                asPartner={asPartner}
                 showcase={showcase}
                 redirectTo={redirectTo}
                 needsName={needsName}

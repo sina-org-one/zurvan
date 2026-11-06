@@ -38,7 +38,7 @@
   "auth_password_label": "Password",
   "auth_password_via_code": "Sign in with a text code",
   "auth_password_forgot": "I forgot my password",
-  "auth_name_intro": "Your account is ready. Enter your name so the trainer knows who she's working with.",
+  "auth_name_intro": "Your account is ready. Enter your name so we know who we're working with.",
   "auth_name_first": "First name",
   "auth_name_last": "Last name",
   "auth_name_rules_missing": "You need to accept the rules to continue.",
@@ -58,5 +58,15 @@
   "auth_error_sign_in_paused": "Too many wrong passwords were entered. Wait a few minutes, or sign in with a text code.",
   "auth_error_too_many_requests": "There were too many requests. Wait a moment and try again.",
   "auth_error_wrong_credentials": "The number or password isn't right. If you haven't set a password, sign in with a text code.",
-  "auth_error_general": "That didn't go through. Check your internet connection and try again."
+  "auth_error_general": "That didn't go through. Check your internet connection and try again.",
+  "auth_door_label": "How you sign in",
+  "auth_door_customer": "Customer sign-in",
+  "auth_door_partner": "Partner sign-in",
+  "auth_partner_welcome_lead": "Hello partner,",
+  "auth_partner_welcome_accent": "welcome",
+  "auth_partner_welcome_note": "Sign in with the number your partnership was approved with. Not a Zurvann partner yet?",
+  "auth_partner_apply_link": "Apply to partner",
+  "auth_partner_phone_note": "Only approved partners' numbers get a code.",
+  "auth_partner_not_partner": "This number isn't a Zurvann partner. If you're a customer, use “Customer sign-in”; if you'd like to partner with us, apply first.",
+  "auth_partner_check_failed": "We couldn't check the number just now. Try again in a moment."
 }

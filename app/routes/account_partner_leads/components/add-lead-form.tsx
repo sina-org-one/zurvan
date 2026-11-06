@@ -19,7 +19,12 @@ import { PlateHead } from "~/routes/account_partner_leads/components/plate-head"
 import { useFlash } from "~/routes/account_partner_leads/hooks/use-flash";
 import { type WriteVoice, useWriteVoice } from "~/routes/account_partner_leads/hooks/use-write-voice";
 import { PLATE } from "~/routes/account_partner_leads/plate";
-import { type AddLeadFormValues, addLeadFormSchema } from "~/routes/account_partner_leads/schema";
+import {
+  type AddLeadFormValues,
+  EMPTY_LEAD,
+  LEAD_DETAIL_FIELDS,
+  addLeadFormSchema,
+} from "~/routes/account_partner_leads/schema";
 import { applyAddLeadServerError } from "~/routes/account_partner_leads/server-errors";
 
 /*===== Lines =====*/
@@ -28,21 +33,51 @@ function lineText(line: "listen" | "saved"): string {
   return line === "listen" ? m.account_partner_leads_form_line_listen() : m.account_partner_leads_form_line_saved();
 }
 
+/** Each detail field's label and placeholder, read while rendering. */
+function detailText(field: (typeof LEAD_DETAIL_FIELDS)[number]): { label: string; placeholder: string } {
+  switch (field) {
+    case "guardianName":
+      return {
+        label: m.account_partner_leads_form_guardian_label(),
+        placeholder: m.account_partner_leads_form_guardian_placeholder(),
+      };
+    case "dogName":
+      return {
+        label: m.account_partner_leads_form_dog_name_label(),
+        placeholder: m.account_partner_leads_form_dog_name_placeholder(),
+      };
+    case "dogBreed":
+      return {
+        label: m.account_partner_leads_form_dog_breed_label(),
+        placeholder: m.account_partner_leads_form_dog_breed_placeholder(),
+      };
+    case "dogAge":
+      return {
+        label: m.account_partner_leads_form_dog_age_label(),
+        placeholder: m.account_partner_leads_form_dog_age_placeholder(),
+      };
+  }
+}
+
 /*===== Add Lead Form =====*/
 /**
- * «یه شماره بنویس»: where a partner writes down the phone of someone about to sign up. The plate is calm (one field and
- * one button); the center's dog lies on its top edge writing in his notebook, the customer's door dimmed behind him. He
- * speaks only while the partner is in the form, and says «ثبت شد!» once when a number goes in.
+ * «یه مشتری ثبت کن»: where a partner writes down someone about to sign up: the phone, and with it the guardian's name and
+ * the dog's name, breed and age (all required, so a lead is a real person and not a bank of numbers). The center's dog
+ * lies on the plate's top edge writing in his notebook, the customer's door dimmed behind him. He speaks only while the
+ * partner is in the form, and says «ثبت شد!» once when a customer goes in.
  *
- * The server's refusals (not a number, already has an account, already entered) land under the field, anything else in
- * an alert. An inactive partner sees the `padlock` dog instead, both controls disabled and the reason, since the server
- * would refuse every number.
+ * The server's refusals (not a number, already has an account, already entered, a blank detail) land under their
+ * field, anything else in an alert. An inactive partner, or one who hasn't accepted the terms in force, sees the
+ * `padlock` dog instead, every control disabled and the reason, since the server would refuse every lead.
  */
 export function AddLeadForm({
   isActive,
+  termsAccepted,
   onAdded,
 }: {
   isActive: boolean;
+  /** The partner accepted the terms in force; until then the dashboard asks first and no lead is taken. */
+  termsAccepted: boolean;
   /** Called with the new person after the server accepted the number, before the list is reloaded. */
   onAdded: (person: PartnerPerson) => void;
 }) {
@@ -57,14 +92,14 @@ export function AddLeadForm({
     formState: { errors },
   } = useForm<AddLeadFormValues>({
     resolver: zodResolver(addLeadFormSchema),
-    defaultValues: { phoneNumber: "" },
+    defaultValues: EMPTY_LEAD,
   });
 
   /*------ Submit ------*/
   const onSubmit = handleSubmit((submitted) => {
     addLead.mutate(submitted, {
       onSuccess: (person) => {
-        reset({ phoneNumber: "" });
+        reset(EMPTY_LEAD);
         toast.add({ title: m.account_partner_leads_form_toast_added(), type: "success" });
         justAdded.flash();
         celebrate();
@@ -77,7 +112,7 @@ export function AddLeadForm({
     });
   });
 
-  const blocked = !isActive;
+  const blocked = !isActive || !termsAccepted;
   const hasFieldError = !!errors.phoneNumber;
   const describedBy = [hasFieldError && "lead-phone-error", blocked && "lead-phone-blocked"].filter(Boolean).join(" ");
 
@@ -116,10 +151,10 @@ export function AddLeadForm({
             onFocus={enter}
             onBlur={(event) => leave({ to: event.relatedTarget, within: event.currentTarget })}
           >
-            {/*------ Field and Button ------*/}
+            {/*------ The Number ------*/}
             <Field data-invalid={hasFieldError}>
               <FieldLabel htmlFor="lead-phone">{m.account_partner_leads_form_label()}</FieldLabel>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+              <div className="flex flex-col gap-3">
                 <div className="flex min-w-0 flex-1 flex-col gap-2">
                   <Input
                     id="lead-phone"
@@ -140,14 +175,46 @@ export function AddLeadForm({
                     className="answer-in"
                   />
                 </div>
-                <SubmitButton isPending={addLead.isPending} isAdded={justAdded.on} disabled={blocked} />
               </div>
             </Field>
+
+            {/*------ Who It Is ------*/}
+            {/* Asked with every number, so the partner writes down a person he talked to, not a list of numbers. */}
+            <fieldset className="flex flex-col gap-3">
+              <legend className="mb-3 text-sm text-pretty text-muted-foreground">
+                {m.account_partner_leads_form_details_legend()}
+              </legend>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {LEAD_DETAIL_FIELDS.map((field) => {
+                  const text = detailText(field);
+                  const error = errors[field];
+                  const id = `lead-${field}`;
+                  return (
+                    <Field key={field} data-invalid={!!error}>
+                      <FieldLabel htmlFor={id}>{text.label}</FieldLabel>
+                      <Input
+                        id={id}
+                        autoComplete="off"
+                        placeholder={text.placeholder}
+                        className="text-base"
+                        disabled={blocked}
+                        aria-invalid={!!error}
+                        aria-describedby={error ? `${id}-error` : undefined}
+                        {...register(field)}
+                      />
+                      <FieldError key={error?.message} id={`${id}-error`} errors={[error]} className="answer-in" />
+                    </Field>
+                  );
+                })}
+              </div>
+            </fieldset>
+
+            <SubmitButton isPending={addLead.isPending} isAdded={justAdded.on} disabled={blocked} />
 
             {/*------ Why It Is Off ------*/}
             {blocked && (
               <p id="lead-phone-blocked" className="text-sm text-pretty text-muted-foreground">
-                {m.account_partner_leads_form_inactive()}
+                {isActive ? m.account_partner_leads_form_terms_needed() : m.account_partner_leads_form_inactive()}
               </p>
             )}
 
@@ -210,7 +277,7 @@ function SubmitButton({ isPending, isAdded, disabled }: { isPending: boolean; is
       type="submit"
       variant="solid"
       size="lg"
-      className="h-14 w-full sm:w-auto sm:min-w-36"
+      className="h-14 w-full sm:w-auto sm:min-w-36 sm:self-end"
       disabled={disabled || isPending}
     >
       <span aria-hidden className="grid place-items-center *:col-start-1 *:row-start-1">

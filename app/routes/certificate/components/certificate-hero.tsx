@@ -6,7 +6,6 @@ import { ValidCard } from "~/routes/certificate/components/valid-card";
 import { VerdictDisc } from "~/routes/certificate/components/verdict-disc";
 import { VerdictStage } from "~/routes/certificate/components/verdict-stage";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { CertificateVerification } from "~/orpc/certificate/contract";
 import { m } from "~/paraglide/messages";
 
@@ -76,7 +75,7 @@ export function CertificateHero({ verification }: { verification: CertificateVer
               </h1>
             </div>
             <p className="mt-4 max-w-md text-lead text-pretty text-muted-foreground">
-              {m.certificate_hero_unknown_line({ name: HEAD_TRAINER.firstName })}
+              {m.certificate_hero_unknown_line()}
             </p>
             <RetryForm />
           </>

@@ -1,15 +1,15 @@
 import { ORPCError } from "@orpc/client";
 import type { UseFormSetError } from "react-hook-form";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { errorDataSchema } from "~/orpc/errors";
 import { m } from "~/paraglide/messages";
-import type { AddLeadFormValues } from "~/routes/account_partner_leads/schema";
+import { type AddLeadFormValues, LEAD_DETAIL_FIELDS } from "~/routes/account_partner_leads/schema";
 
 /*===== Add Lead =====*/
 /**
- * Puts the server's message next to the number (not a number, already has an account, already entered) and anything
- * else in the form-level alert (an inactive account). Never throws: every failure ends as a field error or as `root`.
+ * Puts the server's message next to its field (not a number, already has an account, already entered, a blank detail)
+ * and anything else in the form-level alert (an inactive account, the terms not accepted). Never throws: every failure
+ * ends as a field error or as `root`.
  */
 export function applyAddLeadServerError({
   error,
@@ -22,11 +22,18 @@ export function applyAddLeadServerError({
   const parsed = error instanceof ORPCError ? errorDataSchema.safeParse(error.data) : null;
 
   if (code === "INVALID_INPUT" && parsed?.success) {
-    const message = parsed.data.fields.phoneNumber;
-    if (message) setError("phoneNumber", { message });
+    const { fields } = parsed.data;
+    let placed = false;
+    for (const name of ["phoneNumber", ...LEAD_DETAIL_FIELDS] as const) {
+      const message = fields[name];
+      if (message) {
+        setError(name, { message });
+        placed = true;
+      }
+    }
     const [general] = parsed.data.errors;
     if (general) setError("root", { message: general });
-    if (!message && !general) setError("root", { message: m.account_partner_leads_error_not_saved() });
+    if (!placed && !general) setError("root", { message: m.account_partner_leads_error_not_saved() });
     return;
   }
   if (code === "UNAUTHORIZED") {
@@ -35,7 +42,7 @@ export function applyAddLeadServerError({
   }
   if (code === "FORBIDDEN" || code === "NOT_FOUND") {
     setError("root", {
-      message: m.account_partner_leads_error_forbidden({ trainer: HEAD_TRAINER.firstName }),
+      message: m.account_partner_leads_error_forbidden(),
     });
     return;
   }

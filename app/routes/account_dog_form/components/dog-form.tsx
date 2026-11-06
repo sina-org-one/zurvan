@@ -12,7 +12,6 @@ import { MascotCut } from "~/components/mascot-cut";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Spinner } from "~/components/ui/spinner";
 import { toast } from "~/components/ui/toast";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { Dog } from "~/orpc/dog/contract";
 import type { Media } from "~/orpc/media/contract";
 import { m } from "~/paraglide/messages";
@@ -134,7 +133,6 @@ export function DogForm({
   header: React.ReactNode;
 }) {
   const navigate = useNavigate();
-  const trainer = HEAD_TRAINER.firstName;
   const saveDog = useSaveDog({ dogId: dog?.id ?? null });
   const locked = dog?.isEvaluated === true;
   const stepMode = step !== null;
@@ -370,7 +368,7 @@ export function DogForm({
   const identityLine = !dog
     ? m.account_dog_form_line_identity_new()
     : locked
-      ? m.account_dog_form_line_identity_locked({ trainer })
+      ? m.account_dog_form_line_identity_locked()
       : m.account_dog_form_line_identity_edit();
 
   const plates: Record<DogFormSection, React.ReactNode> = {
@@ -378,7 +376,7 @@ export function DogForm({
       <FormPlate
         id="identity"
         title={m.account_dog_form_plate_identity_title()}
-        description={m.account_dog_form_plate_identity_description({ trainer })}
+        description={m.account_dog_form_plate_identity_description()}
         guide={locked ? GUIDES.locked : GUIDES.identity}
         {...plateVoice("identity", identityLine)}
       >
@@ -400,7 +398,7 @@ export function DogForm({
       <FormPlate
         id="health"
         title={m.account_dog_form_plate_health_title()}
-        description={m.account_dog_form_plate_health_description({ trainer })}
+        description={m.account_dog_form_plate_health_description()}
         guide={GUIDES.health}
         {...plateVoice("health", m.account_dog_form_line_health())}
       >
@@ -411,11 +409,11 @@ export function DogForm({
       <FormPlate
         id="training"
         title={m.account_dog_form_plate_training_title()}
-        description={m.account_dog_form_plate_training_description({ trainer })}
+        description={m.account_dog_form_plate_training_description()}
         guide={GUIDES.training}
-        {...plateVoice("training", m.account_dog_form_line_training({ trainer }))}
+        {...plateVoice("training", m.account_dog_form_line_training())}
       >
-        <TrainingFields trainer={trainer} />
+        <TrainingFields />
       </FormPlate>
     ),
   };

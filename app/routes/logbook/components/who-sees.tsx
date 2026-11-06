@@ -3,22 +3,21 @@ import { EyeOffIcon, NotebookPenIcon, PawPrintIcon } from "lucide-react";
 import { MascotCut } from "~/components/mascot-cut";
 import { BRICK } from "~/lib/brick";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/logbook/column";
 
 /*===== Plates =====*/
 // Who sees a dog's record, in the order a visitor asks: «am I the owner?», «who else can?», «and me, a stranger?». The
-// facts are app-spec F14 and the loader's: the owner is sent from the QR code to their dog's page, the head trainer
-// (the Admin) reads every dog's file and writes in the diary after a session, everyone else sees only that the record
-// is private (no dog's name, nothing else, whether or not the number exists).
+// facts are app-spec F14 and the loader's: the owner is sent from the QR code to their dog's page, Zurvan's trainers
+// (through the Admin) read every dog's file and write in the diary after a session, everyone else sees only that the
+// record is private (no dog's name, nothing else, whether or not the number exists).
 // A function, not a constant: the words follow the page's language when it renders.
 function plates() {
   return [
     { icon: PawPrintIcon, title: m.logbook_who_owner_title(), line: m.logbook_who_owner_line() },
     {
       icon: NotebookPenIcon,
-      title: m.logbook_who_trainer_title({ name: HEAD_TRAINER.firstName }),
+      title: m.logbook_who_trainer_title(),
       line: m.logbook_who_trainer_line(),
     },
     { icon: EyeOffIcon, title: m.logbook_who_others_title(), line: m.logbook_who_others_line() },

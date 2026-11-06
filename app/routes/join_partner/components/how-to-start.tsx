@@ -4,14 +4,13 @@ import { GroundStrip } from "~/components/ground-strip";
 import { MascotCut, type MascotCutName } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 import { ChalkDefs, PathLine, SketchedEdge } from "~/routes/join_partner/components/chalk-trail";
 
 /*===== Start Steps =====*/
-// Joining is a phone call, not a form: the Admin creates the partner account from the number the caller gives (app-spec
-// F1). It is a real sequence, so it is numbered, with gold discs as on the home page's evaluation steps. Each step has
+// Joining starts with an application (the owner, 2026-11-06): on this page's form, filled in with a marketer who visited,
+// or over the phone; the Admin reviews it and approves, which creates the partner account (app-spec F7). It is a real sequence, so it is numbered, with gold discs as on the home page's evaluation steps. Each step has
 // the dog that fits it: he phones, brings the key, and celebrates at the finish flag. `idle` is his own loop.
 // A function, not a constant: the words follow the page's language when it renders.
 function steps(): { title: string; detail: string; pose: MascotCutName; idle: string }[] {
@@ -24,7 +23,7 @@ function steps(): { title: string; detail: string; pose: MascotCutName; idle: st
     },
     {
       title: m.join_partner_step_account_title(),
-      detail: m.join_partner_step_account_detail({ name: HEAD_TRAINER.firstName }),
+      detail: m.join_partner_step_account_detail(),
       pose: "key-carry",
       idle: "lively-breathe",
     },

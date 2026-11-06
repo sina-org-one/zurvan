@@ -6,7 +6,6 @@ import { useForm, useWatch } from "react-hook-form";
 import { Field, FieldDescription, FieldError, FieldLabel } from "~/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "~/components/ui/input-group";
 import { toast } from "~/components/ui/toast";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import type { CardVoiceProps } from "~/routes/account_profile/card-voice-props";
 import { CardBubble } from "~/routes/account_profile/components/card-bubble";
@@ -28,7 +27,7 @@ import { applyShebaServerError } from "~/routes/account_profile/server-errors";
 
 /*===== Sheba Card =====*/
 /**
- * «واریز پورسانت», a partner's only: the Sheba the head trainer pays the commission to, saved on its own (it is a
+ * «واریز هدیه‌ی معرفی», a partner's only: the Sheba Zurvann pays the referral gifts to, saved on its own (it is a
  * different API from the name). A partner who hasn't written one yet gets a gold-bordered notice saying what that costs
  * them; it folds away once a Sheba is saved.
  *
@@ -108,9 +107,7 @@ export function ShebaCard({
       />
 
       <div className={PLATE}>
-        <p className="text-pretty text-muted-foreground">
-          {m.account_profile_sheba_line({ trainer: HEAD_TRAINER.firstName })}
-        </p>
+        <p className="text-pretty text-muted-foreground">{m.account_profile_sheba_line()}</p>
 
         {/*------ No Sheba Yet ------*/}
         {/* Kept mounted so it folds away as one motion once a Sheba is saved; it rises in on load. */}

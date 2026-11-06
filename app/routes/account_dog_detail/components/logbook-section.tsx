@@ -1,7 +1,6 @@
 import { cn } from "cn";
 
 import { MascotCut } from "~/components/mascot-cut";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatDate } from "~/lib/locale-format";
 import type { LogbookEntry } from "~/orpc/logbook/contract";
 import { EdgeDog } from "~/routes/account_dog_detail/components/edge-dog";
@@ -10,8 +9,8 @@ import { m } from "~/paraglide/messages";
 
 /*===== Logbook Section =====*/
 /**
- * F14 on the dog's page: the diary the head trainer writes after each session, newest first, read-only for the owner
- * and private (only the owner and the trainer see it). The public record's chalk timeline, copied here: a dashed gold line down the start side, a dot per entry, each entry a grained
+ * F14 on the dog's page: the diary the trainer writes after each session, newest first, read-only for the owner
+ * and private (only the owner and the center see it). The public record's chalk timeline, copied here: a dashed gold line down the start side, a dot per entry, each entry a grained
  * card with the day as its heading, the notes, the exercises as chips and «جمع‌بندی».
  *
  * The `write` dog lies on the section's top edge writing in his notebook. With no entry yet the dimmed lectern stands
@@ -69,7 +68,7 @@ export function LogbookSection({ entries }: { entries: LogbookEntry[] }) {
             />
             <p className="font-bold">{m.account_dog_detail_logbook_empty_title()}</p>
             <p className="mt-1 max-w-md text-sm text-pretty text-muted-foreground">
-              {m.account_dog_detail_logbook_empty_text({ trainer: HEAD_TRAINER.firstName })}
+              {m.account_dog_detail_logbook_empty_text()}
             </p>
           </div>
         ) : (

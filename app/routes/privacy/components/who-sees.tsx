@@ -4,11 +4,10 @@ import { GroundStrip } from "~/components/ground-strip";
 import { MascotCut, type MascotCutName } from "~/components/mascot-cut";
 import { BRICK } from "~/lib/brick";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Viewer Cards =====*/
-// One card per person who can see the account's data: the visitor, the head trainer and a partner. Each lists what that
+// One card per person who can see the account's data: the visitor, Zurvan's site administrator and a partner. Each lists what that
 // person sees; the partner's card also lists what they don't, because that is the question a customer asks. The partner
 // lists follow what the partner's leads page really shows (`account_partner_leads/components/lead-row.tsx`): the
 // customer's name and number, where they stand (registered, bought), and the commission's amount and whether it is paid;
@@ -53,7 +52,7 @@ const STAGES = {
     dog: { name: "sit", wrapper: "left-[14%] h-36", idle: "lively-breathe" },
     bush: "left-[2%] w-[17%]",
   },
-  // The head trainer: the center, the dog with his notebook.
+  // Zurvan's administrator: the center, the dog with his notebook.
   trainer: {
     place: { name: "center", className: "right-[1%] w-[62%]" },
     dog: { name: "teach-advice", wrapper: "left-[6%] h-36", idle: "lively-tilt" },
@@ -71,7 +70,10 @@ const STAGES = {
 function PlateStage({ stage }: { stage: Stage }) {
   const { place, dog, bush } = stage;
   return (
-    <div aria-hidden className="pointer-events-none relative h-48 overflow-hidden rounded-t-3xl border-b border-border/60">
+    <div
+      aria-hidden
+      className="pointer-events-none relative h-48 overflow-hidden rounded-t-3xl border-b border-border/60"
+    >
       {/* A pool of warm light where he stands. */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_32%_80%,rgb(255_194_26/0.08),transparent)]" />
       <MascotCut name={place.name} className={`absolute bottom-[1.1rem] translate-y-[6%] ${place.className}`} />
@@ -163,10 +165,8 @@ export function WhoSees() {
         <div className="mt-8 grid gap-6 lg:grid-cols-3 lg:items-start">
           <ViewerCard title={m.privacy_who_title_you()} sees={SEES()} stage={STAGES.you} index={1} />
 
-          <ViewerCard title={m.privacy_who_title_trainer({ trainer: HEAD_TRAINER.firstName })} sees={TRAINER_SEES()} stage={STAGES.trainer} index={2}>
-            <p className="mt-6 text-sm text-muted-foreground">
-              {m.privacy_who_trainer_note({ trainer: HEAD_TRAINER.firstName })}
-            </p>
+          <ViewerCard title={m.privacy_who_title_trainer()} sees={TRAINER_SEES()} stage={STAGES.trainer} index={2}>
+            <p className="mt-6 text-sm text-muted-foreground">{m.privacy_who_trainer_note()}</p>
           </ViewerCard>
 
           <ViewerCard

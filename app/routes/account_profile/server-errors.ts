@@ -1,7 +1,6 @@
 import { ORPCError } from "@orpc/client";
 import type { UseFormSetError } from "react-hook-form";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { errorDataSchema } from "~/orpc/errors";
 import { m } from "~/paraglide/messages";
 import type { PasswordFormValues, ShebaFormInput } from "~/routes/account_profile/schema";
@@ -43,7 +42,7 @@ export function applyShebaServerError({
   }
   if (code === "FORBIDDEN" || code === "NOT_FOUND") {
     setError("root", {
-      message: m.account_profile_error_sheba_forbidden({ trainer: HEAD_TRAINER.firstName }),
+      message: m.account_profile_error_sheba_forbidden(),
     });
     return;
   }

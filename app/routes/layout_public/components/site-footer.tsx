@@ -1,10 +1,10 @@
-import { ArrowUpLeft, MapPin, Phone, UserRound } from "lucide-react";
+import { ArrowUpLeft, MapPin, Phone } from "lucide-react";
 
 import { linkOptions } from "@tanstack/react-router";
 
 import { Link } from "~/components/link";
 import { CENTER, CENTER_LINKS, CENTER_PHONE, CENTER_PHONE_SECOND } from "~/lib/contact";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { ZURVAN_SINCE } from "~/lib/head-trainer";
 import { SITE_RULES } from "~/lib/site-rules";
 import { BrandEmblem } from "~/components/brand-emblem";
 import { SOCIAL_ICONS } from "~/components/social-icons";
@@ -25,10 +25,7 @@ function footerGroups() {
     {
       title: m.layout_public_footer_connect(),
       links: [
-        {
-          label: m.layout_public_footer_about_trainer({ name: HEAD_TRAINER.name }),
-          link: linkOptions({ to: "/about" }),
-        },
+        { label: m.layout_public_footer_about(), link: linkOptions({ to: "/about" }) },
         { label: m.layout_public_footer_contact_us(), link: linkOptions({ to: "/contact" }) },
         { label: m.layout_public_footer_partner(), link: linkOptions({ to: "/join/partner" }) },
       ],
@@ -70,7 +67,7 @@ export function SiteFooter() {
               </span>
             </Link>
             <p className="mt-4 max-w-sm leading-7 text-pretty text-foreground/70">
-              {m.layout_public_footer_about_line({ name: HEAD_TRAINER.name, year: HEAD_TRAINER.sinceYear })}
+              {m.layout_public_footer_about_line({ year: ZURVAN_SINCE.sinceYear })}
             </p>
             <ul className="mt-5 flex flex-wrap gap-2">
               {CENTER_LINKS.map((item) => {
@@ -128,10 +125,6 @@ export function SiteFooter() {
               <li className="flex items-center gap-2.5">
                 <MapPin aria-hidden className="size-4 shrink-0 text-primary" strokeWidth={1.8} />
                 {m.layout_public_footer_area({ area: CENTER.serviceArea })}
-              </li>
-              <li className="flex items-center gap-2.5">
-                <UserRound aria-hidden className="size-4 shrink-0 text-primary" strokeWidth={1.8} />
-                {m.layout_public_footer_trainer({ name: HEAD_TRAINER.name })}
               </li>
             </ul>
           </div>

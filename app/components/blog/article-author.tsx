@@ -9,8 +9,9 @@ import { m } from "~/paraglide/messages";
 /*===== Article Author =====*/
 /**
  * Who wrote the post: the head trainer's photo as a small taped print, her name in gold, her trade, her years and her
- * credential, and the way to her About page. The site sells a real, named person, so the reader meets her beside the
- * text (the rail on wide screens) or right after it (phones). Facts only, from `HEAD_TRAINER`.
+ * credential, and the way to the About page, where Zurvan and its trainers are introduced. A post has a real, named
+ * author, so the reader meets her beside the text (the rail on wide screens) or right after it (phones); she is one of
+ * Zurvan's trainers, never presented as the only one. Facts only, from `HEAD_TRAINER`.
  */
 export function ArticleAuthor({ className }: { className?: string }) {
   const photo = HEAD_TRAINER.photos.withDog;
@@ -57,7 +58,7 @@ export function ArticleAuthor({ className }: { className?: string }) {
           to="/about"
           className="mt-3 inline-flex min-h-10 items-center gap-1 rounded-sm text-sm font-bold text-primary underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          {m.blog_article_author_more({ name: HEAD_TRAINER.firstName })}
+          {m.blog_article_author_more()}
           <ChevronLeftIcon aria-hidden strokeWidth={2} className="size-4 ltr:-scale-x-100" />
         </Link>
       </div>

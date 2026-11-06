@@ -34,7 +34,7 @@
   "account_purchases_slip_total": "Total for {courses}",
   "account_purchases_courses_one": "{count} course",
   "account_purchases_courses_other": "{count} courses",
-  "account_purchases_line_no_enrollment": "Payment went through, but no course was recorded for it. {trainer} will look into it and call you.",
+  "account_purchases_line_no_enrollment": "Payment went through, but no course was recorded for it. We'll look into it and call you.",
   "account_purchases_refund_title": "Refund",
   "account_purchases_refund_for": "For {course}",
   "account_purchases_refund_paid_on": "Paid out {date}",

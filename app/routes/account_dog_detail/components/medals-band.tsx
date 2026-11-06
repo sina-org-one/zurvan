@@ -5,7 +5,6 @@ import { ChalkBubble } from "~/components/chalk-bubble";
 import { MascotCut } from "~/components/mascot-cut";
 import { BRICK } from "~/lib/brick";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import type { Dog } from "~/orpc/dog/contract";
 import { m } from "~/paraglide/messages";
@@ -24,7 +23,7 @@ const RIBBONS = [
 /**
  * «مدال‌های {name}»: the page's one brick band, full-bleed, running into the footer. The courses the dog has passed
  * (F2) hang on the wall as gold medals on ribbons from a rail, each with a dark label plate under it (the title, and
- * «{trainer} ثبت کرده» for a course the Admin marked by hand: the customer never saw it being bought). After them hang
+ * «ما ثبت کردیم» for a course the Admin marked by hand: the customer never saw it being bought). After them hang
  * the courses it is training in now, as dashed outline medals with «در راه» on their plates: the rail shows what is
  * won and what is on its way, not a row of blanks. Only a dog with neither gets the empty hooks.
  *
@@ -199,9 +198,7 @@ function Medal({ course, index }: { course: Dog["passedCourses"][number]; index:
       <div className="mt-4 w-full rounded-2xl border border-border/50 bg-jet paper-grain px-3 py-2.5 text-center shadow-[0_12px_24px_-14px_rgb(0_0_0/0.9)]">
         <p className="text-sm font-extrabold text-pretty">{course.title}</p>
         {course.source === "admin" && (
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            {m.account_dog_detail_medal_by_admin({ trainer: HEAD_TRAINER.firstName })}
-          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{m.account_dog_detail_medal_by_admin()}</p>
         )}
       </div>
     </li>
