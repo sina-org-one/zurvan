@@ -15,7 +15,7 @@ import {
 // (docs/app-spec.md, F2).
 export const Route = createFileRoute("/account/dogs/new")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   validateSearch: dogFormSearchSchema,
   head: () =>
     pageHead({

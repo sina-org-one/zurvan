@@ -12,7 +12,7 @@ import {
 /*===== Customer =====*/
 // The customer's refunds are scoped to the signed-in customer's own payments.
 export const listMyRefundsProcedure = base.refund.listMine
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context }) => listMyRefunds({ db: context.db, customerId: context.user.id }));
 

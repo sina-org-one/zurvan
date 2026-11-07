@@ -13,7 +13,7 @@ import { provideDbMiddleware } from "~/orpc/middleware/db/db.middleware";
 /*===== Owner =====*/
 // The owner's certificates are scoped to the signed-in owner's own dogs.
 export const listMyCertificatesProcedure = base.certificate.listMine
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await listMyCertificates({

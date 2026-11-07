@@ -63,5 +63,13 @@
   "join_partner_apply_business_type_required": "نوع کسب‌وکارت رو انتخاب کن.",
   "join_partner_apply_sent_bubble": "هورا! رسید!",
   "join_partner_apply_sent_title": "درخواستت ثبت شد",
-  "join_partner_apply_sent_line": "زروان درخواستت رو بررسی می‌کنه و نتیجه رو به همون شماره پیامک می‌کنه. بعد از تأیید، از «ورود همکار» وارد شو."
+  "join_partner_apply_sent_line": "زروان درخواستت رو بررسی می‌کنه و نتیجه رو به همون شماره پیامک می‌کنه. بعد از تأیید، از «ورود همکار» وارد شو.",
+  "join_partner_apply_documents": "مدارک کسب‌وکار",
+  "join_partner_apply_documents_hint": "عکس یا PDF جواز کسب، پروانه‌ی نظام دامپزشکی یا یه عکس از سردر مغازه‌ت. حداقل یکی، تا {count} فایل و هر کدوم تا {megabytes} مگابایت. فقط مدیر زروان می‌بینه‌شون.",
+  "join_partner_apply_documents_pick": "انتخاب فایل",
+  "join_partner_apply_documents_remove": "حذف {name}",
+  "join_partner_apply_documents_size": "{size} مگابایت",
+  "join_partner_apply_documents_required": "حداقل یه مدرک کسب‌وکارت رو بذار.",
+  "join_partner_apply_documents_too_many": "بیشتر از این تعداد فایل نمی‌شه گذاشت.",
+  "join_partner_apply_documents_too_big": "یکی از فایل‌ها خیلی بزرگه؛ یه عکس کوچیک‌تر بذار."
 }

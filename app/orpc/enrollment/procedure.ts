@@ -7,7 +7,7 @@ const noData = { errors: [], fields: {} };
 
 /*===== List =====*/
 export const listMyEnrollmentsProcedure = base.enrollment.listMine
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context, input }) =>
     listMyEnrollments({ db: context.db, customerId: context.user.id, dogId: input.dogId }),

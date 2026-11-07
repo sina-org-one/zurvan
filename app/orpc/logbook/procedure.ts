@@ -28,7 +28,7 @@ export const locateDogProcedure = base.logbook.locate
 /*===== Owner =====*/
 // The owner's diary is scoped to the signed-in owner's own dogs.
 export const listLogbookProcedure = base.logbook.list
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await listDogLogbook({
@@ -81,7 +81,7 @@ export const recordProcedure = base.logbook.record
   );
 
 export const publicStatusProcedure = base.logbook.publicStatus
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await getPublicStatus({ db: context.db, ownerId: context.user.id, dogId: input.dogId });
@@ -90,7 +90,7 @@ export const publicStatusProcedure = base.logbook.publicStatus
   });
 
 export const setPublicProcedure = base.logbook.setPublic
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await setRecordPublic({

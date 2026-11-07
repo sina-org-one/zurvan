@@ -165,6 +165,9 @@ function DrawerBody({
           <div className="min-w-0 flex-1">
             <SheetTitle className={cn(DISPLAY_HEADING, "text-xl break-words")}>
               <bdi>{partner.name}</bdi>
+              {partner.role === "customer" && (
+                <span className="ms-2 align-middle text-sm font-bold text-muted-foreground">(مشتری معرف)</span>
+              )}
             </SheetTitle>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <span

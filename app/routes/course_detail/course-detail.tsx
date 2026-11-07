@@ -60,7 +60,8 @@ export const Route = createFileRoute("/_public/courses/$slug")({
  */
 function toBuyViewer(session: SessionState): Viewer {
   if (session.status === "anonymous") return "visitor";
-  if (session.user.role !== "customer") return "other";
+  // A partner can be a customer too (the owner, 2026-11-07).
+  if (session.user.role !== "customer" && session.user.role !== "partner") return "other";
   return session.status === "active" ? "customer" : "visitor";
 }
 

@@ -92,9 +92,14 @@
   "server_partner_lead_dog_age_required": "سن سگ رو بنویس؛ مثلاً «۸ ماه» یا «۲ سال».",
   "server_partner_lead_too_long": "حداکثر {count} حرف.",
   "server_partner_terms_needed": "اول قوانین همکاری رو بخون و تأیید کن؛ بعدش می‌تونی مشتری ثبت کنی.",
-  "server_partner_apply_phone_taken": "این شماره قبلاً توی سایت حساب داره. اگه همکار مایی، از «ورود همکار» وارد شو؛ وگرنه با زروان تماس بگیر.",
+  "server_partner_apply_phone_taken": "این شماره مال یه همکار زروانه. اگه همکاری، از «ورود همکار» وارد شو.",
   "server_partner_apply_pending": "یه درخواست همکاری با این شماره منتظر بررسیه. به‌زودی باهات تماس می‌گیریم.",
   "server_partner_apply_required": "این رو بنویس.",
   "server_partner_apply_business_type": "نوع کسب‌وکارت رو انتخاب کن.",
-  "server_partner_apply_terms": "برای ثبت درخواست باید قوانین همکاری رو قبول کنی."
+  "server_partner_apply_terms": "برای ثبت درخواست باید قوانین همکاری رو قبول کنی.",
+  "server_partner_apply_busy": "الان درخواست‌های زیادی رسیده. چند دقیقه‌ی دیگه دوباره امتحان کن.",
+  "server_partner_apply_documents_required": "حداقل یه مدرک کسب‌وکارت رو بذار.",
+  "server_partner_apply_documents_too_many": "حداکثر {count} فایل می‌شه گذاشت.",
+  "server_partner_apply_documents_too_big": "هر فایل حداکثر {megabytes} مگابایت می‌تونه باشه.",
+  "server_partner_apply_documents_format": "فقط عکس (JPG، PNG، WebP) یا PDF قبوله."
 }

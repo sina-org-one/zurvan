@@ -35,7 +35,7 @@ export const Route = createFileRoute("/_public/assessment")({
   // A dog owner asks for the evaluation. Signed out goes to sign in and back here; partners and the Admin go to their
   // own home (docs/app-spec.md, Roles).
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   validateSearch: assessmentSearchSchema,
   loader: async ({ context: { queryClient } }) => {
     await Promise.all([queryClient.ensureQueryData(dogsQuery()), queryClient.ensureQueryData(evaluationsQuery())]);

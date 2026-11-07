@@ -92,9 +92,14 @@
   "server_partner_lead_dog_age_required": "Write the dog's age, e.g. “8 months” or “2 years”.",
   "server_partner_lead_too_long": "{count} characters at most.",
   "server_partner_terms_needed": "Read and accept the partnership terms first; then you can enter customers.",
-  "server_partner_apply_phone_taken": "This number already has an account on the site. If you're our partner, use “Partner sign-in”; otherwise, call Zurvann.",
+  "server_partner_apply_phone_taken": "This number belongs to a Zurvann partner. If that's you, use “Partner sign-in”.",
   "server_partner_apply_pending": "An application with this number is waiting to be reviewed. We'll call you soon.",
   "server_partner_apply_required": "Write this in.",
   "server_partner_apply_business_type": "Pick your kind of business.",
-  "server_partner_apply_terms": "To send the application, accept the partnership terms."
+  "server_partner_apply_terms": "To send the application, accept the partnership terms.",
+  "server_partner_apply_busy": "A lot of applications just came in. Try again in a few minutes.",
+  "server_partner_apply_documents_required": "Add at least one paper for your business.",
+  "server_partner_apply_documents_too_many": "{count} files at most.",
+  "server_partner_apply_documents_too_big": "Each file can be {megabytes} MB at most.",
+  "server_partner_apply_documents_format": "Only photos (JPG, PNG, WebP) or PDFs are accepted."
 }

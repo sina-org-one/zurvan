@@ -23,7 +23,7 @@ import type { PartnerFunnel } from "~/routes/account_partner/funnel";
 // The account layout lets customers in too, but the partner's pages are his alone (docs/app-spec.md, Pages).
 export const Route = createFileRoute("/account/partner")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["partner"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   /**
    * The partner's shop card, funnel and commissions. A partner user with no `partner` row is a broken account: the API
    * answers NOT_FOUND, and that becomes the 404 look that explains it, not an empty page.
@@ -83,7 +83,9 @@ function summarize({
  * nothing more.
  */
 function AccountPartnerPage() {
-  const { firstName } = Route.useRouteContext({ select: (context) => context.user });
+  const { firstName, role } = Route.useRouteContext({ select: (context) => context.user });
+  // A customer refers friends from this same page (F7, the owner 2026-11-07).
+  const isPartner = role === "partner";
   const { data: profile } = useSuspenseQuery(orpc.partner.getMine.queryOptions());
   const { data: allCommissions } = useSuspenseQuery(orpc.commission.listMine.queryOptions());
   const { data: leads } = useSuspenseQuery(orpc.partner.leads.list.queryOptions());
@@ -97,7 +99,7 @@ function AccountPartnerPage() {
       <PageMotion />
 
       {/*===== Hero =====*/}
-      <PartnerHero firstName={firstName} funnel={funnel} />
+      <PartnerHero firstName={firstName} funnel={funnel} isPartner={isPartner} />
 
       <div className={COLUMN}>
         {/*===== Terms First =====*/}
@@ -115,7 +117,7 @@ function AccountPartnerPage() {
             sticky only where the screen is tall enough to show all of it. */}
             <div className="grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:items-start lg:gap-x-8">
               <div className="lg:col-span-5 lg:[@media(min-height:52rem)]:sticky lg:[@media(min-height:52rem)]:top-6">
-                <ShopCard link={link} qr={qr} />
+                <ShopCard link={link} qr={qr} isPartner={isPartner} />
               </div>
 
               <div className="flex flex-col gap-12 lg:col-span-7">

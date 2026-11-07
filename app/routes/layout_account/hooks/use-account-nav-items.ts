@@ -2,7 +2,12 @@ import { useAtomValue } from "jotai";
 
 import { useHydrated } from "~/hooks/use-hydrated";
 import { cartCountAtom } from "~/atoms/cart";
-import { ACCOUNT_NAV_ITEMS, PARTNER_NAV_ITEMS, type DeskNavItem } from "~/routes/layout_account/account-nav";
+import {
+  ACCOUNT_NAV_ITEMS,
+  PARTNER_NAV_ITEMS,
+  REFERRAL_NAV_ITEM,
+  type DeskNavItem,
+} from "~/routes/layout_account/account-nav";
 import { CART_PATH } from "~/orpc/checkout/constants";
 
 /*===== Account Nav Items =====*/
@@ -14,9 +19,9 @@ export function useAccountNavItems(role: "customer" | "partner"): readonly DeskN
   const hydrated = useHydrated();
   const count = useAtomValue(cartCountAtom);
 
-  // A partner has his own two sections; he has no cart, so the count never applies to him.
-  if (role === "partner") return PARTNER_NAV_ITEMS;
-  if (!hydrated || count === 0) return ACCOUNT_NAV_ITEMS;
+  // A partner's desk is his two sections and then a customer's (he can be one too); a customer's adds the referral page.
+  const items = role === "partner" ? PARTNER_NAV_ITEMS : [...ACCOUNT_NAV_ITEMS, REFERRAL_NAV_ITEM];
+  if (!hydrated || count === 0) return items;
   // Spread while rendering, so the labels' getters are read in the page's language.
-  return ACCOUNT_NAV_ITEMS.map((item) => (item.to === CART_PATH ? { ...item, badge: count } : item));
+  return items.map((item) => (item.to === CART_PATH ? { ...item, badge: count } : item));
 }

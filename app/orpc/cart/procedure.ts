@@ -7,13 +7,13 @@ import { provideDbMiddleware } from "~/orpc/middleware/db/db.middleware";
 
 /*===== Get =====*/
 export const getCartProcedure = base.cart.get
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context }) => getCart({ db: context.db, userId: context.user.id }));
 
 /*===== Add =====*/
 export const addToCartProcedure = base.cart.add
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await addToCart({ db: context.db, userId: context.user.id, item: input.item });
@@ -23,25 +23,25 @@ export const addToCartProcedure = base.cart.add
 
 /*===== Remove =====*/
 export const removeFromCartProcedure = base.cart.remove
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context, input }) => removeFromCart({ db: context.db, userId: context.user.id, item: input.item }));
 
 /*===== Clear =====*/
 export const clearCartProcedure = base.cart.clear
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context }) => clearCart({ db: context.db, userId: context.user.id }));
 
 /*===== Merge =====*/
 export const mergeCartProcedure = base.cart.merge
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context, input }) => mergeIntoCart({ db: context.db, userId: context.user.id, items: input.items }));
 
 /*===== Place =====*/
 export const setCartPlaceProcedure = base.cart.setPlace
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await setCartPlace({

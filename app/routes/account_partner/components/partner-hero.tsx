@@ -25,7 +25,16 @@ import type { PartnerFunnel } from "~/routes/account_partner/funnel";
  * The page's load moment (page-motion.tsx): he waves (`pd-wave`, then his idle tilt), the bubble pops at 0.4s, the
  * tally's numbers rise one after another.
  */
-export function PartnerHero({ firstName, funnel }: { firstName: string; funnel: PartnerFunnel }) {
+export function PartnerHero({
+  firstName,
+  funnel,
+  isPartner,
+}: {
+  firstName: string;
+  funnel: PartnerFunnel;
+  /** A customer refers friends from the same page (F7, the owner 2026-11-07); a few lines speak to them instead. */
+  isPartner: boolean;
+}) {
   return (
     <section aria-labelledby="partner-title" className="pt-4 pb-8 lg:pt-section-sm lg:pb-10">
       <div className={cn(COLUMN, "relative z-10 grid gap-y-6 lg:grid-cols-12 lg:gap-x-12")}>
@@ -33,17 +42,19 @@ export function PartnerHero({ firstName, funnel }: { firstName: string; funnel: 
         <div className="order-2 lg:order-1 lg:col-span-7 lg:flex lg:flex-col lg:justify-center lg:py-6">
           <p className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/45 px-3.5 py-1 text-sm font-bold text-primary">
             <HandshakeIcon aria-hidden strokeWidth={2} className="size-4" />
-            {m.account_partner_hero_chip()}
+            {isPartner ? m.account_partner_hero_chip() : m.account_partner_hero_chip_customer()}
           </p>
           <h1 id="partner-title" className={cn(DISPLAY_HEADING, "mt-4 text-h1 text-balance")}>
             {m.account_partner_hero_title_lead()} <span className="text-primary">{firstName}</span>!
           </h1>
-          <p className="mt-3 max-w-xl text-lead text-pretty text-muted-foreground">{m.account_partner_hero_lead()}</p>
+          <p className="mt-3 max-w-xl text-lead text-pretty text-muted-foreground">
+            {isPartner ? m.account_partner_hero_lead() : m.account_partner_hero_lead_customer()}
+          </p>
           <TallyPlate funnel={funnel} />
         </div>
 
         {/*===== Street =====*/}
-        <Street />
+        <Street isPartner={isPartner} />
       </div>
     </section>
   );
@@ -101,7 +112,7 @@ function TallyPlate({ funnel }: { funnel: PartnerFunnel }) {
  * sky. `--dog-w` is the dog's width and `--ground` how high the path lifts the pieces; the bubble is placed from them,
  * so it sits over his head whatever the screen. Phones: a 12.5rem band; from `lg`, as tall as the words.
  */
-function Street() {
+function Street({ isPartner }: { isPartner: boolean }) {
   return (
     <div
       aria-hidden
@@ -152,7 +163,7 @@ function Street() {
           tail="left"
           className="pd-hello absolute bottom-[calc(var(--dog-w)*1.38+0.5rem)] left-[calc(50%-2.25rem)] z-20 max-w-[12rem] whitespace-nowrap lg:max-w-none"
         >
-          {m.account_partner_hero_bubble()}
+          {isPartner ? m.account_partner_hero_bubble() : m.account_partner_hero_bubble_customer()}
         </ChalkBubble>
       </div>
     </div>

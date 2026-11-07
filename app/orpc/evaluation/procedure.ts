@@ -18,7 +18,7 @@ const noData = { errors: [], fields: {} };
 
 /*===== Request =====*/
 export const requestEvaluationProcedure = base.evaluation.request
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await requestEvaluation({ db: context.db, customerId: context.user.id, input });
@@ -36,7 +36,7 @@ export const requestEvaluationProcedure = base.evaluation.request
 
 /*===== Withdraw =====*/
 export const withdrawEvaluationProcedure = base.evaluation.withdraw
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await withdrawEvaluation({ db: context.db, customerId: context.user.id, id: input.id });
@@ -51,7 +51,7 @@ export const withdrawEvaluationProcedure = base.evaluation.withdraw
 
 /*===== List =====*/
 export const listMyEvaluationsProcedure = base.evaluation.listMine
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context, input }) =>
     listMyEvaluations({ db: context.db, customerId: context.user.id, dogId: input.dogId }),

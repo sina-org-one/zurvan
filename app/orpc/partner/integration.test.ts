@@ -13,6 +13,7 @@ import {
   acceptPartnerTerms,
   addLead,
   adminListPartners,
+  ensureReferrerRow,
   createPartner,
   getPartnerProfile,
   listMyPeople,
@@ -183,8 +184,9 @@ async function cleanUpPeopleFixtures() {
   await db.delete(payment).where(inArray(payment.customerId, customerIds));
   await db.delete(partnerLead).where(inArray(partnerLead.partnerId, allPartnerIds));
   await db.delete(consent).where(inArray(consent.userId, allPartnerIds));
+  // A promoted customer has a partner row too, so partner rows go before any user.
+  await db.delete(partner).where(inArray(partner.userId, [...allPartnerIds, ...customerIds]));
   await db.delete(user).where(inArray(user.id, customerIds));
-  await db.delete(partner).where(inArray(partner.userId, allPartnerIds));
   await db.delete(user).where(inArray(user.id, allPartnerIds));
 }
 
@@ -414,6 +416,31 @@ describe("partner people", () => {
     });
   });
 
+  it("a customer refers friends from a referral row of their own, with the same lead rules", async () => {
+    const customerId = await makeCustomer({ phone: newPhone(), referredBy: null });
+
+    // Made once, on first use; again changes nothing (same link code).
+    await ensureReferrerRow({ db, userId: customerId });
+    const first = await getPartnerProfile({ db, userId: customerId });
+    await ensureReferrerRow({ db, userId: customerId });
+    const again = await getPartnerProfile({ db, userId: customerId });
+    if (first.kind !== "success" || again.kind !== "success") throw new Error("Expected a referral row.");
+    expect(again.profile.code).toBe(first.profile.code);
+    expect(first.profile.terms.accepted).toBe(false);
+
+    // The same rule as a partner: the terms first, then a friend with the guardian's and dog's details.
+    const friend = newPhone();
+    expect(await addLead({ db, userId: customerId, input: leadInput(friend) })).toMatchObject({ kind: "invalid" });
+    await acceptPartnerTerms({ db, userId: customerId });
+    expect(await addLead({ db, userId: customerId, input: leadInput(friend) })).toMatchObject({
+      kind: "success",
+      person: { stage: "lead" },
+    });
+
+    // The friend signs up with that number: attributed to the customer, like any partner's lead.
+    expect(await findPartnerForNewCustomer({ db, referralCode: null, phoneNumber: friend })).toBe(customerId);
+  });
+
   it("admin.create writes the user and the partner together, and refuses a taken phone or code with nothing written", async () => {
     const phone = newPhone();
     createdPhones.push(phone);
@@ -443,17 +470,21 @@ describe("partner people", () => {
       email: phonePlaceholderEmail(phone),
     });
 
-    // A phone that already belongs to a customer, or to the partner just made, is refused whatever the role.
-    const customerPhone = newPhone();
-    await makeCustomer({ phone: customerPhone, referredBy: null });
+    // A partner's number is refused: one account per number.
     const base = { firstName: "علی", lastName: "رضایی" };
-    for (const taken of [customerPhone, phone]) {
-      expect(await createPartner({ db, input: { ...base, phoneNumber: taken } })).toEqual({
-        kind: "invalid",
-        errors: [],
-        fields: { phoneNumber: "این شماره قبلاً در سایت ثبت‌نام کرده. هر شماره یک نقش دارد." },
-      });
-    }
+    expect(await createPartner({ db, input: { ...base, phoneNumber: phone } })).toEqual({
+      kind: "invalid",
+      errors: [],
+      fields: { phoneNumber: "این شماره مال یه همکار دیگه یا مدیره. شماره‌ی مشتری رو می‌شه همکار کرد." },
+    });
+
+    // A customer's number becomes a partner's, keeping the account (a partner can be a customer too, 2026-11-07).
+    const customerPhone = newPhone();
+    const customerId = await makeCustomer({ phone: customerPhone, referredBy: null });
+    const promoted = await createPartner({ db, input: { ...base, phoneNumber: customerPhone } });
+    expect(promoted).toMatchObject({ kind: "success", partner: { id: customerId, phoneNumber: customerPhone } });
+    const [promotedRow] = await db.select({ role: user.role }).from(user).where(eq(user.id, customerId));
+    expect(promotedRow?.role).toBe("partner");
 
     // A taken code is refused, and the user written first in the transaction is undone with it.
     const freshPhone = newPhone();

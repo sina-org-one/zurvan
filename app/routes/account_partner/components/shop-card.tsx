@@ -30,7 +30,7 @@ import type { Qr } from "~/lib/qr";
  * bubble floats. The copy button's icon turns into a check; while the PNG is made, the download icon turns into a
  * spinner.
  */
-export function ShopCard({ link, qr }: { link: string; qr: Qr }) {
+export function ShopCard({ link, qr, isPartner }: { link: string; qr: Qr; isPartner: boolean }) {
   return (
     <section aria-labelledby="partner-shop-title" className={cn(PLATE, "lg:p-6 xl:p-7")}>
       <h2 id="partner-shop-title" className={cn(DISPLAY_HEADING, "text-h2 text-balance")}>
@@ -82,7 +82,9 @@ export function ShopCard({ link, qr }: { link: string; qr: Qr }) {
           <CopyLinkButton link={link} />
         </div>
         <DownloadButton qr={qr} />
-        <p className="text-sm text-muted-foreground">{m.account_partner_shop_hint()}</p>
+        <p className="text-sm text-muted-foreground">
+          {isPartner ? m.account_partner_shop_hint() : m.account_partner_shop_hint_customer()}
+        </p>
       </div>
     </section>
   );

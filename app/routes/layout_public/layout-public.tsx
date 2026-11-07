@@ -34,7 +34,7 @@ function PublicLayout() {
   return (
     <div className="flex min-h-svh flex-col overflow-x-clip">
       {/* A customer's cart follows them to every device (F5); nobody else has one. */}
-      {viewer?.role === "customer" && <CartSync />}
+      {(viewer?.role === "customer" || viewer?.role === "partner") && <CartSync />}
       <SiteHeader viewer={viewer} />
       <main id="main" className={flushFooter ? "flex-1" : "flex-1 pb-section-md"}>
         <Outlet />

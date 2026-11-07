@@ -5,7 +5,7 @@ import { provideDbMiddleware } from "~/orpc/middleware/db/db.middleware";
 
 /*===== Partner =====*/
 export const listMyCommissionsProcedure = base.commission.listMine
-  .use(requireRoleMiddleware("partner"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context }) => listPartnerCommissions({ db: context.db, partnerId: context.user.id }));
 

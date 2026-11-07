@@ -1,6 +1,6 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "account_partner_meta_title": "Zurvann | My partnership",
+  "account_partner_meta_title": "Partnering and referrals | Zurvann",
   "account_partner_meta_description": "The partner's page: your link and QR, your customers and referral gifts.",
   "account_partner_hero_chip": "Partner",
   "account_partner_hero_title_lead": "Hi",
@@ -51,5 +51,9 @@
   "account_partner_terms_title": "First, the partnership terms",
   "account_partner_terms_lead": "Before you see your link and QR and enter customers, read and accept the terms of partnering with Zurvann.",
   "account_partner_terms_accept": "I accept",
-  "account_partner_terms_failed": "That didn't save. Try again."
+  "account_partner_terms_failed": "That didn't save. Try again.",
+  "account_partner_hero_chip_customer": "Refer a friend",
+  "account_partner_hero_lead_customer": "Introduce your friends to Zurvann: with your own link or QR, or by entering their details in “Customers”. Each time one of them buys a course, a referral gift is yours.",
+  "account_partner_hero_bubble_customer": "Your friend has a dog too? Bring them along!",
+  "account_partner_shop_hint_customer": "Send the link to your friends or show them the QR."
 }

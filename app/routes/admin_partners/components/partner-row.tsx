@@ -90,6 +90,12 @@ export function PartnerRow({
           >
             <bdi>{partner.name}</bdi>
           </Link>
+          {/* A customer who refers friends: the same row and gifts as a partner, but no business behind it. */}
+          {partner.role === "customer" && (
+            <span className="inline-flex h-6 items-center rounded-full border border-foreground/25 px-2 text-xs font-bold text-muted-foreground">
+              مشتری
+            </span>
+          )}
           {inactive && (
             <span
               key="inactive"

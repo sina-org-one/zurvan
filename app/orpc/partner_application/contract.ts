@@ -2,6 +2,7 @@ import { oc } from "@orpc/contract";
 import { z } from "zod";
 
 import { commonErrors, errorDataSchema } from "~/orpc/errors";
+import { PARTNER_DOCUMENT_FORMATS, PARTNER_DOCUMENT_MAX } from "~/orpc/partner_application/documents";
 import { authErrors, roleErrors } from "~/orpc/middleware/auth/auth.errors";
 
 /*===== Schemas =====*/
@@ -10,6 +11,16 @@ import { authErrors, roleErrors } from "~/orpc/middleware/auth/auth.errors";
 export const PARTNER_APPLICATION_STATUSES = ["pending", "approved", "rejected"] as const;
 
 export type PartnerApplicationStatus = (typeof PARTNER_APPLICATION_STATUSES)[number];
+
+/** A paper sent with an application. Its bytes are read through `/api/partner-documents/{id}`, by the Admin only. */
+export const partnerDocumentSchema = z.object({
+  id: z.string(),
+  format: z.enum(PARTNER_DOCUMENT_FORMATS),
+  sizeBytes: z.number().int(),
+  fileName: z.string(),
+});
+
+export type PartnerDocument = z.infer<typeof partnerDocumentSchema>;
 
 /** An application as the Admin reviews it. */
 export const adminPartnerApplicationSchema = z.object({
@@ -23,6 +34,8 @@ export const adminPartnerApplicationSchema = z.object({
   address: z.string(),
   note: z.string(),
   marketerName: z.string(),
+  /** The papers they sent (licence, permit, shopfront), oldest first. */
+  documents: z.array(partnerDocumentSchema),
   termsVersion: z.string(),
   termsAcceptedAt: z.date(),
   status: z.enum(PARTNER_APPLICATION_STATUSES),
@@ -57,7 +70,9 @@ const adminErrors = { ...commonErrors, ...authErrors, ...roleErrors };
 /**
  * Public: anyone may apply, signed in or not. The input is raw text as typed; the server normalizes and checks it.
  * Refusals are `INVALID_INPUT` with `fields.<name>`: a missing value, a bad number, a number that already has an account
- * (one role per number) or one with an application waiting, and `fields.acceptTerms` when the terms weren't ticked.
+ * that is a partner's or the Admin's (a customer's may apply: a partner can be a customer too) or one with an
+ * application waiting, `fields.acceptTerms` when the terms weren't ticked, `fields.documents` for missing, too many,
+ * too big or unsupported papers, and `errors` when too many applications came in the last hour.
  */
 export const submitApplicationContract = oc
   .errors(commonErrors)
@@ -72,6 +87,8 @@ export const submitApplicationContract = oc
       note: z.string(),
       marketerName: z.string(),
       acceptTerms: z.boolean(),
+      // Structure only: the count, size and real format are the service's checks (`fields.documents`).
+      documents: z.array(z.file()).max(PARTNER_DOCUMENT_MAX),
     }),
   )
   .output(z.object({ id: z.string() }));

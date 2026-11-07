@@ -43,7 +43,8 @@ The app is a **small shop with locked items**. A new dog starts with a **free ev
 **Who:** everyone.
 
 - Sign in with a phone number and an SMS code. Already built: 5-digit code, valid for 2 minutes, resend after 60 seconds, invalidated after 5 wrong attempts, rate-limited per phone and per IP.
-- One role per phone number. Only customers self-register; a partner account is made by the Admin, by hand or by approving an application ([F7](#f7-partners), "Becoming a partner").
+- One account (and role) per phone number. Only customers self-register; a partner account is made by the Admin, by hand or by approving an application ([F7](#f7-partners), "Becoming a partner").
+- **A partner is a customer too** (the owner, 2026-11-07): everything a customer does (dogs, evaluations, cart, purchases, logbook, certificates) a partner does from the same account, and his desk has both sets of tabs. A customer's number can become a partner's: the Admin's approval (or «همکار تازه») changes that account's role to `partner` and keeps its dogs and purchases. A partner's or the Admin's number can't be made a partner again.
 - **Two doors** (the owner, 2026-11-06): the header and the sign-in page have «ورود مشتری» and «ورود همکار» (`/auth?as=partner`). The customer door works as above. The partner door sends a code only to a partner's number (it asks `partner.isPartnerPhone` first), because a code verified for an unknown number would make a customer account, and one role per number would then shut that person out of partnering; anyone else is pointed to the application.
 - Blocked users can't sign in: the Admin blocks and unblocks from the Users page, which signs the user out everywhere at once. She can't block herself or any admin. Blocking a partner closes his sign-in only; his link and commissions are switched off by deactivating him ([F7](#f7-partners)).
 - Each user edits their name. Partners also enter their Sheba number, so the Admin knows where to send commissions ([F7](#f7-partners)).
@@ -202,7 +203,7 @@ An enrollment is created **only by a successful payment** ([F5](#f5-cart-and-che
 
 **Becoming a partner** (the owner, 2026-11-06). Three ways, all ending in an Admin's approval:
 
-1. The business **applies** on `/join/partner` (the Partner Enquiry page's form): first and last name, mobile number (the one they will sign in with), business name and kind (clinic, groomer, pet shop, kennel, other), city and address, and optionally the marketer who visited them and a note. A number that already has an account, or already has an application waiting, is refused.
+1. The business **applies** on `/join/partner` (the Partner Enquiry page's form): first and last name, mobile number (the one they will sign in with), business name and kind (clinic, groomer, pet shop, kennel, other), city and address, and optionally the marketer who visited them and a note. With it, **at least one paper** of the business (a business licence, a vet's permit, a photo of the shopfront): up to 4 files, each a JPG, PNG, WebP or PDF (told by its bytes) of 8 MB at most, stored privately (`partner-document/…`, never under `/media`) and read only by the Admin, through `/api/partner-documents/{id}`. A customer's number may apply; a partner's or the Admin's can't, nor one with an application waiting. The form is public, so past 30 applications in an hour the next ones are asked to try later.
 2. A **marketer** visits the business and helps them fill in the same form (the marketer's name is recorded on it).
 3. The business **calls**, and the Admin either fills the form in for them or creates the account by hand («همکار تازه»).
 
@@ -216,7 +217,8 @@ The Admin sees the applications on the Partners page («درخواست‌ها»)
 2. a **QR code** of that link, for their shop,
 3. **phone leads:** a customer entered in their dashboard before they sign up: the mobile number **and** the guardian's name, the dog's name, breed and age (all required, the owner, 2026-11-06), so a lead is a real person the partner talked to and not a bank of numbers hoping someone buys. The details are the partner's own words, shown to him and the Admin, never matched against the customer's profile.
 
-- A customer is attributed to **one partner, permanently**, when they register.
+- **Customers refer too** (the owner, 2026-11-07), with exactly the partners' system: their own link and QR, entered friends with the same four details, the same terms to accept first, and the same gift steps and payment. A customer's referral row (a `partner` row; the user keeps the `customer` role) is made the first time they open «معرفی به دوستان» (`/account/partner`, the same page as the partner's dashboard) or Profile Settings, where the Sheba card now shows for customers too. The Admin sees them among the partners, marked «مشتری», and pays them the same way. A customer never earns from their own purchases (nobody is attributed to themselves).
+- A customer is attributed to **one partner (or referring customer), permanently**, when they register.
 - A referral link wins over a phone lead.
 - If several partners entered the same phone number, the **earliest** lead wins; the others see it as lost.
 - An inactive partner's link and leads don't attribute anyone.

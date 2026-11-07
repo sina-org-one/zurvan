@@ -51,7 +51,8 @@ export async function locateDog({
   if (!found) return null;
 
   if (user.role === "admin") return { path: `/admin/dogs/${found.id}` };
-  if (user.role === "customer" && found.ownerId === user.id) return { path: `/account/dogs/${found.id}` };
+  if ((user.role === "customer" || user.role === "partner") && found.ownerId === user.id)
+    return { path: `/account/dogs/${found.id}` };
   return null;
 }
 

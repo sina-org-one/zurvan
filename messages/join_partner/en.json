@@ -63,5 +63,13 @@
   "join_partner_apply_business_type_required": "Pick your kind of business.",
   "join_partner_apply_sent_bubble": "Hooray! Got it!",
   "join_partner_apply_sent_title": "Your application is in",
-  "join_partner_apply_sent_line": "Zurvann will review it and text the outcome to the same number. Once approved, sign in with “Partner sign-in”."
+  "join_partner_apply_sent_line": "Zurvann will review it and text the outcome to the same number. Once approved, sign in with “Partner sign-in”.",
+  "join_partner_apply_documents": "Business papers",
+  "join_partner_apply_documents_hint": "A photo or PDF of your business licence, your vet permit, or a photo of your shopfront. At least one, up to {count} files of {megabytes} MB each. Only Zurvann's admin sees them.",
+  "join_partner_apply_documents_pick": "Choose files",
+  "join_partner_apply_documents_remove": "Remove {name}",
+  "join_partner_apply_documents_size": "{size} MB",
+  "join_partner_apply_documents_required": "Add at least one paper for your business.",
+  "join_partner_apply_documents_too_many": "That's more files than allowed.",
+  "join_partner_apply_documents_too_big": "One of the files is too big; add a smaller photo."
 }

@@ -105,6 +105,7 @@ export function toAdminPartner({
     code: record.code,
     shebaNumber: record.shebaNumber,
     isActive: record.isActive,
+    role: record.role === "customer" ? "customer" : "partner",
     businessName: record.businessName,
     businessType: record.businessType,
     termsAcceptedAt: record.termsAcceptedAt,

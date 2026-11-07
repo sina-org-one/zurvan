@@ -87,6 +87,11 @@ export const adminPartnerSchema = z.object({
   code: z.string(),
   shebaNumber: z.string().nullable(),
   isActive: z.boolean(),
+  /**
+   * `partner` (a business), or `customer` for a customer who refers friends (F7, the owner 2026-11-07): the same
+   * referral row, steps and gifts, paid the same way.
+   */
+  role: z.enum(["partner", "customer"]),
   /** From the application; null for a partner added by hand. */
   businessName: z.string().nullable(),
   businessType: z.string().nullable(),

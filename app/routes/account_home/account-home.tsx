@@ -22,7 +22,7 @@ import { buildCards, dogsQuery, enrollmentsQuery, evaluationsQuery } from "~/rou
 // The account layout lets partners in too, but my dogs, requests and courses are a customer's (docs/app-spec.md, Pages).
 export const Route = createFileRoute("/account/")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   loader: async ({ context: { queryClient } }) => {
     await Promise.all([
       queryClient.ensureQueryData(dogsQuery()),

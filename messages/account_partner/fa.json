@@ -1,6 +1,6 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "account_partner_meta_title": "همکاری من | زروان",
+  "account_partner_meta_title": "همکاری و معرفی | زروان",
   "account_partner_meta_description": "صفحه‌ی همکار: لینک و QR، مشتری‌ها و هدیه‌های معرفی‌ت.",
   "account_partner_hero_chip": "همکار",
   "account_partner_hero_title_lead": "سلام",
@@ -51,5 +51,9 @@
   "account_partner_terms_title": "اول، قوانین همکاری",
   "account_partner_terms_lead": "قبل از این‌که لینک و QR‌ت رو ببینی و مشتری ثبت کنی، قوانین همکاری با زروان رو بخون و تأیید کن.",
   "account_partner_terms_accept": "قبول دارم",
-  "account_partner_terms_failed": "ثبت نشد. دوباره امتحان کن."
+  "account_partner_terms_failed": "ثبت نشد. دوباره امتحان کن.",
+  "account_partner_hero_chip_customer": "معرفی به دوستان",
+  "account_partner_hero_lead_customer": "دوستات رو به زروان معرفی کن: با لینک یا QR خودت، یا با ثبت مشخصاتشون توی «مشتری‌ها». هر بار یکی‌شون دوره بخره، هدیه‌ی معرفی مال توئه.",
+  "account_partner_hero_bubble_customer": "رفیقت هم سگ داره؟ بیارش!",
+  "account_partner_shop_hint_customer": "لینک رو برای دوستات بفرست یا QR رو نشونشون بده."
 }

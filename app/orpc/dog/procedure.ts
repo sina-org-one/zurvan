@@ -17,13 +17,13 @@ import { provideDbMiddleware } from "~/orpc/middleware/db/db.middleware";
 
 /*===== List =====*/
 export const listDogsProcedure = base.dog.list
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context }) => listDogs({ db: context.db, ownerId: context.user.id }));
 
 /*===== Get =====*/
 export const getDogProcedure = base.dog.get
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await getDog({ db: context.db, ownerId: context.user.id, id: input.id });
@@ -35,7 +35,7 @@ export const getDogProcedure = base.dog.get
 
 /*===== Create =====*/
 export const createDogProcedure = base.dog.create
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await createDog({ db: context.db, ownerId: context.user.id, input });
@@ -49,7 +49,7 @@ export const createDogProcedure = base.dog.create
 
 /*===== Update =====*/
 export const updateDogProcedure = base.dog.update
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const { id, ...details } = input;

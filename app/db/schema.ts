@@ -908,6 +908,28 @@ export const partnerApplication = pgTable(
   ],
 );
 
+/**
+ * A paper an applicant sent with their application (the owner, 2026-11-07): a business licence, a vet's permit, a photo
+ * of the shopfront. Private: stored under `partner-document/{id}/original.{format}`, which the media route never
+ * serves; only the Admin reads it, through `/api/partner-documents/{id}`.
+ */
+export const partnerApplicationDocument = pgTable(
+  "partner_application_document",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    applicationId: uuid("application_id")
+      .notNull()
+      .references(() => partnerApplication.id, { onDelete: "restrict" }),
+    /** One of `PARTNER_DOCUMENT_FORMATS`: what the file's bytes are, not what its name says. */
+    format: text("format").notNull(),
+    sizeBytes: integer("size_bytes").notNull(),
+    /** The file's name as sent, for the Admin; never used to store or serve it. */
+    fileName: text("file_name").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [index("partner_application_document_application_idx").on(table.applicationId)],
+);
+
 /** A phone number a partner entered before the customer signed up. The earliest lead wins when several partners did. */
 export const partnerLead = pgTable(
   "partner_lead",

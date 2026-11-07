@@ -13,8 +13,11 @@ import {
   findPartnerProfile,
   findPartners,
   findPeople,
+  findUserByPhone,
   findUserIdByPhone,
   findUserRoleByPhone,
+  promoteCustomerToPartner,
+  updatePartnerBusiness,
   insertLeadOnce,
   insertPartnerOnce,
   insertPartnerUserOnce,
@@ -40,7 +43,7 @@ type InvalidResult = { kind: "invalid"; errors: string[]; fields: Record<string,
 /*===== Messages =====*/
 // The Admin's (a new partner), so Persian only. The partner's own refusals are `m.server_partner_…()`, called where they
 // happen so they are in that request's language.
-const PARTNER_PHONE_TAKEN_MESSAGE = "این شماره قبلاً در سایت ثبت‌نام کرده. هر شماره یک نقش دارد.";
+const PARTNER_PHONE_TAKEN_MESSAGE = "این شماره مال یه همکار دیگه یا مدیره. شماره‌ی مشتری رو می‌شه همکار کرد.";
 const PARTNER_CODE_TAKEN_MESSAGE = "این کد قبلاً گرفته شده.";
 
 /*===== Profile =====*/
@@ -217,6 +220,23 @@ export async function addLead({
   return { kind: "success", person };
 }
 
+/*===== Customer Referrers =====*/
+/**
+ * F7 (the owner, 2026-11-07): a customer refers friends the same way a partner brings customers (link, QR, entered
+ * leads, the same gift steps), so a customer gets a `partner` row of their own, with a generated link code, the first
+ * time they open their referral page. The row is what the referral machinery reads; the user keeps the `customer` role.
+ * Safe to repeat: an existing row is left as it is.
+ */
+export async function ensureReferrerRow({ db, userId }: Own): Promise<void> {
+  if (await findPartnerProfile({ db, userId })) return;
+  for (let attempt = 0; attempt < GENERATED_CODE_ATTEMPTS; attempt += 1) {
+    if (await insertPartnerOnce({ db, userId, code: generatePartnerCode() })) return;
+    // Taken code, or another tab made the row meanwhile.
+    if (await findPartnerProfile({ db, userId })) return;
+  }
+  throw new Error("ensureReferrerRow: could not generate a free referral code");
+}
+
 /*===== Partner Sign-in =====*/
 /** Whether the number (as typed) belongs to a partner account. A number that isn't a phone number is simply no. */
 export async function isPartnerPhone({
@@ -348,6 +368,28 @@ export async function createPartnerAccount({
   code?: string | undefined;
   business?: { businessName: string; businessType: string };
 }): Promise<CreateAccountResult> {
+  /*------ An Existing Customer ------*/
+  // A partner can be a customer too (the owner, 2026-11-07): a customer's number becomes a partner's, keeping their
+  // dogs and purchases (and their referral row and link code, if they already referred friends). A partner's or the
+  // Admin's number is still refused: one account per number.
+  const existing = await findUserByPhone({ db, phoneNumber });
+  if (existing) {
+    if (existing.role !== "customer") {
+      return { kind: "invalid", errors: [], fields: { phoneNumber: PARTNER_PHONE_TAKEN_MESSAGE } };
+    }
+    const promoted = await promoteCustomerToPartner({ db, userId: existing.id });
+    if (!promoted) return { kind: "invalid", errors: [], fields: { phoneNumber: PARTNER_PHONE_TAKEN_MESSAGE } };
+    if (typedCode && !(await findPartnerProfile({ db, userId: existing.id }))) {
+      if (!(await insertPartnerOnce({ db, userId: existing.id, code: typedCode, business }))) {
+        throw new RollbackCreate();
+      }
+    } else {
+      await ensureReferrerRow({ db, userId: existing.id });
+      if (business) await updatePartnerBusiness({ db, userId: existing.id, business });
+    }
+    return { kind: "created", id: existing.id };
+  }
+
   for (let attempt = 0; attempt < (typedCode ? 1 : GENERATED_CODE_ATTEMPTS); attempt += 1) {
     const outcome = await tryCreatePartner({
       db,
@@ -387,7 +429,18 @@ export async function createPartner({
   const { firstName, lastName, phoneNumber, code: typedCode } = parsed.data;
 
   /*------ Write ------*/
-  const outcome = await createPartnerAccount({ db, firstName, lastName, phoneNumber, code: typedCode });
+  // One transaction: a customer promoted to partner is undone when their typed code turns out to be taken.
+  let outcome: CreateAccountResult;
+  try {
+    outcome = await db.transaction((tx) =>
+      createPartnerAccount({ db: tx, firstName, lastName, phoneNumber, code: typedCode }),
+    );
+  } catch (error) {
+    if (error instanceof RollbackCreate) {
+      return { kind: "invalid", errors: [], fields: { code: PARTNER_CODE_TAKEN_MESSAGE } };
+    }
+    throw error;
+  }
   if (outcome.kind === "invalid") return outcome;
 
   const [created] = await loadAdminPartners({ db, partnerId: outcome.id });

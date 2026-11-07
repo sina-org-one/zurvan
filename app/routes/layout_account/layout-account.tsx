@@ -37,7 +37,8 @@ function AccountLayout() {
 
   return (
     <div className="flex min-h-svh flex-col overflow-x-clip">
-      {role === "customer" && <CartSync />}
+      {/* Both: a partner can be a customer too. */}
+      <CartSync />
       <AccountHeader
         firstName={user.firstName}
         phoneNumber={user.phoneNumber}

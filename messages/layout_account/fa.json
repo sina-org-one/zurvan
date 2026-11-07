@@ -16,5 +16,8 @@
   "layout_account_footer_faq": "سؤال‌های پرتکرار",
   "layout_account_footer_contact": "تماس",
   "layout_account_footer_call": "زنگ بزن",
-  "layout_account_footer_call_or": "یا"
+  "layout_account_footer_call_or": "یا",
+  "layout_account_nav_referral": "معرفی به دوستان",
+  "layout_account_nav_referral_short": "معرفی",
+  "layout_account_nav_partner_home_short": "همکاری"
 }

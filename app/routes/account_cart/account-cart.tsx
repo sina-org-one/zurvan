@@ -40,7 +40,7 @@ const cartSearchSchema = z.object({
 // itself is in the browser, so there is nothing to load; the review is asked for on the client.
 export const Route = createFileRoute("/account/cart")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   validateSearch: cartSearchSchema,
   head: () =>
     pageHead({

@@ -38,7 +38,7 @@ export const Route = createFileRoute("/_public/buy")({
   // Customers only. A visitor is sent to sign in and brought back here, the query string included (`requireSession`);
   // a partner or the Admin goes to their own home.
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   validateSearch: buySearchSchema,
   loaderDeps: ({ search }) => ({ dog: search.dog }),
   loader: async ({ context: { queryClient }, deps }) => {

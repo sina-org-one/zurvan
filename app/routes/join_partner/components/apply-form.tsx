@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
-import { SendIcon } from "lucide-react";
+import { FileTextIcon, PaperclipIcon, SendIcon, XIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { ChalkBubble } from "~/components/chalk-bubble";
@@ -17,9 +17,15 @@ import { NativeSelect, NativeSelectOption } from "~/components/ui/native-select"
 import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
+import { formatNumber } from "~/lib/locale-format";
 import { PARTNER_BUSINESS_TYPES, partnerBusinessTypeLabel } from "~/lib/partner-terms";
 import { orpc } from "~/orpc/client";
 import { errorDataSchema } from "~/orpc/errors";
+import {
+  PARTNER_DOCUMENT_ACCEPT,
+  PARTNER_DOCUMENT_MAX,
+  PARTNER_DOCUMENT_MAX_BYTES,
+} from "~/orpc/partner_application/documents";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/join_partner/column";
 import { type ApplyFormValues, EMPTY_APPLICATION, applyFormSchema } from "~/routes/join_partner/schema";
@@ -36,7 +42,13 @@ const FIELD_NAMES = [
   "marketerName",
   "note",
   "acceptTerms",
+  "documents",
 ] as const;
+
+/** «۲٫۴ مگابایت» / "2.4 MB": a chosen file's size, so a too-big one is easy to spot. */
+function formatMegabytes(bytes: number): string {
+  return m.join_partner_apply_documents_size({ size: formatNumber(Math.round((bytes / 1024 / 1024) * 10) / 10) });
+}
 
 function textLabel(field: (typeof TEXT_FIELDS)[number]): string {
   switch (field) {
@@ -204,6 +216,72 @@ export function ApplyForm() {
                   <FieldError errors={[errors.note]} />
                 </Field>
               </div>
+
+              {/*------ The Papers ------*/}
+              {/* At least one: a licence, a vet's permit, a photo of the shopfront. Kept private, for the Admin only. */}
+              <Controller
+                control={control}
+                name="documents"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={!!fieldState.error}>
+                    <FieldLabel htmlFor="apply-documents">{m.join_partner_apply_documents()}</FieldLabel>
+                    <FieldDescription>
+                      {m.join_partner_apply_documents_hint({
+                        count: formatNumber(PARTNER_DOCUMENT_MAX),
+                        megabytes: formatNumber(PARTNER_DOCUMENT_MAX_BYTES / 1024 / 1024),
+                      })}
+                    </FieldDescription>
+                    {field.value.length > 0 && (
+                      <ul className="flex flex-col gap-2">
+                        {field.value.map((file, index) => (
+                          <li
+                            key={`${file.name}-${file.size}-${file.lastModified}`}
+                            className="flex items-center gap-3 rounded-xl border border-foreground/15 bg-background/40 px-3 py-2 text-sm"
+                          >
+                            <FileTextIcon aria-hidden className="size-4 shrink-0 text-primary" />
+                            <bdi className="min-w-0 flex-1 truncate">{file.name}</bdi>
+                            <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                              {formatMegabytes(file.size)}
+                            </span>
+                            <button
+                              type="button"
+                              className="grid size-8 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+                              aria-label={m.join_partner_apply_documents_remove({ name: file.name })}
+                              onClick={() => field.onChange(field.value.filter((_, at) => at !== index))}
+                            >
+                              <XIcon aria-hidden className="size-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {field.value.length < PARTNER_DOCUMENT_MAX && (
+                      <label
+                        htmlFor="apply-documents"
+                        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-foreground/20 px-4 py-4 text-sm font-bold text-foreground/85 transition-colors hover:border-primary/60 hover:text-foreground has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50"
+                      >
+                        <PaperclipIcon aria-hidden className="size-4 text-primary" />
+                        {m.join_partner_apply_documents_pick()}
+                        <input
+                          id="apply-documents"
+                          type="file"
+                          multiple
+                          accept={PARTNER_DOCUMENT_ACCEPT}
+                          className="sr-only"
+                          aria-invalid={!!fieldState.error}
+                          onChange={(event) => {
+                            const picked = [...(event.target.files ?? [])];
+                            // The same input picks again later, so it is emptied after each pick.
+                            event.target.value = "";
+                            field.onChange([...field.value, ...picked].slice(0, PARTNER_DOCUMENT_MAX));
+                          }}
+                        />
+                      </label>
+                    )}
+                    <FieldError errors={[fieldState.error]} />
+                  </Field>
+                )}
+              />
 
               {/*------ The Terms ------*/}
               <PartnerTermsText />

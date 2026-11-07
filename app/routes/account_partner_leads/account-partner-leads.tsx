@@ -22,7 +22,7 @@ import { countPeople, filterPeople } from "~/routes/account_partner_leads/stages
 // The account layout lets customers in too; the partner's pages are his alone (docs/app-spec.md, Pages).
 export const Route = createFileRoute("/account/partner/leads")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["partner"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   validateSearch: partnerLeadsSearchSchema,
   // The whole list comes once: the stage pills, their counts and the paging are applied in the component, so changing
   // them never waits for the server. `getMine` is only for `isActive`; a partner user with no `partner` row is a broken

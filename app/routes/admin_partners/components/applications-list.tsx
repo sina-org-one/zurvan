@@ -1,5 +1,5 @@
 import { cn } from "cn";
-import { CheckIcon, XIcon } from "lucide-react";
+import { CheckIcon, FileTextIcon, ImageIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "~/components/ui/button";
@@ -116,6 +116,28 @@ function ApplicationCard({
           </div>
         ))}
       </dl>
+      {/*------ Papers ------*/}
+      {/* Private: each opens through the Admin-only route, in a new tab (a photo, or the browser's PDF viewer). */}
+      {application.documents.length > 0 && (
+        <ul aria-label="مدارک" className="mt-3 flex flex-wrap gap-2">
+          {application.documents.map((document, index) => {
+            const Icon = document.format === "pdf" ? FileTextIcon : ImageIcon;
+            return (
+              <li key={document.id}>
+                <a
+                  href={`/api/partner-documents/${document.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-9 max-w-64 items-center gap-2 rounded-full border border-foreground/20 px-3 text-sm font-bold transition-colors outline-none hover:border-primary/60 focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <Icon aria-hidden className="size-4 shrink-0 text-primary" />
+                  <bdi className="truncate">{document.fileName || `مدرک ${toPersianDigits(String(index + 1))}`}</bdi>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )}
       {application.note && (
         <p className="mt-3 rounded-xl bg-background/40 p-3 text-sm text-pretty whitespace-pre-line">
           <bdi>{application.note}</bdi>

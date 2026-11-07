@@ -16,5 +16,8 @@
   "layout_account_footer_faq": "FAQ",
   "layout_account_footer_contact": "Contact",
   "layout_account_footer_call": "Call",
-  "layout_account_footer_call_or": "or"
+  "layout_account_footer_call_or": "or",
+  "layout_account_nav_referral": "Refer a friend",
+  "layout_account_nav_referral_short": "Refer",
+  "layout_account_nav_partner_home_short": "Partner"
 }

@@ -45,7 +45,8 @@ async function upload(request: Request) {
     return json({ errors: [m.server_evaluation_video_sign_in()], fields: {} }, 401);
   // Better-Auth types additional fields as optional, but the column is NOT NULL with a default.
   const role = session.user.role as UserRole;
-  if (role !== "customer") return json({ errors: [m.server_evaluation_video_customers_only()], fields: {} }, 403);
+  if (role !== "customer" && role !== "partner")
+    return json({ errors: [m.server_evaluation_video_customers_only()], fields: {} }, 403);
 
   /*------ Size, Before Reading the Body ------*/
   const declared = Number(request.headers.get("content-length"));

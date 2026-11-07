@@ -2,10 +2,12 @@ import { buildReferralCard } from "~/lib/referral-card.server";
 import { base } from "~/orpc/implementer.server";
 import { requireRoleMiddleware } from "~/orpc/middleware/auth/auth.middleware";
 import { provideDbMiddleware } from "~/orpc/middleware/db/db.middleware";
+import type { DatabaseOrTransaction } from "~/db/client.server";
 import {
   acceptPartnerTerms,
   addLead,
   adminListPartners,
+  ensureReferrerRow,
   createPartner,
   getPartnerProfile,
   isPartnerPhone,
@@ -14,12 +16,25 @@ import {
   updatePartnerProfile,
 } from "~/orpc/partner/service";
 
+/*===== Customer Referrers =====*/
+/** A customer refers friends from a `partner` row of their own, made the first time they need it (F7). */
+async function prepareReferrer({
+  db,
+  user,
+}: {
+  db: DatabaseOrTransaction;
+  user: { id: string; role?: string | null };
+}) {
+  if (user.role === "customer") await ensureReferrerRow({ db, userId: user.id });
+}
+
 /*===== Profile =====*/
 // Only ever touch the signed-in partner's own row.
 export const getMyPartnerProfileProcedure = base.partner.getMine
-  .use(requireRoleMiddleware("partner"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, errors }) => {
+    await prepareReferrer({ db: context.db, user: context.user });
     const result = await getPartnerProfile({ db: context.db, userId: context.user.id });
 
     if (result.kind === "not-found") throw errors.NOT_FOUND({ data: { errors: [], fields: {} } });
@@ -28,9 +43,10 @@ export const getMyPartnerProfileProcedure = base.partner.getMine
   });
 
 export const updateMyPartnerProfileProcedure = base.partner.updateMine
-  .use(requireRoleMiddleware("partner"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
+    await prepareReferrer({ db: context.db, user: context.user });
     const result = await updatePartnerProfile({ db: context.db, userId: context.user.id, input });
 
     if (result.kind === "not-found") throw errors.NOT_FOUND({ data: { errors: [], fields: {} } });
@@ -42,9 +58,10 @@ export const updateMyPartnerProfileProcedure = base.partner.updateMine
   });
 
 export const acceptMyTermsProcedure = base.partner.acceptTerms
-  .use(requireRoleMiddleware("partner"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, errors }) => {
+    await prepareReferrer({ db: context.db, user: context.user });
     const result = await acceptPartnerTerms({ db: context.db, userId: context.user.id });
 
     if (result.kind === "not-found") throw errors.NOT_FOUND({ data: { errors: [], fields: {} } });
@@ -62,9 +79,10 @@ export const isPartnerPhoneProcedure = base.partner.isPartnerPhone
 
 /*===== Leads =====*/
 export const listMyLeadsProcedure = base.partner.leads.list
-  .use(requireRoleMiddleware("partner"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, errors }) => {
+    await prepareReferrer({ db: context.db, user: context.user });
     const result = await listMyPeople({ db: context.db, userId: context.user.id });
 
     if (result.kind === "not-found") throw errors.NOT_FOUND({ data: { errors: [], fields: {} } });
@@ -73,9 +91,10 @@ export const listMyLeadsProcedure = base.partner.leads.list
   });
 
 export const addLeadProcedure = base.partner.leads.add
-  .use(requireRoleMiddleware("partner"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
+    await prepareReferrer({ db: context.db, user: context.user });
     const result = await addLead({ db: context.db, userId: context.user.id, input });
 
     if (result.kind === "not-found") throw errors.NOT_FOUND({ data: { errors: [], fields: {} } });

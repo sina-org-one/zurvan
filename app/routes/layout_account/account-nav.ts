@@ -1,4 +1,4 @@
-import { BookOpen, PawPrint, ReceiptText, ShoppingBag, Store, UsersRound, type LucideIcon } from "lucide-react";
+import { BookOpen, Gift, PawPrint, ReceiptText, ShoppingBag, Store, UsersRound, type LucideIcon } from "lucide-react";
 
 import { ACCOUNT_LINKS } from "~/lib/account-links";
 import { CART_PATH, PURCHASES_PATH } from "~/orpc/checkout/constants";
@@ -49,11 +49,29 @@ export const ACCOUNT_NAV_ITEMS: readonly DeskNavItem[] = ACCOUNT_LINKS.map((link
   icon: ACCOUNT_ICONS[link.to] ?? PawPrint,
 }));
 
-/** The partner's pages (F7): the dashboard and the leads. */
-export const PARTNER_NAV_ITEMS: readonly DeskNavItem[] = [
+/**
+ * A customer's referral page (F7, the owner 2026-11-07: customers earn referral gifts the same way partners do). The
+ * same page as the partner's dashboard; its customers list is reached from there. Not `end`, so the tab stays lit on it.
+ */
+export const REFERRAL_NAV_ITEM: DeskNavItem = {
+  get label() {
+    return m.layout_account_nav_referral();
+  },
+  get short() {
+    return m.layout_account_nav_referral_short();
+  },
+  to: "/account/partner",
+  icon: Gift,
+};
+
+/** The partner's pages (F7): the dashboard and the leads. A partner is a customer too, so his desk adds theirs. */
+export const PARTNER_ONLY_NAV_ITEMS: readonly DeskNavItem[] = [
   {
     get label() {
       return m.layout_account_nav_partner_home();
+    },
+    get short() {
+      return m.layout_account_nav_partner_home_short();
     },
     to: "/account/partner",
     end: true,
@@ -70,6 +88,8 @@ export const PARTNER_NAV_ITEMS: readonly DeskNavItem[] = [
     icon: UsersRound,
   },
 ];
+
+export const PARTNER_NAV_ITEMS: readonly DeskNavItem[] = [...PARTNER_ONLY_NAV_ITEMS, ...ACCOUNT_NAV_ITEMS];
 
 export const ACCOUNT_EXIT_LINK: DeskExitLink = {
   get label() {

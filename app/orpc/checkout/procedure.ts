@@ -21,7 +21,7 @@ import { baseLocale, type Locale } from "~/paraglide/runtime";
 
 /*===== Dog Eligibility =====*/
 export const dogEligibilityProcedure = base.checkout.eligibility
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await getDogEligibility({
@@ -36,7 +36,7 @@ export const dogEligibilityProcedure = base.checkout.eligibility
 
 /*===== Courses For A Dog =====*/
 export const myDogCoursesProcedure = base.checkout.dogCourses
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await getMyDogCourses({
@@ -51,13 +51,13 @@ export const myDogCoursesProcedure = base.checkout.dogCourses
 
 /*===== Review =====*/
 export const reviewCartProcedure = base.checkout.review
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context, input }) => reviewCart({ db: context.db, customerId: context.user.id, input }));
 
 /*===== Pay =====*/
 export const payCartProcedure = base.checkout.pay
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await payCart({
@@ -86,7 +86,7 @@ export const payCartProcedure = base.checkout.pay
 
 /*===== Payments =====*/
 export const listMyPaymentsProcedure = base.checkout.payments
-  .use(requireRoleMiddleware("customer"))
+  .use(requireRoleMiddleware("customer", "partner"))
   .use(provideDbMiddleware)
   .handler(({ context }) => listMyPayments({ db: context.db, customerId: context.user.id }));
 

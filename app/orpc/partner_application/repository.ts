@@ -1,12 +1,13 @@
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import type { DatabaseOrTransaction } from "~/db/client.server";
-import { partnerApplication } from "~/db/schema";
+import { partnerApplication, partnerApplicationDocument } from "~/db/schema";
 
 /*===== Types =====*/
 type Executor = { db: DatabaseOrTransaction };
 
 export type PartnerApplicationRecord = typeof partnerApplication.$inferSelect;
+export type PartnerDocumentRecord = typeof partnerApplicationDocument.$inferSelect;
 
 /*===== Reads =====*/
 /** All applications, the waiting ones first, newest first within each. `id` narrows them to one. */
@@ -18,7 +19,42 @@ export async function findApplications({ db, id }: Executor & { id?: string }): 
     .orderBy(sql`${partnerApplication.status} = 'pending' desc`, desc(partnerApplication.createdAt));
 }
 
+/** The documents of these applications, oldest first. */
+export async function findDocuments({
+  db,
+  applicationIds,
+}: Executor & { applicationIds: string[] }): Promise<PartnerDocumentRecord[]> {
+  if (applicationIds.length === 0) return [];
+  return db
+    .select()
+    .from(partnerApplicationDocument)
+    .where(inArray(partnerApplicationDocument.applicationId, applicationIds))
+    .orderBy(asc(partnerApplicationDocument.createdAt), asc(partnerApplicationDocument.id));
+}
+
+/** One document, for the Admin's download route. */
+export async function findDocument({ db, id }: Executor & { id: string }): Promise<PartnerDocumentRecord | undefined> {
+  const [row] = await db.select().from(partnerApplicationDocument).where(eq(partnerApplicationDocument.id, id));
+  return row;
+}
+
+/** How many applications came in since a moment: the public form's brake against a flood. */
+export async function countApplicationsSince({ db, since }: Executor & { since: Date }): Promise<number> {
+  const [row] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(partnerApplication)
+    .where(gt(partnerApplication.createdAt, since));
+  return row?.count ?? 0;
+}
+
 /*===== Writes =====*/
+/** Records the documents of a stored application (their bytes are already in the bucket). */
+export async function insertDocuments({
+  db,
+  values,
+}: Executor & { values: (typeof partnerApplicationDocument.$inferInsert)[] }): Promise<void> {
+  if (values.length > 0) await db.insert(partnerApplicationDocument).values(values);
+}
 /**
  * Stores an application unless the number already has one waiting (a partial unique index decides, so two racing
  * submits still leave one).

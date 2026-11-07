@@ -21,7 +21,7 @@ import { SlipsSection } from "./components/slips-section";
 // The account layout lets partners in too, but payments are a customer's (docs/app-spec.md, F5).
 export const Route = createFileRoute("/account/purchases")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   loader: async ({ context: { queryClient } }) => {
     // The dogs are read only for their photos: a payment item carries just the dog's id and name.
     await Promise.all([

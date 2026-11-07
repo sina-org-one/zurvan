@@ -16,6 +16,7 @@ export type PartnerRecord = PartnerProfileRecord & {
   id: string;
   name: string;
   phoneNumber: string | null;
+  role: string;
   businessName: string | null;
   businessType: string | null;
   termsAcceptedAt: Date | null;
@@ -237,6 +238,7 @@ export async function findPartners({ db, partnerId }: Executor & { partnerId?: s
       id: partner.userId,
       name: user.name,
       phoneNumber: user.phoneNumber,
+      role: user.role,
       code: partner.code,
       shebaNumber: partner.shebaNumber,
       isActive: partner.isActive,
@@ -283,6 +285,39 @@ export async function findUserIdByPhone({
 }: Executor & { phoneNumber: string }): Promise<string | undefined> {
   const [row] = await db.select({ id: user.id }).from(user).where(eq(user.phoneNumber, phoneNumber));
   return row?.id;
+}
+
+/** The id and role of the user with this number, or `undefined` when nobody has it. */
+export async function findUserByPhone({
+  db,
+  phoneNumber,
+}: Executor & { phoneNumber: string }): Promise<{ id: string; role: string } | undefined> {
+  const [row] = await db.select({ id: user.id, role: user.role }).from(user).where(eq(user.phoneNumber, phoneNumber));
+  return row;
+}
+
+/**
+ * Makes a customer a partner (the owner, 2026-11-07: a partner can be a customer too): the role changes, and their dogs,
+ * cart and purchases stay theirs. Only a `customer` changes, so a racing second approval leaves the first as it is.
+ *
+ * @returns Whether the user was a customer and is now a partner.
+ */
+export async function promoteCustomerToPartner({ db, userId }: Executor & { userId: string }): Promise<boolean> {
+  const rows = await db
+    .update(user)
+    .set({ role: "partner" })
+    .where(and(eq(user.id, userId), eq(user.role, "customer")))
+    .returning({ id: user.id });
+  return rows.length > 0;
+}
+
+/** Sets the business on a partner row (one a customer already had for referring, or a new one). */
+export async function updatePartnerBusiness({
+  db,
+  userId,
+  business,
+}: Executor & { userId: string; business: { businessName: string; businessType: string } }): Promise<void> {
+  await db.update(partner).set(business).where(eq(partner.userId, userId));
 }
 
 /** The role of the user with this number, or `undefined` when nobody has it. */

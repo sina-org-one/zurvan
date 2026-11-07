@@ -38,6 +38,14 @@ export function videoKey({ videoId, format }: { videoId: string; format: Evaluat
   return `evaluation-video/${videoId}/original.${format}`;
 }
 
+/**
+ * The bucket key of a partner application's document: `partner-document/{documentId}/original.{format}`. Never served
+ * by the media route: only `/api/partner-documents/{id}`, for the Admin.
+ */
+export function partnerDocumentKey({ documentId, format }: { documentId: string; format: string }): string {
+  return `partner-document/${documentId}/original.${format}`;
+}
+
 /*===== Writes =====*/
 /**
  * Puts one object into the bucket.

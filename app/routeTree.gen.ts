@@ -61,6 +61,7 @@ import { Route as admin_course_formAdminCourseNewRouteImport } from './routes/ad
 import { Route as admin_dog_detailAdminDogDetailRouteImport } from './routes/admin_dog_detail/admin-dog-detail'
 import { Route as api_authApiAuthRouteImport } from './routes/api_auth/api-auth'
 import { Route as api_evaluation_videoApiEvaluationVideoRouteImport } from './routes/api_evaluation_video/api-evaluation-video'
+import { Route as api_partner_documentApiPartnerDocumentRouteImport } from './routes/api_partner_document/api-partner-document'
 import { Route as account_dog_formAccountDogEditRouteImport } from './routes/account_dog_form/account-dog-edit'
 import { Route as admin_post_formAdminPostEditRouteImport } from './routes/admin_post_form/admin-post-edit'
 import { Route as admin_course_formAdminCourseEditRouteImport } from './routes/admin_course_form/admin-course-edit'
@@ -346,6 +347,12 @@ const api_evaluation_videoApiEvaluationVideoRoute =
     path: '/api/evaluation-videos/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
+const api_partner_documentApiPartnerDocumentRoute =
+  api_partner_documentApiPartnerDocumentRouteImport.update({
+    id: '/api/partner-documents/$id',
+    path: '/api/partner-documents/$id',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const account_dog_formAccountDogEditRoute =
   account_dog_formAccountDogEditRouteImport.update({
     id: '/dogs/$dogId/edit',
@@ -417,6 +424,7 @@ export interface FileRoutesByFullPath {
   '/admin/dogs/$dogId': typeof admin_dog_detailAdminDogDetailRoute
   '/api/auth/$': typeof api_authApiAuthRoute
   '/api/evaluation-videos/$id': typeof api_evaluation_videoApiEvaluationVideoRoute
+  '/api/partner-documents/$id': typeof api_partner_documentApiPartnerDocumentRoute
   '/account/dogs/$dogId/edit': typeof account_dog_formAccountDogEditRoute
   '/admin/blog/$id/edit': typeof admin_post_formAdminPostEditRoute
   '/admin/courses/$slug/edit': typeof admin_course_formAdminCourseEditRoute
@@ -471,6 +479,7 @@ export interface FileRoutesByTo {
   '/admin/dogs/$dogId': typeof admin_dog_detailAdminDogDetailRoute
   '/api/auth/$': typeof api_authApiAuthRoute
   '/api/evaluation-videos/$id': typeof api_evaluation_videoApiEvaluationVideoRoute
+  '/api/partner-documents/$id': typeof api_partner_documentApiPartnerDocumentRoute
   '/account/dogs/$dogId/edit': typeof account_dog_formAccountDogEditRoute
   '/admin/blog/$id/edit': typeof admin_post_formAdminPostEditRoute
   '/admin/courses/$slug/edit': typeof admin_course_formAdminCourseEditRoute
@@ -529,6 +538,7 @@ export interface FileRoutesById {
   '/admin/dogs/$dogId': typeof admin_dog_detailAdminDogDetailRoute
   '/api/auth/$': typeof api_authApiAuthRoute
   '/api/evaluation-videos/$id': typeof api_evaluation_videoApiEvaluationVideoRoute
+  '/api/partner-documents/$id': typeof api_partner_documentApiPartnerDocumentRoute
   '/account/dogs/$dogId/edit': typeof account_dog_formAccountDogEditRoute
   '/admin/blog/$id/edit': typeof admin_post_formAdminPostEditRoute
   '/admin/courses/$slug/edit': typeof admin_course_formAdminCourseEditRoute
@@ -587,6 +597,7 @@ export interface FileRouteTypes {
     | '/admin/dogs/$dogId'
     | '/api/auth/$'
     | '/api/evaluation-videos/$id'
+    | '/api/partner-documents/$id'
     | '/account/dogs/$dogId/edit'
     | '/admin/blog/$id/edit'
     | '/admin/courses/$slug/edit'
@@ -641,6 +652,7 @@ export interface FileRouteTypes {
     | '/admin/dogs/$dogId'
     | '/api/auth/$'
     | '/api/evaluation-videos/$id'
+    | '/api/partner-documents/$id'
     | '/account/dogs/$dogId/edit'
     | '/admin/blog/$id/edit'
     | '/admin/courses/$slug/edit'
@@ -698,6 +710,7 @@ export interface FileRouteTypes {
     | '/admin/dogs/$dogId'
     | '/api/auth/$'
     | '/api/evaluation-videos/$id'
+    | '/api/partner-documents/$id'
     | '/account/dogs/$dogId/edit'
     | '/admin/blog/$id/edit'
     | '/admin/courses/$slug/edit'
@@ -718,6 +731,7 @@ export interface RootRouteChildren {
   rpcRpcRoute: typeof rpcRpcRoute
   api_authApiAuthRoute: typeof api_authApiAuthRoute
   api_evaluation_videoApiEvaluationVideoRoute: typeof api_evaluation_videoApiEvaluationVideoRoute
+  api_partner_documentApiPartnerDocumentRoute: typeof api_partner_documentApiPartnerDocumentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1086,6 +1100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof api_evaluation_videoApiEvaluationVideoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/partner-documents/$id': {
+      id: '/api/partner-documents/$id'
+      path: '/api/partner-documents/$id'
+      fullPath: '/api/partner-documents/$id'
+      preLoaderRoute: typeof api_partner_documentApiPartnerDocumentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/account/dogs/$dogId/edit': {
       id: '/account/dogs/$dogId/edit'
       path: '/dogs/$dogId/edit'
@@ -1252,6 +1273,8 @@ const rootRouteChildren: RootRouteChildren = {
   api_authApiAuthRoute: api_authApiAuthRoute,
   api_evaluation_videoApiEvaluationVideoRoute:
     api_evaluation_videoApiEvaluationVideoRoute,
+  api_partner_documentApiPartnerDocumentRoute:
+    api_partner_documentApiPartnerDocumentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

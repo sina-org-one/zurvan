@@ -19,7 +19,7 @@ import {
 // look the same.
 export const Route = createFileRoute("/account/dogs/$dogId/edit")({
   beforeLoad: ({ context, location }) =>
-    requireSession({ queryClient: context.queryClient, location, roles: ["customer"] }),
+    requireSession({ queryClient: context.queryClient, location, roles: ["customer", "partner"] }),
   validateSearch: dogFormSearchSchema,
   loader: async ({ context: { queryClient }, params }) => {
     const dog = await orNotFound(queryClient.ensureQueryData(editDogQuery(params.dogId)));

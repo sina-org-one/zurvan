@@ -436,7 +436,8 @@ export async function uploadEvaluationVideo({
   user: { id: string; role: UserRole };
   file: File;
 }): Promise<UploadVideoResult> {
-  if (user.role !== "customer") return { kind: "forbidden" };
+  // A partner can be a customer too (the owner, 2026-11-07).
+  if (user.role !== "customer" && user.role !== "partner") return { kind: "forbidden" };
   if (file.size === 0) return { kind: "invalid", message: VIDEO_MESSAGES.empty() };
   if (file.size > EVALUATION_VIDEO_MAX_BYTES) return { kind: "invalid", message: VIDEO_MESSAGES.tooBig() };
 
