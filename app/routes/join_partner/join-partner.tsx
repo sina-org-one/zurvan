@@ -9,6 +9,7 @@ import { pageHead } from "~/lib/seo";
 import { orpc } from "~/orpc/client";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/join_partner/column";
+import { ApplyForm } from "~/routes/join_partner/components/apply-form";
 import { CommissionCard } from "~/routes/join_partner/components/commission-card";
 import { HowToStart } from "~/routes/join_partner/components/how-to-start";
 import { PartnerAsk } from "~/routes/join_partner/components/partner-ask";
@@ -31,8 +32,8 @@ export const Route = createFileRoute("/_public/join/partner")({
 });
 
 /*===== Partner Enquiry Page =====*/
-// No form. Joining starts with a phone call (the Admin creates the partner account), so the page's only action is
-// `tel:`. Nothing here writes anything.
+// Joining starts with the application on this page (the Admin reviews and approves it, which creates the account), or
+// with a phone call; a partner who already has an account signs in from the hero.
 function JoinPartnerPage() {
   const {
     data: { tiers },
@@ -50,6 +51,9 @@ function JoinPartnerPage() {
         <HowToStart />
         <CommissionCard tiers={tiers} />
       </div>
+
+      {/*===== The Application =====*/}
+      <ApplyForm />
 
       {/*===== The Ask =====*/}
       <PartnerAsk />

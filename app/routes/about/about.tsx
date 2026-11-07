@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CENTER } from "~/lib/contact";
 import { familyMascotPose } from "~/lib/course-mascot";
 import { familiesWithCourses } from "~/lib/course-families";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { ZURVAN_SINCE } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { pageHead } from "~/lib/seo";
 import { m } from "~/paraglide/messages";
@@ -13,9 +13,10 @@ import { AboutClosing } from "~/routes/about/components/about-closing";
 import { AboutFacts } from "~/routes/about/components/about-facts";
 import { AboutHero } from "~/routes/about/components/about-hero";
 import { AboutLineup } from "~/routes/about/components/about-lineup";
+import { AboutTrainers } from "~/routes/about/components/about-trainers";
 
 /*===== Route =====*/
-// Public. The only data is which course families exist, for the «what I learn with her» lineup (a family with no
+// Public. The only data is which course families exist, for the «what I learn at Zurvan» lineup (a family with no
 // course gets no dog, so no link leads to an empty catalogue). If the course list can't be read the lineup is left
 // out and the rest of the page, which is all fixed facts, still renders: the loader swallows the failure.
 export const Route = createFileRoute("/_public/about")({
@@ -25,11 +26,9 @@ export const Route = createFileRoute("/_public/about")({
   head: () =>
     pageHead({
       path: "/about",
-      title: m.about_meta_title({ name: HEAD_TRAINER.name }),
+      title: m.about_meta_title(),
       description: m.about_meta_description({
-        name: HEAD_TRAINER.name,
-        role: HEAD_TRAINER.role,
-        years: formatNumber(HEAD_TRAINER.years),
+        years: formatNumber(ZURVAN_SINCE.years),
         area: CENTER.serviceArea,
       }),
     }),
@@ -37,9 +36,10 @@ export const Route = createFileRoute("/_public/about")({
 });
 
 /*===== Page =====*/
-// Every fact comes from the owner's business card (`HEAD_TRAINER`, `contact.ts`); the page adds nothing to it, no
-// biography and no claim about where or how training is held. The photo is one of the two the owner sent on
-// 2026-10-19 (the home page shows the other); which of them is her chosen introduction is still open.
+// «درباره‌ی زروان»: since 2026-11-06 the page is about the center, not one person (the center may have several
+// trainers). What Zurvan is and teaches, its facts, its trainers (`TRAINERS`) and the families it teaches. Every fact
+// comes from the owner's business card and messages (`head-trainer.ts`, `contact.ts`); no biography, no invented
+// trainer and no claim beyond the formats the owner lists.
 function AboutPage() {
   // Not a suspense read, so a failed list leaves the lineup out instead of failing the page; the loader has already put
   // the list in the cache for the server render.
@@ -54,6 +54,7 @@ function AboutPage() {
     <>
       <AboutHero />
       <AboutFacts />
+      <AboutTrainers />
       {families.length > 0 && <AboutLineup families={families} />}
       <AboutClosing />
     </>

@@ -19,6 +19,11 @@ export const partnerProfileSchema = z.object({
   commissionTiers: z.array(commissionTierSchema),
   /** How many distinct customers have earned this partner a commission: the count the steps are read against. */
   payingCustomers: z.number().int(),
+  /**
+   * The partnership terms in force (`app/lib/partner-terms.ts`) and whether this partner accepted exactly that version.
+   * Until they have, the dashboard shows the terms first and no customer can be entered.
+   */
+  terms: z.object({ version: z.string(), accepted: z.boolean() }),
 });
 
 export type PartnerProfile = z.infer<typeof partnerProfileSchema>;
@@ -36,12 +41,24 @@ export const PARTNER_PERSON_STAGES = ["lead", "registered", "bought", "lost"] as
 export type PartnerPersonStage = (typeof PARTNER_PERSON_STAGES)[number];
 
 /** A phone lead, or a customer the partner's link brought, as the partner who owns it sees it (F12): never prices, dogs or other partners. */
+/** Who a phone lead is about, as the partner wrote it with the number (empty strings on leads from before these). */
+export const leadDetailsSchema = z.object({
+  guardianName: z.string(),
+  dogName: z.string(),
+  dogBreed: z.string(),
+  dogAge: z.string(),
+});
+
+export type LeadDetails = z.infer<typeof leadDetailsSchema>;
+
 export const partnerPersonSchema = z.object({
   /** The lead's id, or the customer's user id for a link customer. */
   id: z.string(),
   source: z.enum(["phone", "link"]),
   /** What the partner typed; null for a link customer. */
   phoneNumber: z.string().nullable(),
+  /** The guardian and dog the partner wrote with the number; null for a link customer. The partner's own words. */
+  details: leadDetailsSchema.nullable(),
   /** Set from `registered` on; null for `lead` and `lost` (a lost customer is not this partner's to see). */
   customerName: z.string().nullable(),
   stage: z.enum(PARTNER_PERSON_STAGES),
@@ -70,6 +87,11 @@ export const adminPartnerSchema = z.object({
   code: z.string(),
   shebaNumber: z.string().nullable(),
   isActive: z.boolean(),
+  /** From the application; null for a partner added by hand. */
+  businessName: z.string().nullable(),
+  businessType: z.string().nullable(),
+  /** When he accepted the partnership terms in force; null while he hasn't. */
+  termsAcceptedAt: z.date().nullable(),
   createdAt: z.date(),
   /** People by stage (not cumulative: a `bought` person is not counted as `registered`). */
   counts: z.object({
@@ -119,14 +141,38 @@ export const updateMyPartnerProfileContract = oc
 export const listMyLeadsContract = oc.errors({ ...baseErrors, ...notFoundError }).output(z.array(partnerPersonSchema));
 
 /**
- * The input is the number as typed. Every refusal is `INVALID_INPUT` so the form can show it inline: `fields.phoneNumber`
- * for a bad number, a number that already has an account, or one the partner already entered; `errors` for an
- * inactive partner.
+ * The input is the number and the four details as typed. Every refusal is `INVALID_INPUT` so the form can show it
+ * inline: `fields.<name>` for a bad or missing value, a number that already has an account, or one the partner already
+ * entered; `errors` for an inactive partner or one who hasn't accepted the terms in force.
  */
 export const addLeadContract = oc
   .errors({ ...baseErrors, ...notFoundError })
-  .input(z.strictObject({ phoneNumber: z.string() }))
+  .input(
+    z.strictObject({
+      phoneNumber: z.string(),
+      guardianName: z.string(),
+      dogName: z.string(),
+      dogBreed: z.string(),
+      dogAge: z.string(),
+    }),
+  )
   .output(partnerPersonSchema);
+
+/**
+ * Records that the signed-in partner accepted the terms **as published now**: the browser sends no version, so nobody
+ * accepts text that isn't the current one. Again is the same as once.
+ */
+export const acceptMyTermsContract = oc.errors({ ...baseErrors, ...notFoundError }).output(partnerProfileSchema);
+
+/**
+ * Public: whether a number belongs to a partner account, asked by «ورود همکار» before it sends a sign-in code. A code
+ * verified for an unknown number creates a customer account, and one role per number would then shut that person out
+ * of becoming a partner, so the partner sign-in stops first and points to the application. It says only yes or no.
+ */
+export const isPartnerPhoneContract = oc
+  .errors(commonErrors)
+  .input(z.strictObject({ phoneNumber: z.string() }))
+  .output(z.object({ isPartner: z.boolean() }));
 
 export const adminListPartnersContract = oc.errors(baseErrors).output(z.array(adminPartnerSchema));
 
@@ -155,6 +201,8 @@ export const adminSetPartnerActiveContract = oc
 export const partnerContract = {
   getMine: getMyPartnerProfileContract,
   updateMine: updateMyPartnerProfileContract,
+  acceptTerms: acceptMyTermsContract,
+  isPartnerPhone: isPartnerPhoneContract,
   leads: {
     list: listMyLeadsContract,
     add: addLeadContract,

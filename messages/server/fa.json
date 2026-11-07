@@ -85,5 +85,16 @@
   "server_partner_phone_invalid": "شماره‌ی موبایل درست نیست؛ مثل ۰۹۱۲۳۴۵۶۷۸۹ بنویس.",
   "server_partner_lead_registered": "این شماره قبلاً توی سایت ثبت‌نام کرده؛ دیگه نمی‌شه به اسم تو ثبت بشه.",
   "server_partner_lead_repeat": "این شماره رو قبلاً ثبت کردی.",
-  "server_partner_inactive": "همکاریت فعلاً متوقفه؛ شماره‌ی تازه ثبت نمی‌شه."
+  "server_partner_inactive": "همکاریت فعلاً متوقفه؛ شماره‌ی تازه ثبت نمی‌شه.",
+  "server_partner_lead_guardian_required": "اسم سرپرست سگ رو بنویس.",
+  "server_partner_lead_dog_name_required": "اسم سگ رو بنویس.",
+  "server_partner_lead_dog_breed_required": "نژاد سگ رو بنویس؛ اگه نمی‌دونی، بنویس «میکس».",
+  "server_partner_lead_dog_age_required": "سن سگ رو بنویس؛ مثلاً «۸ ماه» یا «۲ سال».",
+  "server_partner_lead_too_long": "حداکثر {count} حرف.",
+  "server_partner_terms_needed": "اول قوانین همکاری رو بخون و تأیید کن؛ بعدش می‌تونی مشتری ثبت کنی.",
+  "server_partner_apply_phone_taken": "این شماره قبلاً توی سایت حساب داره. اگه همکار مایی، از «ورود همکار» وارد شو؛ وگرنه با زروان تماس بگیر.",
+  "server_partner_apply_pending": "یه درخواست همکاری با این شماره منتظر بررسیه. به‌زودی باهات تماس می‌گیریم.",
+  "server_partner_apply_required": "این رو بنویس.",
+  "server_partner_apply_business_type": "نوع کسب‌وکارت رو انتخاب کن.",
+  "server_partner_apply_terms": "برای ثبت درخواست باید قوانین همکاری رو قبول کنی."
 }

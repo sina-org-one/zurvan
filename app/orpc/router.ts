@@ -88,14 +88,22 @@ import {
 } from "~/orpc/logbook/procedure";
 import { uploadMediaProcedure } from "~/orpc/media/procedure";
 import {
+  acceptMyTermsProcedure,
   addLeadProcedure,
   adminCreatePartnerProcedure,
   adminListPartnersProcedure,
   adminSetPartnerActiveProcedure,
   getMyPartnerProfileProcedure,
+  isPartnerPhoneProcedure,
   listMyLeadsProcedure,
   updateMyPartnerProfileProcedure,
 } from "~/orpc/partner/procedure";
+import {
+  adminApproveApplicationProcedure,
+  adminListApplicationsProcedure,
+  adminRejectApplicationProcedure,
+  applyProcedure,
+} from "~/orpc/partner_application/procedure";
 import { passwordStatusProcedure, setPasswordProcedure } from "~/orpc/password/procedure";
 import {
   adminCancelRefundProcedure,
@@ -237,6 +245,8 @@ export const router = implementer.router({
   partner: {
     getMine: getMyPartnerProfileProcedure,
     updateMine: updateMyPartnerProfileProcedure,
+    acceptTerms: acceptMyTermsProcedure,
+    isPartnerPhone: isPartnerPhoneProcedure,
     leads: {
       list: listMyLeadsProcedure,
       add: addLeadProcedure,
@@ -245,6 +255,14 @@ export const router = implementer.router({
       list: adminListPartnersProcedure,
       create: adminCreatePartnerProcedure,
       setActive: adminSetPartnerActiveProcedure,
+    },
+  },
+  partnerApplication: {
+    apply: applyProcedure,
+    admin: {
+      list: adminListApplicationsProcedure,
+      approve: adminApproveApplicationProcedure,
+      reject: adminRejectApplicationProcedure,
     },
   },
   password: {

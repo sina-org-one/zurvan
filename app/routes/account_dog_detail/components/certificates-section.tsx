@@ -8,7 +8,7 @@ import { m } from "~/paraglide/messages";
 
 /*===== Certificates Section =====*/
 /**
- * F14 on the dog's page: the certificates the head trainer issued for courses the dog finished, each with the link and
+ * F14 on the dog's page: the certificates the center issued for courses the dog finished, each with the link and
  * QR code that let anyone check it. Nothing is shown when there are none: a finished course does not promise one.
  *
  * Beside the heading the `diploma` dog stands with the rolled diploma in his mouth, the easel with its framed

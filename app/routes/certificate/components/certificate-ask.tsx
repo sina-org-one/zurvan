@@ -7,12 +7,11 @@ import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { CENTER_PHONE } from "~/lib/contact";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Certificate Ask =====*/
 /**
- * The closing card, the same for all three answers: a question about the certificate goes straight to the head trainer
+ * The closing card, the same for all three answers: a question about the certificate goes straight to Zurvan
  * by phone. A raised grained card, centred, with the phone dog sitting on its top edge at the end corner (the page's
  * left) by the mailbox, a bush either side and a pool of warm light, his line in a bubble over his head. The card has
  * no overflow clipping, so he sits over its edge; its top margin makes room for him and the sky.
@@ -55,9 +54,7 @@ export function CertificateAsk() {
       <h2 id="certificate-ask-title" className={`${DISPLAY_HEADING} text-h2 text-balance`}>
         {m.certificate_ask_title()}
       </h2>
-      <p className="mt-3 max-w-xl text-pretty text-muted-foreground">
-        {m.certificate_ask_line({ name: HEAD_TRAINER.name })}
-      </p>
+      <p className="mt-3 max-w-xl text-pretty text-muted-foreground">{m.certificate_ask_line()}</p>
 
       {/*===== Actions =====*/}
       <div className="mt-8 flex flex-wrap gap-3">

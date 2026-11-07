@@ -1,20 +1,20 @@
-import { PhoneIcon } from "lucide-react";
+import { LogInIcon, PhoneIcon, SendIcon } from "lucide-react";
 
 import { ChalkBubble } from "~/components/chalk-bubble";
 import { GroundStrip } from "~/components/ground-strip";
+import { Link } from "~/components/link";
 import { MascotCut } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { CENTER_PHONE } from "~/lib/contact";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/join_partner/column";
 
 /*===== Partner Hero =====*/
 /**
- * The partner page's first screen: the headline, the line with the commission percents and the call button on the start
- * side, and on the end side a little street of the places a partner owns. The clinic and the pet shop stand side by
+ * The partner page's first screen: the headline, the line with the referral gift's percents, «درخواست همکاری» (to the form below), «ورود همکار» and the
+ * call on the start side, and on the end side a little street of the places a partner owns. The clinic and the pet shop stand side by
  * side on one path and the freshly groomed dog sits in front of them, the third kind of place (the groomer's), telling
  * the shop owner to send his like to the trainer.
  *
@@ -42,17 +42,31 @@ export function PartnerHero({ percentRange }: { percentRange: string }) {
         <p className="mt-4 max-w-md text-lead text-pretty text-muted-foreground">
           {m.join_partner_hero_line({ percent: percentRange })}
         </p>
-        <div className="mt-8">
+        {/* Applying is the main way in now (the Admin reviews it); a partner who already has an account signs in. */}
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a
-            href={`tel:${CENTER_PHONE.tel}`}
+            href="#apply"
             className={buttonVariants({ variant: "solid", size: "lg", className: "w-full sm:w-auto sm:px-10" })}
           >
-            <PhoneIcon aria-hidden className="size-4" />
-            <span>
-              {m.join_partner_call()} <bdi dir="ltr">{CENTER_PHONE.display}</bdi>
-            </span>
+            <SendIcon aria-hidden className="size-4" />
+            {m.join_partner_hero_apply()}
           </a>
+          <Link
+            to="/auth"
+            search={{ as: "partner" }}
+            className={buttonVariants({ variant: "outline", size: "lg", className: "w-full sm:w-auto sm:px-8" })}
+          >
+            <LogInIcon aria-hidden className="size-4" />
+            {m.join_partner_hero_sign_in()}
+          </Link>
         </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {m.join_partner_hero_or_call()}{" "}
+          <a href={`tel:${CENTER_PHONE.tel}`} className="font-bold text-foreground underline-offset-4 hover:underline">
+            <PhoneIcon aria-hidden className="me-1 inline size-3.5" />
+            <bdi dir="ltr">{CENTER_PHONE.display}</bdi>
+          </a>
+        </p>
       </div>
 
       {/*===== Street =====*/}
@@ -100,7 +114,7 @@ export function PartnerHero({ percentRange }: { percentRange: string }) {
             tail="right"
             className="jp-pop absolute right-[calc(40%-36px)] bottom-[calc(100%+0.4rem)] w-max max-w-[13.5rem] text-pretty lg:max-w-[16rem]"
           >
-            {m.join_partner_hero_bubble({ name: HEAD_TRAINER.firstName })}
+            {m.join_partner_hero_bubble()}
           </ChalkBubble>
         </div>
       </div>

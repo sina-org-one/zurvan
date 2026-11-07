@@ -11,9 +11,9 @@ import type { DogFormInput, DogFormValues } from "~/routes/account_dog_form/sche
 /*===== Training Fields =====*/
 /**
  * What the training is for, all optional: the goals (several can be picked), the behavior problems, one per line (the
- * head trainer sees them as a list above the dog's diary), and the note for her.
+ * trainer sees them as a list above the dog's diary), and a note for the trainer.
  */
-export function TrainingFields({ trainer }: { trainer: string }) {
+export function TrainingFields() {
   const {
     register,
     formState: { errors },
@@ -51,7 +51,7 @@ export function TrainingFields({ trainer }: { trainer: string }) {
 
       <Field data-invalid={!!errors.behaviorNotes}>
         <FieldLabel htmlFor="dog-behavior">
-          {m.account_dog_form_field_behavior({ trainer })}{" "}
+          {m.account_dog_form_field_behavior()}{" "}
           <span className="font-medium text-muted-foreground">{m.account_dog_form_optional()}</span>
         </FieldLabel>
         <Textarea

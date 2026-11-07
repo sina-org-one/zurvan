@@ -1,8 +1,11 @@
 import { z } from "zod";
 
 /*===== Constants =====*/
-/** The three views, in the order the pills show. «unpaid» first: paying is what he comes here to do. */
-export const PARTNER_VIEWS = ["unpaid", "paid", "partners"] as const;
+/**
+ * The views, in the order the pills show. «unpaid» first: paying is what he comes here to do. «applications» is who
+ * asked to become a partner on `/join/partner`.
+ */
+export const PARTNER_VIEWS = ["unpaid", "paid", "partners", "applications"] as const;
 
 export type PartnerView = (typeof PARTNER_VIEWS)[number];
 

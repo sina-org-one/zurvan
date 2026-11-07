@@ -9,7 +9,7 @@
   "layout_public_nav_help": "راهنما",
   "layout_public_nav_rules": "قوانین",
   "layout_public_nav_evaluation": "ارزیابی رایگان",
-  "layout_public_sign_in": "ورود",
+  "layout_public_sign_in": "ورود مشتری",
   "layout_public_sign_in_or_up": "ورود یا ثبت‌نام",
   "layout_public_tab_home": "خانه",
   "layout_public_tab_courses": "دوره‌ها",
@@ -37,7 +37,7 @@
   "layout_public_footer_courses": "دوره‌ها",
   "layout_public_footer_all_courses": "همه‌ی دوره‌ها",
   "layout_public_footer_connect": "ارتباط با زروان",
-  "layout_public_footer_about_trainer": "درباره‌ی {name}",
+  "layout_public_footer_about": "درباره‌ی زروان",
   "layout_public_footer_contact_us": "تماس با ما",
   "layout_public_footer_partner": "همکاری با زروان",
   "layout_public_footer_help": "راهنما",
@@ -45,11 +45,11 @@
   "layout_public_footer_blog": "وبلاگ",
   "layout_public_footer_logbook": "لاگ‌بوک سگ‌ها",
   "layout_public_footer_rules": "قوانین",
-  "layout_public_footer_about_line": "{name} از سال {year} سگ‌ها رو آموزش می‌ده: فرمان‌پذیری، اصلاح رفتار، کارهای تخصصی و آمادگی مسابقه.",
+  "layout_public_footer_about_line": "زروان از سال {year} سگ‌ها رو آموزش می‌ده: فرمان‌پذیری، اصلاح رفتار، کارهای تخصصی و آمادگی مسابقه.",
   "layout_public_footer_reach": "تماس با زروان",
   "layout_public_footer_area": "فعالیت در {area}",
-  "layout_public_footer_trainer": "مربی: {name}",
   "layout_public_footer_copyright": "© ۱۴۰۵ زروان. همه‌ی حقوق محفوظ است.",
   "layout_public_footer_privacy": "حریم خصوصی",
-  "layout_public_footer_language": "زبان"
+  "layout_public_footer_language": "زبان",
+  "layout_public_sign_in_partner": "ورود همکار"
 }

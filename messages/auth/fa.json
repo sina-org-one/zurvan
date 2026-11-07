@@ -38,7 +38,7 @@
   "auth_password_label": "رمز عبور",
   "auth_password_via_code": "با کد پیامکی وارد شو",
   "auth_password_forgot": "رمزمو فراموش کردم",
-  "auth_name_intro": "حسابت ساخته شد. اسمتو بنویس تا مربی بدونه با کی کار می‌کنه.",
+  "auth_name_intro": "حسابت ساخته شد. اسمتو بنویس تا بدونیم با کی کار می‌کنیم.",
   "auth_name_first": "نام",
   "auth_name_last": "نام خانوادگی",
   "auth_name_rules_missing": "برای ادامه باید قوانین رو بپذیری.",
@@ -58,5 +58,15 @@
   "auth_error_sign_in_paused": "چند بار رمز اشتباه وارد شد. چند دقیقه صبر کن، یا با کد پیامکی وارد شو.",
   "auth_error_too_many_requests": "تعداد درخواست‌ها زیاد بود. کمی صبر کن و دوباره امتحان کن.",
   "auth_error_wrong_credentials": "شماره یا رمز عبور درست نیست. اگه رمز نذاشتی، با کد پیامکی وارد شو.",
-  "auth_error_general": "درخواست انجام نشد. اینترنتتو چک کن و دوباره امتحان کن."
+  "auth_error_general": "درخواست انجام نشد. اینترنتتو چک کن و دوباره امتحان کن.",
+  "auth_door_label": "نوع ورود",
+  "auth_door_customer": "ورود مشتری",
+  "auth_door_partner": "ورود همکار",
+  "auth_partner_welcome_lead": "سلام همکار،",
+  "auth_partner_welcome_accent": "خوش اومدی",
+  "auth_partner_welcome_note": "با همون شماره‌ای که همکاریت باهاش تأیید شده وارد شو. هنوز همکار زروان نیستی؟",
+  "auth_partner_apply_link": "درخواست همکاری بده",
+  "auth_partner_phone_note": "فقط شماره‌ی همکارهای تأییدشده کد می‌گیره.",
+  "auth_partner_not_partner": "این شماره همکار زروان نیست. اگه مشتری هستی، از «ورود مشتری» وارد شو؛ اگه می‌خوای همکار بشی، اول درخواست همکاری بده.",
+  "auth_partner_check_failed": "الان نتونستیم شماره رو بررسی کنیم. چند لحظه‌ی دیگه دوباره امتحان کن."
 }

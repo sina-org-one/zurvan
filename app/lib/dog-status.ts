@@ -1,6 +1,5 @@
 import { type LinkOptions, linkOptions } from "@tanstack/react-router";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { Dog } from "~/orpc/dog/contract";
 import type { Enrollment } from "~/orpc/enrollment/contract";
 import type { Evaluation } from "~/orpc/evaluation/contract";
@@ -43,7 +42,6 @@ export function getDogStatus({
 }): DogStatus {
   const own = evaluations.filter((evaluation) => evaluation.dog.id === dog.id);
   const waitingEvaluation = own.find((evaluation) => evaluation.status === "requested") ?? null;
-  const trainer = HEAD_TRAINER.firstName;
   const coursesAction = { label: m.shared_dog_status_see_courses(), link: linkOptions({ to: "/courses" }) };
   const evaluationAction = (label: string) => ({
     label,
@@ -56,7 +54,7 @@ export function getDogStatus({
     const training = enrollments.some((enrollment) => enrollment.dog.id === dog.id && enrollment.status === "active");
     return {
       kind: training ? "training" : "evaluated",
-      line: training ? m.shared_dog_status_training({ trainer }) : m.shared_dog_status_evaluated(),
+      line: training ? m.shared_dog_status_training() : m.shared_dog_status_evaluated(),
       badge: "evaluated",
       action: coursesAction,
       waitingEvaluation: null,
@@ -68,7 +66,7 @@ export function getDogStatus({
   if (waitingEvaluation) {
     return {
       kind: "waiting",
-      line: m.shared_dog_status_waiting({ trainer }),
+      line: m.shared_dog_status_waiting(),
       badge: "requested",
       action: null,
       waitingEvaluation,
@@ -81,7 +79,7 @@ export function getDogStatus({
   if (latest?.status === "rejected") {
     return {
       kind: "rejected",
-      line: m.shared_dog_status_rejected({ trainer }),
+      line: m.shared_dog_status_rejected(),
       badge: "rejected",
       action: evaluationAction(m.shared_dog_status_evaluate_again()),
       waitingEvaluation: null,
@@ -91,7 +89,7 @@ export function getDogStatus({
 
   return {
     kind: "unseen",
-    line: m.shared_dog_status_unseen({ trainer }),
+    line: m.shared_dog_status_unseen(),
     badge: null,
     action: evaluationAction(m.shared_dog_status_free_evaluation()),
     waitingEvaluation: null,

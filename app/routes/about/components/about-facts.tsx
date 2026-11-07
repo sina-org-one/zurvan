@@ -3,7 +3,7 @@ import { cn } from "cn";
 import { GroundStrip } from "~/components/ground-strip";
 import { MascotCut } from "~/components/mascot-cut";
 import { CENTER } from "~/lib/contact";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { ZURVAN_SINCE } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/about/column";
@@ -17,7 +17,7 @@ const FLOOR =
 const POOL =
   "absolute inset-x-0 bottom-0 h-full bg-[radial-gradient(ellipse_55%_60%_at_45%_85%,rgb(255_194_26/0.08),transparent)]";
 
-/** Thirteen years of work: the dog sits by his notebook in front of the training centre. */
+/** The center's years of work: the dog sits by his notebook in front of the training centre. */
 function ExperienceScene() {
   return (
     <>
@@ -29,15 +29,14 @@ function ExperienceScene() {
   );
 }
 
-/** The credential: the dog brings his rolled diploma, with the finish flag behind him. */
-function CredentialScene() {
+/** Private training at your place: the dog waits on his leash in front of a house. */
+function PlacesScene() {
   return (
     <>
       <div className={POOL} />
-      {/* The pole stands about 72% across the picture and the flag flies left, which is onward in RTL. */}
-      <MascotCut name="flag" className="lively-sway absolute end-[2%] bottom-[16%] w-[58%]" />
+      <MascotCut name="home" className="absolute end-[-4%] bottom-[18%] w-[80%]" />
       <GroundStrip className={FLOOR} />
-      <MascotCut name="diploma" className="lively-wiggle absolute start-[18%] bottom-[7%] h-[92%] w-auto" />
+      <MascotCut name="leash" className="lively-wiggle absolute start-[10%] bottom-[7%] h-[92%] w-auto" />
     </>
   );
 }
@@ -89,31 +88,33 @@ function Stage({
 
 /*===== Facts =====*/
 /**
- * The three facts from the owner's business card, each on its own stage. No bubbles here: the facts are the words, and
- * every fact is a line of `HEAD_TRAINER` or `contact.ts`.
+ * Three facts about the center, each on its own stage: its years (`ZURVAN_SINCE`), the private formats (at your place
+ * or at the center, as the home page says) and the service area (`contact.ts`). No bubbles here: the facts are the
+ * words. The head trainer's credential moved to her card in the trainers section (2026-11-06): it is hers, not the
+ * center's.
  */
 export function AboutFacts() {
   return (
     <section aria-labelledby="about-facts-title" className={`${COLUMN} pt-section-sm`}>
       <h2 id="about-facts-title" className="sr-only">
-        {m.about_facts_title({ trainer: HEAD_TRAINER.firstName })}
+        {m.about_facts_title()}
       </h2>
       <div className="overflow-hidden rounded-4xl border border-border bg-sunken paper-grain shadow-sm">
         <ul className="grid divide-y divide-border lg:grid-cols-3 lg:divide-x lg:divide-y-0">
           {/*------ Experience ------*/}
           <Stage scene={<ExperienceScene />}>
             <p className="font-display text-3xl leading-tight font-extrabold text-primary lg:text-5xl">
-              {m.about_facts_since({ year: HEAD_TRAINER.sinceYear })}
+              {m.about_facts_since({ year: ZURVAN_SINCE.sinceYear })}
             </p>
             <p className="mt-2 text-pretty text-muted-foreground">
-              {m.about_facts_experience({ years: formatNumber(HEAD_TRAINER.years) })}
+              {m.about_facts_experience({ years: formatNumber(ZURVAN_SINCE.years) })}
             </p>
           </Stage>
 
-          {/*------ Credential ------*/}
-          <Stage scene={<CredentialScene />}>
+          {/*------ Places ------*/}
+          <Stage scene={<PlacesScene />}>
             <p className="font-display text-2xl leading-snug font-extrabold text-balance text-primary lg:text-3xl">
-              {HEAD_TRAINER.credential}
+              {m.about_facts_places()}
             </p>
           </Stage>
 

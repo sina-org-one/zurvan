@@ -4,7 +4,6 @@ import { BadgeCheckIcon, PhoneCallIcon, PlusIcon } from "lucide-react";
 import { Link } from "~/components/link";
 import { buttonVariants } from "~/components/ui/button";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { NEW_DOG_LINK, type DogChoice } from "~/routes/assessment/components/dog-picker";
 import { PLATE } from "~/routes/assessment/components/form-plate";
@@ -17,14 +16,12 @@ import { TapedPrint } from "~/routes/assessment/components/taped-print";
  * no form; then the way to the Dashboard, and to a new dog, which could ask.
  */
 export function NothingToAskPlate({ dogs }: { dogs: readonly DogChoice[] }) {
-  const trainer = HEAD_TRAINER.firstName;
-
   return (
     <section aria-labelledby="nothing-title" className={cn(PLATE, "answer-in p-6 sm:p-8")}>
       <h2 id="nothing-title" className={cn(DISPLAY_HEADING, "text-h2 text-balance")}>
         {m.assessment_nothing_title()}
       </h2>
-      <p className="mt-3 max-w-lg text-pretty text-muted-foreground">{m.assessment_nothing_description({ trainer })}</p>
+      <p className="mt-3 max-w-lg text-pretty text-muted-foreground">{m.assessment_nothing_description()}</p>
 
       {/*------ The Dogs ------*/}
       <ul className="mt-8 flex flex-wrap gap-x-7 gap-y-6">
@@ -39,7 +36,7 @@ export function NothingToAskPlate({ dogs }: { dogs: readonly DogChoice[] }) {
                 {dog.state === "pending" ? (
                   <>
                     <PhoneCallIcon aria-hidden className="size-3.5 shrink-0" />
-                    {m.assessment_picker_waiting({ trainer })}
+                    {m.assessment_picker_waiting()}
                   </>
                 ) : (
                   <>

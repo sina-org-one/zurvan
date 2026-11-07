@@ -4,12 +4,13 @@ import { eq, inArray } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { db } from "~/db/client.server";
-import { commission, partner, partnerLead, payment, user } from "~/db/schema";
+import { commission, consent, partner, partnerLead, payment, user } from "~/db/schema";
 import { toPersianDigits } from "~/lib/digits";
 import { phonePlaceholderEmail } from "~/lib/phone";
 import { findPartnerForNewCustomer } from "~/lib/referral.server";
 import { markPaid, recordPurchaseCommission } from "~/orpc/commission/service";
 import {
+  acceptPartnerTerms,
   addLead,
   adminListPartners,
   createPartner,
@@ -72,7 +73,13 @@ describe("partner sheba number", () => {
   it("reads null until the partner writes it, and not-found without a partner row", async () => {
     expect(await getPartnerProfile({ db, userId: partnerA.id })).toEqual({
       kind: "success",
-      profile: { shebaNumber: null, code: `ta${runId}`, isActive: true, commissionTiers: expect.any(Array), payingCustomers: 0 },
+      profile: {
+        shebaNumber: null,
+        code: `ta${runId}`,
+        isActive: true,
+        commissionTiers: expect.any(Array),
+        payingCustomers: 0,
+      },
     });
     expect(await getPartnerProfile({ db, userId: orphan.id })).toEqual({ kind: "not-found" });
     expect(await updatePartnerProfile({ db, userId: orphan.id, input: { shebaNumber: shebaA } })).toEqual({
@@ -149,6 +156,17 @@ beforeAll(async () => {
     })),
   );
   await db.insert(partner).values(peoplePartners.map((entry) => ({ userId: entry.id, code: entry.code })));
+  // A, B and C accepted the terms; D hasn't yet.
+  for (const entry of [pA, pB, pC]) await acceptPartnerTerms({ db, userId: entry.id });
+});
+
+/** A lead as the form sends it: the number with the guardian's and dog's details. */
+const leadInput = (phoneNumber: string) => ({
+  phoneNumber,
+  guardianName: "سارا",
+  dogName: "پاپی",
+  dogBreed: "ژرمن شپرد",
+  dogAge: "۸ ماه",
 });
 
 /** Everything the people tests wrote, in foreign-key order. Runs inside the file's single `afterAll`. */
@@ -164,6 +182,7 @@ async function cleanUpPeopleFixtures() {
   await db.delete(commission).where(inArray(commission.customerId, customerIds));
   await db.delete(payment).where(inArray(payment.customerId, customerIds));
   await db.delete(partnerLead).where(inArray(partnerLead.partnerId, allPartnerIds));
+  await db.delete(consent).where(inArray(consent.userId, allPartnerIds));
   await db.delete(user).where(inArray(user.id, customerIds));
   await db.delete(partner).where(inArray(partner.userId, allPartnerIds));
   await db.delete(user).where(inArray(user.id, allPartnerIds));
@@ -301,7 +320,10 @@ describe("partner people", () => {
     // A link customer who buys shows the partner's commission the same way a phone lead does.
     expect(await buy({ customerId, baseAmount: 2_000_000 })).toBe(true);
     const bought = (await peopleOf(pB.id)).find((person) => person.id === customerId);
-    expect(bought).toMatchObject({ stage: "bought", commission: { amount: 200_000, unpaidAmount: 200_000, paidAt: null } });
+    expect(bought).toMatchObject({
+      stage: "bought",
+      commission: { amount: 200_000, unpaidAmount: 200_000, paidAt: null },
+    });
   });
 
   it("an inactive partner attributes no one, cannot add, and earns no commission", async () => {
@@ -319,7 +341,7 @@ describe("partner people", () => {
     expect(await findPartnerForNewCustomer({ db, referralCode: pC.code, phoneNumber: phone })).toBe(pD.id);
     expect(await personOnPhone({ partnerId: pD.id, phone })).toMatchObject({ stage: "lead" });
 
-    expect(await addLead({ db, userId: pC.id, input: { phoneNumber: newPhone() } })).toMatchObject({
+    expect(await addLead({ db, userId: pC.id, input: leadInput(newPhone()) })).toMatchObject({
       kind: "invalid",
       errors: [expect.stringContaining("متوقف")],
     });
@@ -336,16 +358,16 @@ describe("partner people", () => {
 
     // Persian digits, spaces and a country code all land on the stored shape.
     const typed = `+${toPersianDigits(`98 ${phone.slice(1, 4)} ${phone.slice(4)}`)}`;
-    const added = await addLead({ db, userId: pA.id, input: { phoneNumber: typed } });
+    const added = await addLead({ db, userId: pA.id, input: leadInput(typed) });
     expect(added).toMatchObject({ kind: "success", person: { source: "phone", phoneNumber: phone, stage: "lead" } });
 
-    expect(await addLead({ db, userId: pA.id, input: { phoneNumber: "۰۹۱۲" } })).toMatchObject({
+    expect(await addLead({ db, userId: pA.id, input: leadInput("۰۹۱۲") })).toMatchObject({
       kind: "invalid",
       fields: { phoneNumber: expect.any(String) },
     });
 
     // The same partner again, however it is typed.
-    expect(await addLead({ db, userId: pA.id, input: { phoneNumber: phone } })).toEqual({
+    expect(await addLead({ db, userId: pA.id, input: leadInput(phone) })).toEqual({
       kind: "invalid",
       errors: [],
       fields: { phoneNumber: "این شماره رو قبلاً ثبت کردی." },
@@ -353,18 +375,43 @@ describe("partner people", () => {
     expect(await db.select().from(partnerLead).where(eq(partnerLead.phoneNumber, phone))).toHaveLength(1);
 
     // Another partner entering it later is accepted and is behind A at once.
-    const later = await addLead({ db, userId: pB.id, input: { phoneNumber: phone } });
+    const later = await addLead({ db, userId: pB.id, input: leadInput(phone) });
     expect(later).toMatchObject({ kind: "success", person: { stage: "lost", customerName: null } });
 
     // A number that already has an account cannot be entered by anyone.
     const registered = newPhone();
     await makeCustomer({ phone: registered, referredBy: null });
-    expect(await addLead({ db, userId: pA.id, input: { phoneNumber: registered } })).toEqual({
+    expect(await addLead({ db, userId: pA.id, input: leadInput(registered) })).toEqual({
       kind: "invalid",
       errors: [],
       fields: { phoneNumber: "این شماره قبلاً توی سایت ثبت‌نام کرده؛ دیگه نمی‌شه به اسم تو ثبت بشه." },
     });
     expect(await db.select().from(partnerLead).where(eq(partnerLead.phoneNumber, registered))).toEqual([]);
+  });
+
+  it("leads.add asks for the guardian's and dog's details, and for the terms first", async () => {
+    const phone = newPhone();
+
+    // Every detail is required: a bare number is the "bank of numbers" the details are there to stop.
+    const bare = await addLead({ db, userId: pA.id, input: { ...leadInput(phone), dogBreed: " ", dogAge: "" } });
+    expect(bare).toMatchObject({
+      kind: "invalid",
+      fields: { dogBreed: expect.any(String), dogAge: expect.any(String) },
+    });
+
+    // D hasn't accepted the terms in force: nothing is written until he does.
+    expect(await addLead({ db, userId: pD.id, input: leadInput(phone) })).toMatchObject({
+      kind: "invalid",
+      errors: [m.server_partner_terms_needed()],
+    });
+    expect(await db.select().from(partnerLead).where(eq(partnerLead.phoneNumber, phone))).toEqual([]);
+
+    expect((await acceptPartnerTerms({ db, userId: pD.id })).kind).toBe("success");
+    const added = await addLead({ db, userId: pD.id, input: leadInput(phone) });
+    expect(added).toMatchObject({
+      kind: "success",
+      person: { details: { guardianName: "سارا", dogName: "پاپی", dogBreed: "ژرمن شپرد", dogAge: "۸ ماه" } },
+    });
   });
 
   it("admin.create writes the user and the partner together, and refuses a taken phone or code with nothing written", async () => {

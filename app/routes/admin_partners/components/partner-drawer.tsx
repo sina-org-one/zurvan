@@ -13,6 +13,7 @@ import { formatToman } from "~/lib/course-format";
 import { formatNumberFa } from "~/lib/digits";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
 import { formatJalaliTimestamp } from "~/lib/jalali";
+import { isPartnerBusinessType, partnerBusinessTypeLabel } from "~/lib/partner-terms";
 import { client } from "~/orpc/client";
 import type { AdminCommission } from "~/orpc/commission/contract";
 import type { AdminPartner, PartnerPerson, PartnerPersonStage } from "~/orpc/partner/contract";
@@ -185,6 +186,22 @@ function DrawerBody({
               <SheetDescription className="text-xs">
                 همکار از {formatJalaliTimestamp(partner.createdAt)}
               </SheetDescription>
+              {partner.businessName && (
+                <span className="text-xs text-muted-foreground">
+                  <bdi>{partner.businessName}</bdi>
+                  {partner.businessType && isPartnerBusinessType(partner.businessType)
+                    ? ` · ${partnerBusinessTypeLabel(partner.businessType)}`
+                    : ""}
+                </span>
+              )}
+              {/* Until he accepts the terms in force, his dashboard shows only them and no customer can be entered. */}
+              <span
+                className={cn("text-xs", partner.termsAcceptedAt ? "text-muted-foreground" : "font-bold text-primary")}
+              >
+                {partner.termsAcceptedAt
+                  ? `قوانین رو قبول کرده · ${formatJalaliTimestamp(partner.termsAcceptedAt)}`
+                  : "هنوز قوانین همکاری رو قبول نکرده"}
+              </span>
             </div>
           </div>
           <CloseButton />
@@ -246,10 +263,10 @@ function DrawerBody({
         {/*------ Commissions ------*/}
         <section aria-labelledby="partner-commissions" className={SECTION}>
           <h3 id="partner-commissions" className="text-sm font-bold">
-            پورسانت‌ها
+            هدیه‌های معرفی
           </h3>
           {commissions.length === 0 ? (
-            <p className="text-sm text-muted-foreground">هنوز پورسانتی نوشته نشده.</p>
+            <p className="text-sm text-muted-foreground">هنوز هدیه‌ای نوشته نشده.</p>
           ) : (
             <ul className={cn("divide-y", ADMIN_HAIRLINE)}>
               {[...unpaid, ...paid].map((commission) => (
@@ -267,7 +284,7 @@ function DrawerBody({
             </h3>
             <p className="text-sm leading-6 text-pretty text-muted-foreground">
               {partner.isActive
-                ? "لینک و شماره‌هاش دیگه کسی رو به اسمش ثبت نمی‌کنن و برای خریدهای بعدی پورسانتی نوشته نمی‌شه. پورسانت‌هایی که نوشته شدن می‌مونن."
+                ? "لینک و شماره‌هاش دیگه کسی رو به اسمش ثبت نمی‌کنن و برای خریدهای بعدی هدیه‌ای نوشته نمی‌شه. هدیه‌هایی که نوشته شدن می‌مونن."
                 : "لینک و شماره‌هاش الان کسی رو به اسمش ثبت نمی‌کنن. فعالش کنی، از این به بعد دوباره حساب می‌شن."}
             </p>
             {partner.isActive ? (

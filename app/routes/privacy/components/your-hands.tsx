@@ -2,7 +2,6 @@ import { GroundStrip } from "~/components/ground-strip";
 import { MascotCut } from "~/components/mascot-cut";
 import { CENTER_PHONE } from "~/lib/contact";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Your Hands Section =====*/
@@ -27,9 +26,7 @@ export function YourHands() {
           {m.privacy_section_yours()}
         </h2>
         <div className="mt-6 max-w-prose space-y-4 text-pretty text-muted-foreground">
-          <p>
-            {m.privacy_yours_p1({ trainer: HEAD_TRAINER.firstName })}
-          </p>
+          <p>{m.privacy_yours_p1()}</p>
           <p>
             {m.privacy_yours_p2_before()}
             <a

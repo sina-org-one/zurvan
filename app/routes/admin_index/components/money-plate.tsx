@@ -86,7 +86,7 @@ export function MoneyPlate({ money }: { money: DashboardOverview["money"] }) {
         <div className={cn("divide-y border-t", ADMIN_HAIRLINE)}>
           <MoneyRow label="دریافتی تا امروز" value={money.salesTotal} link={PAID_PAYMENTS} />
           <MoneyRow
-            label="پورسانت پرداخت‌نشده"
+            label="هدیه‌ی معرفی پرداخت‌نشده"
             note={`${formatNumberFa(money.unpaidCommissions.count)} مورد`}
             value={money.unpaidCommissions.amount}
             // «unpaid» is the Partners page's default view, so the link leaves `?view=` out.

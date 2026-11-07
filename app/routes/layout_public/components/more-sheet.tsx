@@ -1,4 +1,16 @@
-import { Info, LifeBuoy, LogIn, LogOut, Phone, ScrollText, Settings, Store, UserRound, X } from "lucide-react";
+import {
+  Handshake,
+  Info,
+  LifeBuoy,
+  LogIn,
+  LogOut,
+  Phone,
+  ScrollText,
+  Settings,
+  Store,
+  UserRound,
+  X,
+} from "lucide-react";
 
 import { cn } from "cn";
 
@@ -136,12 +148,20 @@ export function MoreSheet({
               </li>
             </>
           ) : (
-            <li>
-              <Link to="/auth" onClick={close} className={ROW}>
-                <LogIn aria-hidden className="size-5 text-primary" strokeWidth={1.8} />
-                {m.layout_public_sign_in_or_up()}
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/auth" onClick={close} className={ROW}>
+                  <LogIn aria-hidden className="size-5 text-primary" strokeWidth={1.8} />
+                  {m.layout_public_sign_in_or_up()}
+                </Link>
+              </li>
+              <li>
+                <Link to="/auth" search={{ as: "partner" }} onClick={close} className={ROW}>
+                  <Handshake aria-hidden className="size-5 text-primary" strokeWidth={1.8} />
+                  {m.layout_public_sign_in_partner()}
+                </Link>
+              </li>
+            </>
           )}
         </ul>
 
@@ -163,7 +183,10 @@ export function MoreSheet({
           {/* The second number as a plain line under the pill, so the pill stays the one call to make. */}
           <a
             href={`tel:${CENTER_PHONE_SECOND.tel}`}
-            className={cn("mx-auto mt-2 block w-fit rounded py-1 text-sm text-foreground/75 hover:text-foreground", FOCUS)}
+            className={cn(
+              "mx-auto mt-2 block w-fit rounded py-1 text-sm text-foreground/75 hover:text-foreground",
+              FOCUS,
+            )}
           >
             {m.layout_public_more_call_second()}{" "}
             <span dir="ltr" className="font-bold tabular-nums">

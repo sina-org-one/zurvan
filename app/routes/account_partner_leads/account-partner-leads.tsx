@@ -58,7 +58,7 @@ function AccountPartnerLeadsPage() {
   const queryClient = useQueryClient();
   const { data: people } = useSuspenseQuery(orpc.partner.leads.list.queryOptions());
   const {
-    data: { isActive },
+    data: { isActive, terms },
   } = useSuspenseQuery(orpc.partner.getMine.queryOptions());
 
   /*------ URL State ------*/
@@ -116,6 +116,7 @@ function AccountPartnerLeadsPage() {
         <div className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
           <AddLeadForm
             isActive={isActive}
+            termsAccepted={terms.accepted}
             onAdded={(person) => {
               // The new person shows first on page one; a filter or page that hides them is dropped so he sees it land.
               void navigate({

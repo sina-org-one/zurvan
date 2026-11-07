@@ -6,7 +6,6 @@ import { MascotCut, type MascotCutName } from "~/components/mascot-cut";
 import { buttonVariants } from "~/components/ui/button";
 import { PROFILE_PATH } from "~/lib/account-links";
 import { CENTER_PHONE } from "~/lib/contact";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Notice Plate =====*/
@@ -21,7 +20,7 @@ const NOTICE =
 
 /*===== Partner Notices =====*/
 /**
- * At most two plates under the hero, and only when they are true. Without a Sheba the head trainer can't pay the
+ * At most two plates under the hero, and only when they are true. Without a Sheba the center can't pay the
  * commission, so that is said first (the same meaning as Profile Settings' commission plate, with the `piggy` dog and
  * the dimmed safe); an inactive partner's link attributes no one, so the only useful step is to call the center (the
  * `padlock` dog by the padlocked gate). They rise in with the page.
@@ -41,9 +40,7 @@ export function PartnerNotices({ isActive, hasSheba }: { isActive: boolean; hasS
             <h2 id="partner-sheba-notice" className="text-lg font-bold text-balance">
               {m.account_partner_notice_sheba_title()}
             </h2>
-            <p className="mt-1 text-sm text-pretty text-muted-foreground">
-              {m.account_partner_notice_sheba_body({ trainer: HEAD_TRAINER.firstName })}
-            </p>
+            <p className="mt-1 text-sm text-pretty text-muted-foreground">{m.account_partner_notice_sheba_body()}</p>
           </div>
           <div className={ACTION}>
             <Link
@@ -72,7 +69,7 @@ export function PartnerNotices({ isActive, hasSheba }: { isActive: boolean; hasS
           className={cn(NOTICE, "border-destructive/55 [--answer-delay:.65s]")}
         >
           <h2 id="partner-inactive-notice" className="max-w-2xl text-lg font-bold text-pretty">
-            {m.account_partner_notice_inactive({ trainer: HEAD_TRAINER.firstName })}
+            {m.account_partner_notice_inactive()}
           </h2>
           <div className={ACTION}>
             <a

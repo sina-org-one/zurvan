@@ -3,7 +3,6 @@ import type { UseFormReturn } from "react-hook-form";
 
 import { Field, FieldError, FieldLabel } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import type { CardVoiceProps } from "~/routes/account_profile/card-voice-props";
 import { CardBubble } from "~/routes/account_profile/components/card-bubble";
@@ -56,9 +55,7 @@ export function NameCard({
       />
 
       <div className={PLATE}>
-        <p className="text-pretty text-muted-foreground">
-          {m.account_profile_name_line({ trainer: HEAD_TRAINER.firstName })}
-        </p>
+        <p className="text-pretty text-muted-foreground">{m.account_profile_name_line()}</p>
 
         <form method="post" onSubmit={onSubmit} noValidate className="mt-6">
           {/* The listener sits on this wrapper, not the form or section: focus events bubble up to it from the fields,

@@ -1,7 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { getDogStatus } from "~/lib/dog-status";
 import { orNotFound } from "~/lib/not-found";
 import { PUBLIC_RECORD_CONSENT } from "~/lib/public-record";
@@ -119,9 +118,7 @@ function AccountDogDetailPage() {
             link={fileCard.link}
             qr={fileCard.qr}
             note={
-              publicStatus.isPublic
-                ? m.account_dog_detail_file_note_public()
-                : m.account_dog_detail_file_note_private({ trainer: HEAD_TRAINER.firstName })
+              publicStatus.isPublic ? m.account_dog_detail_file_note_public() : m.account_dog_detail_file_note_private()
             }
           />
           <PublicRecordCard dogId={dog.id} dogName={dog.name} status={publicStatus} wording={wording} />

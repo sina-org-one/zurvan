@@ -1,19 +1,17 @@
 import { cn } from "cn";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 
 /*===== Steps =====*/
 // What happens after a paid cart, only from the FAQ («بعد از پرداخت چی می‌شه؟», «خرید چطوری کار می‌کنه؟», «دوره کی تموم
 // می‌شه؟»; app-spec F5–F6): the call, the training as arranged on it, and the course marked done.
-// A function, read while rendering: the trainer's name and the words follow the page's language.
+// A function, read while rendering: the words follow the page's language.
 function getSteps() {
-  const trainer = HEAD_TRAINER.firstName;
   return [
-    { label: m.account_cart_road_call_label({ trainer }), line: m.account_cart_road_call_line() },
+    { label: m.account_cart_road_call_label(), line: m.account_cart_road_call_line() },
     { label: m.account_cart_road_training_label(), line: m.account_cart_road_training_line() },
-    { label: m.account_cart_road_done_label(), line: m.account_cart_road_done_line({ trainer }) },
+    { label: m.account_cart_road_done_label(), line: m.account_cart_road_done_line() },
   ];
 }
 

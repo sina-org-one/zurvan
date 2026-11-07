@@ -2,7 +2,6 @@ import { cn } from "cn";
 
 import { EvaluationStatusBadge } from "~/components/evaluation-status-badge";
 import { WithdrawEvaluationButton } from "~/components/withdraw-evaluation-button";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatDate, formatTimestamp } from "~/lib/locale-format";
 import { EVALUATION_PERIOD_LABELS, EVALUATION_WEEKDAY_LABELS } from "~/orpc/evaluation/constants";
 import type { Evaluation } from "~/orpc/evaluation/contract";
@@ -37,9 +36,7 @@ export function EvaluationCard({ evaluation }: { evaluation: Evaluation }) {
 
       {/*------ What Was Asked ------*/}
       {evaluation.createdByAdmin ? (
-        <p className="text-pretty text-muted-foreground">
-          {m.account_dog_detail_evaluation_by_admin({ trainer: HEAD_TRAINER.firstName })}
-        </p>
+        <p className="text-pretty text-muted-foreground">{m.account_dog_detail_evaluation_by_admin()}</p>
       ) : (
         asked && (
           <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">

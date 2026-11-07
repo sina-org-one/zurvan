@@ -6,7 +6,6 @@ import { Link } from "~/components/link";
 import { MascotCut } from "~/components/mascot-cut";
 import { PROFILE_LINK } from "~/lib/account-links";
 import { CENTER, CENTER_PHONE, CENTER_PHONE_SECOND } from "~/lib/contact";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground";
@@ -71,9 +70,7 @@ export function AccountFooter() {
             <BrandEmblem className="size-10" />
             <span className="font-display text-2xl font-black text-foreground">{CENTER.name}</span>
           </div>
-          <p className="max-w-md leading-7 text-pretty text-foreground/70">
-            {m.layout_account_footer_line({ trainer: HEAD_TRAINER.firstName })}
-          </p>
+          <p className="max-w-md leading-7 text-pretty text-foreground/70">{m.layout_account_footer_line()}</p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 lg:justify-start">
             <nav aria-label={m.layout_account_footer_links_label()}>
               <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">

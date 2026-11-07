@@ -3,7 +3,7 @@ import { CheckIcon } from "lucide-react";
 
 import { Link } from "~/components/link";
 import { MascotCut } from "~/components/mascot-cut";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { CENTER } from "~/lib/contact";
 import { formatTimestamp } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 
@@ -68,7 +68,7 @@ export function ValidCard({
         <Fact label={m.certificate_valid_issuer()}>
           <dd className="font-bold">
             <Link to="/about" className="underline decoration-primary/50 underline-offset-4 hover:decoration-primary">
-              {HEAD_TRAINER.name}
+              {CENTER.name}
             </Link>
           </dd>
         </Fact>

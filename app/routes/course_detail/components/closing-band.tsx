@@ -5,7 +5,6 @@ import { BRICK } from "~/lib/brick";
 import { formatNumber } from "~/lib/locale-format";
 import { COLUMN } from "~/routes/course_detail/column";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Steps =====*/
@@ -18,7 +17,7 @@ const steps = () =>
   [
     { title: m.course_detail_closing_step_pick_title(), detail: m.course_detail_closing_step_pick_detail() },
     {
-      title: m.course_detail_closing_step_call_title({ trainer: HEAD_TRAINER.firstName }),
+      title: m.course_detail_closing_step_call_title(),
       detail: m.course_detail_closing_step_call_detail(),
     },
     { title: m.course_detail_closing_step_train_title(), detail: m.course_detail_closing_step_train_detail() },
@@ -53,7 +52,7 @@ export function ClosingBand() {
           <MascotCut name="sit" className="lively-breathe relative block w-full" />
           <ChalkBubble
             tail="start"
-            className="lively-reveal-pop absolute right-[86%] bottom-[66%] ltr:right-auto ltr:left-[86%] w-max max-w-[11rem] text-pretty md:max-w-[14rem]"
+            className="lively-reveal-pop absolute right-[86%] bottom-[66%] w-max max-w-[11rem] text-pretty md:max-w-[14rem] ltr:right-auto ltr:left-[86%]"
           >
             {m.course_detail_closing_bubble()}
           </ChalkBubble>
@@ -64,11 +63,9 @@ export function ClosingBand() {
         {/*------ Words ------*/}
         <div>
           <h2 id="closing-title" className={`${DISPLAY_HEADING} text-h2 text-balance`}>
-            {m.course_detail_closing_title({ trainer: HEAD_TRAINER.firstName })}
+            {m.course_detail_closing_title()}
           </h2>
-          <p className="mt-3 max-w-[34rem] text-pretty text-muted-foreground">
-            {m.course_detail_closing_text({ trainer: HEAD_TRAINER.firstName })}
-          </p>
+          <p className="mt-3 max-w-[34rem] text-pretty text-muted-foreground">{m.course_detail_closing_text()}</p>
           <Link
             to="/help"
             hash="what-is-evaluation"

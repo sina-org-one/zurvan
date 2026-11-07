@@ -8,6 +8,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "~/c
 import { InputGroup, InputGroupAddon, InputGroupInput } from "~/components/ui/input-group";
 import { Spinner } from "~/components/ui/spinner";
 import { authClient } from "~/lib/auth-client";
+import { client } from "~/orpc/client";
 import { describeAuthError } from "~/routes/auth/auth-errors";
 import { DemoAccounts } from "~/routes/auth/components/demo-accounts";
 import { StepAlert } from "~/routes/auth/components/step-alert";
@@ -19,15 +20,22 @@ import { m } from "~/paraglide/messages";
  * Step one: the phone number. Sends the code and hands the normalized number on, or, for someone who has set a password,
  * hands it to the password step without sending anything. There is no separate sign-up: a number seen for the first
  * time becomes a new customer account once its code is verified.
+ *
+ * «ورود همکار» (`asPartner`) asks first whether the number is a partner's and sends no code when it isn't: verifying it
+ * would make a customer account, and with one role per number that person could then never become a partner. They are
+ * pointed to the application instead.
  */
 export function PhoneStep({
   defaultPhoneNumber,
+  asPartner,
   showcase,
   focusOnMount,
   onSent,
   onChoosePassword,
 }: {
   defaultPhoneNumber: string;
+  /** Signing in as a partner: only a partner's number gets a code. */
+  asPartner: boolean;
   /** Coming back from the code step: the field takes focus. Not on page load, where the reader starts at the top. */
   focusOnMount: boolean;
   /** Shows the demo accounts under the form, each filling in its number. */
@@ -52,7 +60,21 @@ export function PhoneStep({
     if (focusOnMount) setFocus("phoneNumber");
   }, [focusOnMount, setFocus]);
 
+  /** In partner mode, refuses a number that isn't a partner's and says why. Returns whether to go on. */
+  async function partnerMayGoOn(phoneNumber: string): Promise<boolean> {
+    if (!asPartner) return true;
+    try {
+      const { isPartner } = await client.partner.isPartnerPhone({ phoneNumber });
+      if (!isPartner) setError("root", { message: m.auth_partner_not_partner() });
+      return isPartner;
+    } catch {
+      setError("root", { message: m.auth_partner_check_failed() });
+      return false;
+    }
+  }
+
   const onSubmit = handleSubmit(async ({ phoneNumber }) => {
+    if (!(await partnerMayGoOn(phoneNumber))) return;
     const { error } = await authClient.phoneNumber.sendOtp({ phoneNumber });
     if (error) {
       setError("root", { message: describeAuthError(error) });
@@ -62,7 +84,9 @@ export function PhoneStep({
   });
 
   // The same number check as the code button, then the password step instead of an SMS.
-  const choosePassword = handleSubmit(({ phoneNumber }) => onChoosePassword(phoneNumber));
+  const choosePassword = handleSubmit(async ({ phoneNumber }) => {
+    if (await partnerMayGoOn(phoneNumber)) onChoosePassword(phoneNumber);
+  });
 
   return (
     <form method="post" onSubmit={onSubmit} noValidate>
@@ -92,7 +116,9 @@ export function PhoneStep({
               {...register("phoneNumber")}
             />
           </InputGroup>
-          <FieldDescription id="sign-in-phone-note">{m.auth_phone_note()}</FieldDescription>
+          <FieldDescription id="sign-in-phone-note">
+            {asPartner ? m.auth_partner_phone_note() : m.auth_phone_note()}
+          </FieldDescription>
           <FieldError errors={[errors.phoneNumber]} className="answer-in" />
         </Field>
 

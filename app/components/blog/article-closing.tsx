@@ -7,7 +7,6 @@ import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { courseMascotLine, courseMascotPose } from "~/lib/course-mascot";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { BlogPost } from "~/orpc/blog/contract";
 import { m } from "~/paraglide/messages";
 
@@ -108,22 +107,20 @@ function CourseClosing({ course }: { course: RelatedCourse }) {
 }
 
 /*===== Evaluation Card =====*/
-/** Without a related course, the post ends where every road on the site does: the free evaluation with the trainer. */
+/** Without a related course, the post ends where every road on the site does: the free evaluation at Zurvan. */
 function EvaluationClosing() {
-  const trainer = HEAD_TRAINER.firstName;
-
   return (
     <section
       aria-labelledby="post-closing-title"
       className="relative rounded-4xl border border-border bg-card paper-grain px-6 py-10 shadow-sm sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-12 lg:px-14 lg:py-12"
     >
-      <EdgeDog pose="sit" line={m.blog_article_closing_eval_bubble({ trainer })} />
+      <EdgeDog pose="sit" line={m.blog_article_closing_eval_bubble()} />
 
       <div className="max-w-xl">
         <h2 id="post-closing-title" className={cn(DISPLAY_HEADING, "text-h2 text-balance")}>
-          {m.blog_article_closing_eval_title({ trainer })}
+          {m.blog_article_closing_eval_title()}
         </h2>
-        <p className="mt-3 text-pretty text-muted-foreground">{m.blog_article_closing_eval_text({ trainer })}</p>
+        <p className="mt-3 text-pretty text-muted-foreground">{m.blog_article_closing_eval_text()}</p>
       </div>
       <EvaluationButton className="mt-8 h-14 w-full shrink-0 lg:mt-0 lg:w-auto" />
     </section>

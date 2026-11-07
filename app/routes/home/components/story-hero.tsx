@@ -1,7 +1,7 @@
 import { cn } from "cn";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { CENTER } from "~/lib/contact";
 import { BRICK } from "~/lib/brick";
 import { ChalkBubble } from "~/components/chalk-bubble";
 import { EvaluationButton } from "~/components/evaluation-button";
@@ -10,7 +10,7 @@ import { DISPLAY_HEADING } from "~/lib/display-heading";
 import { m } from "~/paraglide/messages";
 
 /*===== Typed Word =====*/
-// The headline types what the dog learns with the trainer, one skill at a time, each in its own colour. First person
+// The headline types what the dog learns at Zurvan, one skill at a time, each in its own colour. First person
 // singular on purpose: «یاد بگیریم بشینیم» put the owner on the floor too. The colours are set by hand rather than
 // taken from the palette: the palette's gold is the only accent, and the point is a change. The words are messages,
 // read when the headline renders, in the page's language.
@@ -73,18 +73,18 @@ function TypedWord() {
   );
 }
 
-/*===== Trainer's Name =====*/
+/*===== Center's Name =====*/
 /**
- * The trainer's name in the headline with a gold chalk underline. «طلا» means "gold", so the name gets the gold as a
- * stroke under it rather than in the letters: the typed word below is already the headline's gold, and a gold name
- * on top of it would make the first screen a bullion shop. The stroke draws in the reading direction (right to left,
- * mirrored on the English pages) as the end of the hero's one load moment, just after the bubble has popped; with
- * reduced motion it's simply there.
+ * «زروان» in the headline with a gold chalk underline: the center the dog learns at (since 2026-11-06 the headline
+ * names the center, not one trainer). The gold is a stroke under the word rather than in the letters: the typed word
+ * below is already the headline's gold, and a gold name on top of it would make the first screen a bullion shop. The
+ * stroke draws in the reading direction (right to left, mirrored on the English pages) as the end of the hero's one
+ * load moment, just after the bubble has popped; with reduced motion it's simply there.
  */
-function TrainerName() {
+function CenterName() {
   return (
     <span className="relative inline-block">
-      {HEAD_TRAINER.firstName}
+      {CENTER.name}
       <svg
         aria-hidden
         viewBox="0 0 120 14"
@@ -294,12 +294,12 @@ export function StoryHero() {
               DISPLAY_HEADING,
               "text-[clamp(2.1rem,5.4svh,2.6rem)] sm:text-[clamp(2.6rem,5.4svh,3.75rem)] lg:text-[clamp(2.75rem,calc(0.5rem+min(7.5svh,5.2vw)),4.5rem)]",
               // After the sizes: `cn` lets a later font size drop an earlier `leading-*`. Taller than DISPLAY_HEADING's 1.2,
-              // so the underline under «طلا» clears the «گ» on the line below.
+              // so the underline under «زروان» clears the «گ» on the line below.
               "leading-[1.4]",
             )}
           >
             {/* No «سلام» here: the bubble beside him already says it. */}
-            {m.home_hero_title_with()} <TrainerName />
+            {m.home_hero_title_with()} <CenterName />
             <br />
             {m.home_hero_title_learn()}
             {/* The typed word gets its own line, so the line's length changes and nothing else moves. */}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "contact_meta_title": "تماس با ما | زروان",
-  "contact_meta_description": "تلفن، تلگرام، واتساپ و اینستاگرام {trainer}؛ فعال در {area}.",
-  "contact_hero_title": "با {trainer} حرف بزن",
+  "contact_meta_description": "تلفن، تلگرام، واتساپ و اینستاگرام زروان؛ فعال در {area}.",
+  "contact_hero_title": "با زروان حرف بزن",
   "contact_hero_lead": "تلفن یا پیام، هر کدوم برات راحت‌تره.",
   "contact_hero_bubble": "الو؟ زروانم! شماره همینه.",
   "contact_hero_phone_label": "شماره‌ی تماس",

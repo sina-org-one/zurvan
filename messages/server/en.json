@@ -43,7 +43,7 @@
   "server_dog_record_photos_max": "At most {max} photos.",
   "server_dog_record_photos_reupload": "Upload the photos again.",
   "server_dog_photo_reupload": "Upload the photo again.",
-  "server_dog_field_locked": "After the evaluation, only the head trainer can change this.",
+  "server_dog_field_locked": "After the evaluation, only Zurvann can change this.",
   "server_evaluation_date_invalid": "Enter a valid date.",
   "server_evaluation_date_past": "The date can't be in the past.",
   "server_evaluation_weekday_unknown": "Choose the days from the list.",
@@ -85,5 +85,16 @@
   "server_partner_phone_invalid": "That mobile number isn't right; write it like 09123456789.",
   "server_partner_lead_registered": "This number has already signed up on the site, so it can't be registered under your name.",
   "server_partner_lead_repeat": "You've already registered this number.",
-  "server_partner_inactive": "Your partnership is paused for now, so new numbers can't be registered."
+  "server_partner_inactive": "Your partnership is paused for now, so new numbers can't be registered.",
+  "server_partner_lead_guardian_required": "Write the dog's guardian's name.",
+  "server_partner_lead_dog_name_required": "Write the dog's name.",
+  "server_partner_lead_dog_breed_required": "Write the dog's breed; if you don't know it, write “mixed”.",
+  "server_partner_lead_dog_age_required": "Write the dog's age, e.g. “8 months” or “2 years”.",
+  "server_partner_lead_too_long": "{count} characters at most.",
+  "server_partner_terms_needed": "Read and accept the partnership terms first; then you can enter customers.",
+  "server_partner_apply_phone_taken": "This number already has an account on the site. If you're our partner, use “Partner sign-in”; otherwise, call Zurvann.",
+  "server_partner_apply_pending": "An application with this number is waiting to be reviewed. We'll call you soon.",
+  "server_partner_apply_required": "Write this in.",
+  "server_partner_apply_business_type": "Pick your kind of business.",
+  "server_partner_apply_terms": "To send the application, accept the partnership terms."
 }

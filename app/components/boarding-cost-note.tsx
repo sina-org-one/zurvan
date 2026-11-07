@@ -1,12 +1,11 @@
 import { cn } from "cn";
 import { InfoIcon } from "lucide-react";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Boarding Cost Note =====*/
 /**
- * Boarding costs extra, and the extra is never charged here: the head trainer calls to arrange it and agree on the
+ * Boarding costs extra, and the extra is never charged here: the center calls to arrange it and agree on the
  * price (F5). A gold-outlined notice, so it is seen next to a price without reading as an alarm.
  */
 export function BoardingCostNote({ className }: { className?: string }) {
@@ -18,7 +17,7 @@ export function BoardingCostNote({ className }: { className?: string }) {
       )}
     >
       <InfoIcon aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
-      <span>{m.shared_place_boarding_note({ trainer: HEAD_TRAINER.firstName })}</span>
+      <span>{m.shared_place_boarding_note()}</span>
     </p>
   );
 }

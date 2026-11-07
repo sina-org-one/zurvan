@@ -77,7 +77,7 @@ export function PayDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className={DIALOG_TITLE}>پرداخت شد؟</AlertDialogTitle>
           <AlertDialogDescription>
-            <span className="whitespace-nowrap">{formatToman(commission.amount)}</span> پورسانت{" "}
+            <span className="whitespace-nowrap">{formatToman(commission.amount)}</span> هدیه‌ی معرفی{" "}
             <bdi>{commission.customer.name}</bdi> رو به <bdi>{partnerName}</bdi> دادی؟ به همکار پیامک می‌ره و این کار
             برنمی‌گرده.
           </AlertDialogDescription>

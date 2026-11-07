@@ -16,6 +16,7 @@ import { PartnerError } from "~/routes/account_partner/components/partner-error"
 import { PartnerHero } from "~/routes/account_partner/components/partner-hero";
 import { PartnerNotices } from "~/routes/account_partner/components/partner-notices";
 import { ShopCard } from "~/routes/account_partner/components/shop-card";
+import { TermsPlate } from "~/routes/account_partner/components/terms-plate";
 import type { PartnerFunnel } from "~/routes/account_partner/funnel";
 
 /*===== Route =====*/
@@ -86,7 +87,7 @@ function AccountPartnerPage() {
   const { data: profile } = useSuspenseQuery(orpc.partner.getMine.queryOptions());
   const { data: allCommissions } = useSuspenseQuery(orpc.commission.listMine.queryOptions());
   const { data: leads } = useSuspenseQuery(orpc.partner.leads.list.queryOptions());
-  const { isActive, shebaNumber, commissionTiers, payingCustomers } = profile;
+  const { isActive, shebaNumber, commissionTiers, payingCustomers, terms } = profile;
   // The referral link lands on the home page; the QR is the same link as a code the customer's phone can scan.
   const { link, qr } = profile;
   const { funnel, commissions, unpaidAmount, paidAmount } = summarize({ leads, commissions: allCommissions });
@@ -99,28 +100,37 @@ function AccountPartnerPage() {
       <PartnerHero firstName={firstName} funnel={funnel} />
 
       <div className={COLUMN}>
-        {/*===== Notices =====*/}
-        <PartnerNotices isActive={isActive} hasSheba={shebaNumber !== null} />
+        {/*===== Terms First =====*/}
+        {/* Until he accepts the terms in force, they are the whole page: no link or QR to hand out, and the server
+            refuses new customers. */}
+        {!terms.accepted ? (
+          <TermsPlate />
+        ) : (
+          <>
+            {/*===== Notices =====*/}
+            <PartnerNotices isActive={isActive} hasSheba={shebaNumber !== null} />
 
-        {/*===== Two Columns From lg =====*/}
-        {/* The shop card comes first in the document, so the phone reads it before the funnel and commissions. It is
+            {/*===== Two Columns From lg =====*/}
+            {/* The shop card comes first in the document, so the phone reads it before the funnel and commissions. It is
             sticky only where the screen is tall enough to show all of it. */}
-        <div className="grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:items-start lg:gap-x-8">
-          <div className="lg:col-span-5 lg:[@media(min-height:52rem)]:sticky lg:[@media(min-height:52rem)]:top-6">
-            <ShopCard link={link} qr={qr} />
-          </div>
+            <div className="grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:items-start lg:gap-x-8">
+              <div className="lg:col-span-5 lg:[@media(min-height:52rem)]:sticky lg:[@media(min-height:52rem)]:top-6">
+                <ShopCard link={link} qr={qr} />
+              </div>
 
-          <div className="flex flex-col gap-12 lg:col-span-7">
-            <FunnelPlate funnel={funnel} />
-            <CommissionPlate
-              commissions={commissions}
-              unpaidAmount={unpaidAmount}
-              paidAmount={paidAmount}
-              commissionTiers={commissionTiers}
-              payingCustomers={payingCustomers}
-            />
-          </div>
-        </div>
+              <div className="flex flex-col gap-12 lg:col-span-7">
+                <FunnelPlate funnel={funnel} />
+                <CommissionPlate
+                  commissions={commissions}
+                  unpaidAmount={unpaidAmount}
+                  paidAmount={paidAmount}
+                  commissionTiers={commissionTiers}
+                  payingCustomers={payingCustomers}
+                />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

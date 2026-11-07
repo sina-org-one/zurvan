@@ -42,7 +42,7 @@ function layout({ pose, phone, sceneWidth }: { pose: Pose; phone: boolean; scene
 
 /*===== Guide Panel =====*/
 /**
- * The center's dog, who takes the request to the head trainer. His pose and line follow the form (`GUIDE`): the pose
+ * The center's dog, who takes the request to the center's trainer. His pose and line follow the form (`GUIDE`): the pose
  * swaps with a keyed `answer-in`, the bubble pops again with each new line. On load he rises from behind the path's edge
  * and his bubble pops at 0.4s (the page's load moment, `page-motion.tsx`). After the first change he just swaps.
  *

@@ -7,7 +7,6 @@ import { MascotCut } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== No Dogs =====*/
@@ -32,7 +31,7 @@ export function NoDogs() {
           {m.account_home_no_dogs_title()}
         </h2>
         <p className="mt-3 max-w-md text-lead text-pretty text-muted-foreground">
-          {m.account_home_no_dogs_description({ trainer: HEAD_TRAINER.firstName })}
+          {m.account_home_no_dogs_description()}
         </p>
         <Link
           to="/account/dogs/new"

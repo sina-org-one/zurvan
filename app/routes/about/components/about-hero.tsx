@@ -3,8 +3,10 @@ import { ChalkBubble } from "~/components/chalk-bubble";
 import { EvaluationButton } from "~/components/evaluation-button";
 import { Link } from "~/components/link";
 import { MascotCut } from "~/components/mascot-cut";
+import { GroundStrip } from "~/components/ground-strip";
 import { BRICK } from "~/lib/brick";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
+import { CENTER } from "~/lib/contact";
+import { ZURVAN_SINCE } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/about/column";
@@ -17,23 +19,23 @@ const TAPE =
 
 /*===== Hero =====*/
 /**
- * The page's one brick wall. The owner's real photo hangs on it as a print, a dark plate beside it carries her name and
- * the two ways forward, and the dog sits on the wall's coping waving hello and introducing her. On phones the dog and
- * his bubble come first, then the print, then the plate; from `lg` the plate is at the start (the right) and the print
- * at the end, with the dog over the plate's end corner.
+ * The page's one brick wall. A dark plate carries «زروان», the center's full name and what it teaches, with the two ways
+ * forward; beside it hangs a print of the center itself (the chalk training centre on its path, as if the dog had
+ * pinned up his own drawing), and the dog sits on the wall's coping waving hello and introducing the place, which
+ * shares his name. Since 2026-11-06 the page is about the center: the trainers' photos are in the trainers section
+ * below. On phones the dog and his bubble come first, then the print, then the plate; from `lg` the plate is at the
+ * start (the right) and the print at the end, with the dog over the plate's end corner.
  *
  * The dog sits on the coping, so his block overlaps the band by a few pixels (the cut-out's soft feet disappear into
  * the stone). His bubble and bushes use physical sides on purpose: they are tied to the picture (the wave pose's raised
  * paw is on his right), not to the reading direction.
  */
 export function AboutHero() {
-  const photo = HEAD_TRAINER.photos.standing;
-
   return (
     <section aria-labelledby="about-title">
       {/*------ The dog on the coping ------*/}
       <div aria-hidden className={`${COLUMN} relative z-10 grid pt-2 md:pt-4 lg:grid-cols-12 lg:gap-x-10`}>
-        <div className="flex justify-start ps-12 max-lg:ltr:justify-end max-lg:ltr:ps-0 max-lg:ltr:pe-12 pt-20 lg:col-span-7 lg:justify-end lg:ps-0 lg:pe-10 lg:pt-16">
+        <div className="flex justify-start ps-12 pt-20 lg:col-span-7 lg:justify-end lg:ps-0 lg:pe-10 lg:pt-16 max-lg:ltr:justify-end max-lg:ltr:ps-0 max-lg:ltr:pe-12">
           <div className="relative w-36 translate-y-[3%] md:w-44 lg:w-64">
             {/* A pool of warm light where he sits. */}
             <div className="absolute -inset-x-1/2 -top-1/4 bottom-0 bg-[radial-gradient(ellipse_45%_60%_at_50%_85%,rgb(255_194_26/0.08),transparent)]" />
@@ -73,11 +75,11 @@ export function AboutHero() {
               id="about-title"
               className="font-display text-5xl leading-[1.2] font-extrabold tracking-tight text-primary md:text-6xl"
             >
-              {HEAD_TRAINER.name}
+              {CENTER.name}
             </h1>
-            <p className="mt-3 text-lead text-pretty text-muted-foreground">{HEAD_TRAINER.role}</p>
+            <p className="mt-3 text-lead text-pretty text-muted-foreground">{CENTER.descriptor}</p>
             <p className="mt-4 max-w-lg text-pretty text-foreground/85">
-              {m.about_hero_intro({ name: HEAD_TRAINER.name, years: formatNumber(HEAD_TRAINER.years) })}
+              {m.about_hero_intro({ years: formatNumber(ZURVAN_SINCE.years) })}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <EvaluationButton className="h-12">{m.about_hero_evaluation()}</EvaluationButton>
@@ -88,20 +90,24 @@ export function AboutHero() {
           </div>
 
           {/*------ The print ------*/}
-          {/* The real photo, never altered: a mount, two strips of tape across the top corners and a slight tilt. */}
-          <figure className="ab-print relative order-1 mx-auto w-full max-w-[22rem] -rotate-2 lg:order-2 lg:col-span-5 lg:self-start">
+          {/* The center as a chalk drawing on dark paper: a mount, two strips of tape across the top corners and a
+              slight tilt. Decorative: the plate says what the center is. */}
+          <figure
+            aria-hidden
+            className="ab-print relative order-1 mx-auto w-full max-w-[22rem] -rotate-2 lg:order-2 lg:col-span-5 lg:self-start"
+          >
             <div className="rounded-sm bg-foreground p-2.5 shadow-[0_18px_40px_-16px_rgb(0_0_0/0.9)] md:p-3">
-              <img
-                src={photo.src}
-                srcSet={photo.srcSet}
-                sizes="(min-width: 64rem) 22rem, 90vw"
-                alt={photo.alt}
-                width={photo.width}
-                height={photo.height}
-                fetchPriority="high"
-                decoding="async"
-                className="aspect-[2/3] h-auto w-full object-cover"
-              />
+              <div className="relative aspect-[4/3] overflow-hidden bg-jet paper-grain">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_80%,rgb(255_194_26/0.1),transparent)]" />
+                <MascotCut name="center" eager className="absolute inset-x-[8%] bottom-[16%] w-[84%]" />
+                <GroundStrip className="absolute inset-x-0 bottom-0 h-10 md:h-12" />
+                <MascotCut name="plants" eager className="lively-sway absolute start-[-6%] bottom-[4%] w-[26%]" />
+                <MascotCut
+                  name="plants"
+                  eager
+                  className="lively-sway-2 absolute end-[-6%] bottom-[4%] w-[22%] -scale-x-100"
+                />
+              </div>
             </div>
             <span aria-hidden className={`${TAPE} -top-4 -right-3 rotate-45 md:-right-5`} />
             <span aria-hidden className={`${TAPE} -top-4 -left-3 -rotate-45 md:-left-5`} />

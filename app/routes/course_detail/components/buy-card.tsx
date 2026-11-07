@@ -4,7 +4,6 @@ import { CheckIcon, ShoppingCartIcon } from "lucide-react";
 import { Link } from "~/components/link";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { formatToman } from "~/lib/course-format";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { CART_PATH } from "~/orpc/checkout/constants";
 import type { Course } from "~/orpc/course/contract";
 import { m } from "~/paraglide/messages";
@@ -82,7 +81,7 @@ export function BuyCard({
 
           {buy.mode !== "evaluation" && (
             <p className="text-sm leading-relaxed text-pretty text-muted-foreground">
-              {m.course_detail_buy_after_pay({ trainer: HEAD_TRAINER.firstName })}
+              {m.course_detail_buy_after_pay()}
               <Link
                 to="/help"
                 hash="how-buying-works"
@@ -157,9 +156,7 @@ function Body({ course, buy }: { course: Course; buy: BuyCardState }) {
   switch (buy.mode) {
     case "evaluation":
       return course.price === null ? (
-        <p className="text-pretty text-muted-foreground">
-          {m.course_detail_buy_body_evaluation({ trainer: HEAD_TRAINER.firstName })}
-        </p>
+        <p className="text-pretty text-muted-foreground">{m.course_detail_buy_body_evaluation()}</p>
       ) : null;
     case "visitor":
       return <p className="text-pretty text-muted-foreground">{m.course_detail_buy_body_visitor()}</p>;

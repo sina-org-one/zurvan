@@ -5,7 +5,6 @@ import { MascotCut } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { buttonVariants } from "~/components/ui/button";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 import { COLUMN } from "~/routes/about/column";
 
@@ -30,7 +29,7 @@ export function AboutClosing() {
             <MascotCut name="sit" className="lively-breathe relative block w-full" />
             <ChalkBubble
               tail="left"
-              className="lively-float-2 absolute bottom-[78%] left-[70%] w-max max-w-[12.5rem] text-pretty max-md:ltr:max-w-[9rem] md:max-w-[16rem]"
+              className="lively-float-2 absolute bottom-[78%] left-[70%] w-max max-w-[12.5rem] text-pretty md:max-w-[16rem] max-md:ltr:max-w-[9rem]"
             >
               {m.about_closing_bubble()}
             </ChalkBubble>
@@ -50,7 +49,7 @@ export function AboutClosing() {
           <div className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-0 md:shrink-0">
             <EvaluationButton className="h-12">{m.about_closing_evaluation()}</EvaluationButton>
             <Link to="/contact" className={buttonVariants({ variant: "outline", className: "h-12 px-7 text-base" })}>
-              {m.about_closing_contact({ trainer: HEAD_TRAINER.firstName })}
+              {m.about_closing_contact()}
             </Link>
           </div>
         </div>

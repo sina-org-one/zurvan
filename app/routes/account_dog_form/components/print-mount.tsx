@@ -8,7 +8,6 @@ import { NightSky } from "~/components/night-sky";
 import { entryCalendar } from "~/lib/date-entry";
 import { toLatinDigits } from "~/lib/digits";
 import { birthDateFromAge, describeBreed, describeDogAge, describeWeight } from "~/lib/dog-format";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { DOG_BREED_PURITIES, DOG_SEX_LABELS, DOG_TRAINING_GOAL_LABELS, DOG_TRAINING_GOALS } from "~/orpc/dog/constants";
 import type { Media } from "~/orpc/media/contract";
 import { m } from "~/paraglide/messages";
@@ -21,7 +20,7 @@ import { type DogFormInput, problemLines } from "~/routes/account_dog_form/schem
  * typed. The print is the photo picker; the dog speaks for itself in a bubble from the print's corner («منم {name}!»,
  * or what it is doing while the form saves); its name is stamped in gold as it is typed, the facts line grows (the
  * breed as the site prints it, «پامرانین × شیتزو»), and on desktop the training goals hang under it as small tags and
- * what the head trainer reads first echoes the behavior problems and the notes. The dog's bed and bowls wait at the mount's foot on a
+ * what the trainer reads first echoes the behavior problems and the notes. The dog's bed and bowls wait at the mount's foot on a
  * short path. No drawn dog here: this column is the customer's dog's, and the mascot never stands for it.
  *
  * One grid, two layouts (the picker is rendered once, so CSS only moves things):
@@ -153,9 +152,7 @@ export function PrintMount({
         aria-hidden
         className="relative mt-6 hidden border-t border-dashed border-foreground/20 pt-5 lg:col-span-2 lg:row-start-4 lg:block"
       >
-        <p className="text-sm font-bold text-primary">
-          {m.account_dog_form_trainer_reads({ trainer: HEAD_TRAINER.firstName })}
-        </p>
+        <p className="text-sm font-bold text-primary">{m.account_dog_form_trainer_reads()}</p>
         {notes.length > 0 ? (
           <ul className="mt-3 flex flex-col gap-2 text-sm text-pretty">
             {notes.map((note) => (

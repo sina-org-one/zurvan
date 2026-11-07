@@ -5,12 +5,11 @@ import { EvaluationButton } from "~/components/evaluation-button";
 import { GroundStrip } from "~/components/ground-strip";
 import { MascotCut } from "~/components/mascot-cut";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Ask Tile =====*/
 /**
- * The list's last tile, and the page's ask: a question the posts didn't answer goes to the trainer, through the free
+ * The list's last tile, and the page's ask: a question the posts didn't answer goes to Zurvan's trainers, through the free
  * evaluation. It fills whatever the last row of cards leaves (one column beside two cards, a whole row under three or
  * under the lead alone), so the grid never has a hole, and it shapes itself to its own width: stacked in one column,
  * words beside the stage when it is wide (a container query).
@@ -19,8 +18,6 @@ import { m } from "~/paraglide/messages";
  * warm light where he walks. His picture faces right, so the stage is in logical sides and mirrored on English pages.
  */
 export function AskTile({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  const trainer = HEAD_TRAINER.firstName;
-
   return (
     <section
       aria-labelledby="blog-ask-title"
@@ -57,7 +54,7 @@ export function AskTile({ className, style }: { className?: string; style?: Reac
             tail="start"
             className="lively-reveal-pop absolute start-[calc(22%+1.6rem)] top-5 max-w-[min(15rem,70%)] text-pretty"
           >
-            {m.blog_index_ask_bubble({ trainer })}
+            {m.blog_index_ask_bubble()}
           </ChalkBubble>
         </div>
 
@@ -67,7 +64,7 @@ export function AskTile({ className, style }: { className?: string; style?: Reac
             {m.blog_index_ask_title()}
           </h2>
           <p className="mt-2 text-sm leading-7 text-pretty text-muted-foreground @xl:text-base @xl:leading-8">
-            {m.blog_index_ask_text({ trainer })}
+            {m.blog_index_ask_text()}
           </p>
           <EvaluationButton className="mt-5 h-12 w-full @xl:w-auto @xl:self-start" />
         </div>

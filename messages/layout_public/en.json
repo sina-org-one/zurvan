@@ -9,7 +9,7 @@
   "layout_public_nav_help": "Help",
   "layout_public_nav_rules": "Rules",
   "layout_public_nav_evaluation": "Free evaluation",
-  "layout_public_sign_in": "Sign in",
+  "layout_public_sign_in": "Customer sign-in",
   "layout_public_sign_in_or_up": "Sign in or sign up",
   "layout_public_tab_home": "Home",
   "layout_public_tab_courses": "Courses",
@@ -37,7 +37,7 @@
   "layout_public_footer_courses": "Courses",
   "layout_public_footer_all_courses": "All courses",
   "layout_public_footer_connect": "Zurvann",
-  "layout_public_footer_about_trainer": "About {name}",
+  "layout_public_footer_about": "About Zurvann",
   "layout_public_footer_contact_us": "Contact us",
   "layout_public_footer_partner": "Partner with Zurvann",
   "layout_public_footer_help": "Help",
@@ -45,11 +45,11 @@
   "layout_public_footer_blog": "Blog",
   "layout_public_footer_logbook": "Dog logbook",
   "layout_public_footer_rules": "Rules",
-  "layout_public_footer_about_line": "{name} has trained dogs since {year}: obedience, behavior modification, specialist work and competition prep.",
+  "layout_public_footer_about_line": "Zurvann has trained dogs since {year}: obedience, behavior modification, specialist work and competition prep.",
   "layout_public_footer_reach": "Reach Zurvann",
   "layout_public_footer_area": "Working all over Tehran",
-  "layout_public_footer_trainer": "Trainer: {name}",
   "layout_public_footer_copyright": "© 2026 Zurvann. All rights reserved.",
   "layout_public_footer_privacy": "Privacy",
-  "layout_public_footer_language": "Language"
+  "layout_public_footer_language": "Language",
+  "layout_public_sign_in_partner": "Partner sign-in"
 }

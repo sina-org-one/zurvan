@@ -74,7 +74,7 @@ const LEAVE_MS = 260;
 
 /*===== Evaluation Request =====*/
 /**
- * F3's request page. The idea: the center's dog takes the request to the head trainer. The start column has the
+ * F3's request page. The idea: the center's dog takes the request to the center's trainer. The start column has the
  * heading with the road of four stops, then the form as three numbered plates; the end column (sticky on a laptop) is
  * the guide, the dog whose pose and line follow the form, and «بعدش چی می‌شه؟». On a phone the guide is a compact band
  * over the plates, and the plates' own dogs take over from it. Once sent, the plates give way in place to the receipt,

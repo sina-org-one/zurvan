@@ -1,7 +1,6 @@
 import { Link } from "~/components/link";
 import { buttonVariants } from "~/components/ui/button";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Evaluation Ask =====*/
@@ -19,9 +18,7 @@ export function EvaluationAsk() {
         <h2 id="ask-title" className={`${DISPLAY_HEADING} text-h2 text-balance`}>
           {m.course_catalogue_ask_title()}
         </h2>
-        <p className="mt-3 text-pretty text-muted-foreground">
-          {m.course_catalogue_ask_text({ trainer: HEAD_TRAINER.firstName })}
-        </p>
+        <p className="mt-3 text-pretty text-muted-foreground">{m.course_catalogue_ask_text()}</p>
       </div>
       <Link
         to="/assessment"

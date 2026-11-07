@@ -34,7 +34,8 @@
       "./messages/account_profile/{locale}.json",
       "./messages/account_partner/{locale}.json",
       "./messages/account_partner_leads/{locale}.json",
-      "./messages/pwa/{locale}.json"
+      "./messages/pwa/{locale}.json",
+      "./messages/partner_terms/{locale}.json"
     ]
   }
 }

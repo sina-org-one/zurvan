@@ -34,7 +34,7 @@
   "account_purchases_slip_total": "جمع {courses}",
   "account_purchases_courses_one": "{count} دوره",
   "account_purchases_courses_other": "{count} دوره",
-  "account_purchases_line_no_enrollment": "پرداخت شد، اما دوره‌ای براش ثبت نشد. {trainer} موضوع رو می‌بینه و باهات تماس می‌گیره.",
+  "account_purchases_line_no_enrollment": "پرداخت شد، اما دوره‌ای براش ثبت نشد. موضوع رو بررسی می‌کنیم و باهات تماس می‌گیریم.",
   "account_purchases_refund_title": "بازپرداخت",
   "account_purchases_refund_for": "برای {course}",
   "account_purchases_refund_paid_on": "واریز {date}",

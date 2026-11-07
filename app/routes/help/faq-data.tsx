@@ -1,6 +1,5 @@
 import { Link } from "~/components/link";
 import { CENTER_PHONE } from "~/lib/contact";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Types =====*/
@@ -57,10 +56,8 @@ function EvaluationLink() {
 /*===== Groups =====*/
 // In road order (`road.tsx`). Facts only from docs/app-spec.md F1 to F6, as the approved brief words them: no refund
 // rules or timings, no calendar, no deadlines, nothing about groups or a venue.
-// A function, not a constant: the messages and the trainer's name answer in the language of the page being rendered.
+// A function, not a constant: the messages answer in the language of the page being rendered.
 export function getFaqGroups(): FaqGroupData[] {
-  const trainer = HEAD_TRAINER.firstName;
-
   return [
     /*------ 1: Evaluation ------*/
     {
@@ -84,7 +81,7 @@ export function getFaqGroups(): FaqGroupData[] {
           answer: (
             <>
               <p>{m.help_q_what_is_evaluation_a1()}</p>
-              <p className="mt-3">{m.help_q_what_is_evaluation_a2({ trainer })}</p>
+              <p className="mt-3">{m.help_q_what_is_evaluation_a2()}</p>
               <p className="mt-3">{m.help_q_what_is_evaluation_a3()}</p>
             </>
           ),
@@ -92,7 +89,7 @@ export function getFaqGroups(): FaqGroupData[] {
         {
           id: "evaluation-rejected",
           question: m.help_q_evaluation_rejected_question(),
-          answer: <p>{m.help_q_evaluation_rejected_answer({ trainer })}</p>,
+          answer: <p>{m.help_q_evaluation_rejected_answer()}</p>,
         },
       ],
     },
@@ -168,7 +165,7 @@ export function getFaqGroups(): FaqGroupData[] {
                 <li>{m.help_q_how_buying_works_s1()}</li>
                 <li>{m.help_q_how_buying_works_s2()}</li>
                 <li>{m.help_q_how_buying_works_s3()}</li>
-                <li>{m.help_q_how_buying_works_s4({ trainer })}</li>
+                <li>{m.help_q_how_buying_works_s4()}</li>
               </ol>
               <p className="mt-4">{m.help_q_how_buying_works_outro()}</p>
             </>
@@ -194,7 +191,7 @@ export function getFaqGroups(): FaqGroupData[] {
           question: m.help_q_after_paying_question(),
           answer: (
             <>
-              <p>{m.help_q_after_paying_answer({ trainer })}</p>
+              <p>{m.help_q_after_paying_answer()}</p>
               <Link to="/account/purchases" className={LINK_CLASS}>
                 {m.help_link_purchases()}
               </Link>
@@ -203,9 +200,9 @@ export function getFaqGroups(): FaqGroupData[] {
         },
         {
           id: "cant-take",
-          question: m.help_q_cant_take_question({ trainer }),
+          question: m.help_q_cant_take_question(),
           // Exactly this and nothing more: no timing, no policy. The money goes back outside the site; the site records it.
-          answer: <p>{m.help_q_cant_take_answer({ trainer })}</p>,
+          answer: <p>{m.help_q_cant_take_answer()}</p>,
         },
       ],
     },
@@ -224,7 +221,7 @@ export function getFaqGroups(): FaqGroupData[] {
               <p>{m.help_q_lessons_intro()}</p>
               <ul className="mt-3 list-disc space-y-2 ps-6 marker:text-primary">
                 <li>
-                  <strong>{m.help_q_lessons_home_label()}</strong> {m.help_q_lessons_home_text({ trainer })}
+                  <strong>{m.help_q_lessons_home_label()}</strong> {m.help_q_lessons_home_text()}
                 </li>
                 <li>
                   <strong>{m.help_q_lessons_center_label()}</strong> {m.help_q_lessons_center_text()}
@@ -237,7 +234,7 @@ export function getFaqGroups(): FaqGroupData[] {
                 </li>
               </ul>
               <p className="mt-4">{m.help_q_lessons_where()}</p>
-              <p className="mt-4">{m.help_q_lessons_times({ trainer })}</p>
+              <p className="mt-4">{m.help_q_lessons_times()}</p>
             </>
           ),
         },
@@ -246,7 +243,7 @@ export function getFaqGroups(): FaqGroupData[] {
           question: m.help_q_logbook_question(),
           answer: (
             <>
-              <p>{m.help_q_logbook_answer({ trainer })}</p>
+              <p>{m.help_q_logbook_answer()}</p>
               <Link to="/account" className={LINK_CLASS}>
                 {m.help_link_my_dogs()}
               </Link>
@@ -256,7 +253,7 @@ export function getFaqGroups(): FaqGroupData[] {
         {
           id: "boarding",
           question: m.help_q_boarding_question(),
-          answer: <p>{m.help_q_boarding_answer({ trainer })}</p>,
+          answer: <p>{m.help_q_boarding_answer()}</p>,
         },
       ],
     },
@@ -270,7 +267,7 @@ export function getFaqGroups(): FaqGroupData[] {
         {
           id: "course-done",
           question: m.help_q_course_done_question(),
-          answer: <p>{m.help_q_course_done_answer({ trainer })}</p>,
+          answer: <p>{m.help_q_course_done_answer()}</p>,
         },
       ],
     },

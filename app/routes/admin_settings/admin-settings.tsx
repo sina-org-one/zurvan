@@ -63,7 +63,7 @@ function AdminSettings() {
 
       <div className="flex flex-col gap-8 lg:gap-10">
         {/*===== Commission =====*/}
-        <SettingGroup title="پورسانت همکاران">
+        <SettingGroup title="هدیه‌ی معرفی همکاران">
           <CommissionTiersPlate setting={commissionTiers} busy={busy} />
         </SettingGroup>
 

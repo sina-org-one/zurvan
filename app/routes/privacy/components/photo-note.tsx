@@ -1,6 +1,5 @@
 import { Lock } from "lucide-react";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Photo Note =====*/
@@ -15,9 +14,7 @@ export function PhotoNote({ className }: { className?: string }) {
         <Lock aria-hidden strokeWidth={1.5} className="mt-1 size-6 shrink-0 text-primary" />
         <div>
           <h3 className="font-extrabold">{m.privacy_photo_title()}</h3>
-          <p className="mt-2 text-pretty text-muted-foreground">
-            {m.privacy_photo_text({ trainer: HEAD_TRAINER.firstName })}
-          </p>
+          <p className="mt-2 text-pretty text-muted-foreground">{m.privacy_photo_text()}</p>
         </div>
       </div>
     </div>

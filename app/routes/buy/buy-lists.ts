@@ -1,6 +1,5 @@
 import { getDogVerdict, type DogVerdictProblem } from "~/lib/dog-verdict";
 import type { IneligibilityKind } from "~/lib/eligibility";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import type { MyDogCourse } from "~/orpc/checkout/contract";
 import type { Course } from "~/orpc/course/contract";
@@ -80,7 +79,7 @@ export function splitCourses({
     canTake.length > 0
       ? (canTake.length === 1 ? m.buy_line_can_one : m.buy_line_can_other)({ count: formatNumber(canTake.length) })
       : gate
-        ? m.buy_line_gate({ trainer: HEAD_TRAINER.firstName })
+        ? m.buy_line_gate()
         : firstBlocked
           ? getDogVerdict({
               dogId,

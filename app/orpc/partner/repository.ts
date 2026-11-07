@@ -2,7 +2,8 @@ import { and, asc, desc, eq, exists, isNotNull, lt, ne, notExists, or, sql } fro
 import { alias } from "drizzle-orm/pg-core";
 
 import type { DatabaseOrTransaction } from "~/db/client.server";
-import { commission, partner, partnerLead, user } from "~/db/schema";
+import { commission, consent, partner, partnerLead, user } from "~/db/schema";
+import { PARTNER_TERMS_VERSION } from "~/lib/partner-terms";
 
 /*===== Types =====*/
 type Executor = { db: DatabaseOrTransaction };
@@ -15,6 +16,9 @@ export type PartnerRecord = PartnerProfileRecord & {
   id: string;
   name: string;
   phoneNumber: string | null;
+  businessName: string | null;
+  businessType: string | null;
+  termsAcceptedAt: Date | null;
   createdAt: Date;
 };
 
@@ -36,14 +40,18 @@ export type LeadFact = {
   id: string;
   partnerId: string;
   phoneNumber: string;
+  guardianName: string;
+  dogName: string;
+  dogBreed: string;
+  dogAge: string;
   createdAt: Date;
   customer: { name: string; referredByPartnerId: string | null; createdAt: Date } | null;
   /** When this partner's first commission for that customer was written; null while there is none. */
   boughtAt: Date | null;
 } & EarnedFact & {
-  /** An earlier lead on the same number by another active partner, ordered as `findPartnerForNewCustomer` does. */
-  hasEarlierActiveLead: boolean;
-};
+    /** An earlier lead on the same number by another active partner, ordered as `findPartnerForNewCustomer` does. */
+    hasEarlierActiveLead: boolean;
+  };
 
 /** A customer a partner's link brought, with no lead of that partner on their phone. */
 export type LinkCustomerFact = {
@@ -145,6 +153,10 @@ export async function findPeople({
       id: partnerLead.id,
       partnerId: partnerLead.partnerId,
       phoneNumber: partnerLead.phoneNumber,
+      guardianName: partnerLead.guardianName,
+      dogName: partnerLead.dogName,
+      dogBreed: partnerLead.dogBreed,
+      dogAge: partnerLead.dogAge,
       createdAt: partnerLead.createdAt,
       customerId: user.id,
       customerName: user.name,
@@ -167,6 +179,10 @@ export async function findPeople({
     id: row.id,
     partnerId: row.partnerId,
     phoneNumber: row.phoneNumber,
+    guardianName: row.guardianName,
+    dogName: row.dogName,
+    dogBreed: row.dogBreed,
+    dogAge: row.dogAge,
     createdAt: row.createdAt,
     customer:
       row.customerId === null || row.customerName === null || row.customerCreatedAt === null
@@ -224,6 +240,13 @@ export async function findPartners({ db, partnerId }: Executor & { partnerId?: s
       code: partner.code,
       shebaNumber: partner.shebaNumber,
       isActive: partner.isActive,
+      businessName: partner.businessName,
+      businessType: partner.businessType,
+      termsAcceptedAt: sql<Date | null>`(
+        select max(${consent.acceptedAt}) from ${consent}
+        where ${consent.userId} = ${partner.userId} and ${consent.kind} = 'partner-terms'
+          and ${consent.version} = ${PARTNER_TERMS_VERSION} and ${consent.revokedAt} is null
+      )`.mapWith(consent.acceptedAt),
       createdAt: partner.createdAt,
     })
     .from(partner)
@@ -262,6 +285,15 @@ export async function findUserIdByPhone({
   return row?.id;
 }
 
+/** The role of the user with this number, or `undefined` when nobody has it. */
+export async function findUserRoleByPhone({
+  db,
+  phoneNumber,
+}: Executor & { phoneNumber: string }): Promise<string | undefined> {
+  const [row] = await db.select({ role: user.role }).from(user).where(eq(user.phoneNumber, phoneNumber));
+  return row?.role;
+}
+
 /*===== Writes =====*/
 /**
  * Stores a lead unless this partner already entered the number. The unique index on partner and phone is the arbiter,
@@ -273,10 +305,15 @@ export async function insertLeadOnce({
   db,
   partnerId,
   phoneNumber,
-}: Executor & { partnerId: string; phoneNumber: string }): Promise<string | undefined> {
+  details,
+}: Executor & {
+  partnerId: string;
+  phoneNumber: string;
+  details: { guardianName: string; dogName: string; dogBreed: string; dogAge: string };
+}): Promise<string | undefined> {
   const [row] = await db
     .insert(partnerLead)
-    .values({ partnerId, phoneNumber })
+    .values({ partnerId, phoneNumber, ...details })
     .onConflictDoNothing({ target: [partnerLead.partnerId, partnerLead.phoneNumber] })
     .returning({ id: partnerLead.id });
   return row?.id;
@@ -305,10 +342,15 @@ export async function insertPartnerOnce({
   db,
   userId,
   code,
-}: Executor & { userId: string; code: string }): Promise<boolean> {
+  business,
+}: Executor & {
+  userId: string;
+  code: string;
+  business?: { businessName: string; businessType: string };
+}): Promise<boolean> {
   const rows = await db
     .insert(partner)
-    .values({ userId, code })
+    .values({ userId, code, ...business })
     .onConflictDoNothing({ target: partner.code })
     .returning({ userId: partner.userId });
   return rows.length > 0;

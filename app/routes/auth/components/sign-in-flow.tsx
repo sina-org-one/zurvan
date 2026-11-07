@@ -40,12 +40,15 @@ const STEP_TITLES: Record<AuthStepName, () => string> = {
  * from the start and only a move the person made animates.
  */
 export function SignInFlow({
+  asPartner,
   showcase,
   redirectTo,
   needsName,
   rulesPublished,
   onStepChange,
 }: {
+  /** «ورود همکار»: only a partner's number gets a code (`PhoneStep`). */
+  asPartner: boolean;
   showcase: boolean;
   /** A same-site path (the page made sure), where the person goes once signed in. */
   redirectTo: string;
@@ -95,6 +98,7 @@ export function SignInFlow({
         {step.name === "phone" && (
           <PhoneStep
             defaultPhoneNumber={lastPhoneNumber}
+            asPartner={asPartner}
             showcase={showcase}
             focusOnMount={hasMoved}
             onSent={(phoneNumber) => {

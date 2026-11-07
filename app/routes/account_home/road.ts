@@ -1,4 +1,3 @@
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatTimestamp } from "~/lib/locale-format";
 import type { DogStatus } from "~/lib/dog-status";
 import type { Dog } from "~/orpc/dog/contract";
@@ -47,7 +46,6 @@ export function buildRoad({
   status: DogStatus;
   activeCount: number;
 }): { stops: RoadStop[]; current: number } {
-  const trainer = HEAD_TRAINER.firstName;
   const evaluated = status.kind === "evaluated" || status.kind === "training";
   const passed = dog.passedCourses.length;
 
@@ -61,7 +59,7 @@ export function buildRoad({
         mark: "check",
       }
     : status.kind === "waiting"
-      ? atEvaluation(m.account_home_road_waiting({ trainer }))
+      ? atEvaluation(m.account_home_road_waiting())
       : status.kind === "rejected"
         ? atEvaluation(m.account_home_road_answered(), "x")
         : atEvaluation(m.account_home_road_free());

@@ -102,7 +102,7 @@ export async function markPaid({ db, id }: { db: DatabaseOrTransaction; id: stri
   if (!existing) return { kind: "not-found" };
 
   if (!(await markCommissionPaid({ db, id }))) {
-    return { kind: "already-paid", errors: ["این پورسانت قبلاً پرداخت شده."] };
+    return { kind: "already-paid", errors: ["این هدیه‌ی معرفی قبلاً پرداخت شده."] };
   }
 
   const [partnerUser] = await db
@@ -112,7 +112,7 @@ export async function markPaid({ db, id }: { db: DatabaseOrTransaction; id: stri
   await notify({
     phoneNumber: partnerUser?.phoneNumber,
     kind: "commission-paid",
-    body: `زروان: پورسانت ${formatNumberFa(Math.round(existing.commission.amount / 10))} تومانی شما پرداخت شد.`,
+    body: `زروان: هدیه‌ی معرفی ${formatNumberFa(Math.round(existing.commission.amount / 10))} تومانی‌ات واریز شد. ممنون که زروان رو معرفی کردی!`,
   });
 
   const updated = (await findCommissions({ db })).find((row) => row.commission.id === id);

@@ -53,7 +53,7 @@ export function PaidLedger({
       </div>
 
       {/*------ Rows ------*/}
-      <ul aria-label="پورسانت‌های پرداخت‌شده" className={cn("divide-y", ADMIN_HAIRLINE)}>
+      <ul aria-label="هدیه‌های معرفی پرداخت‌شده" className={cn("divide-y", ADMIN_HAIRLINE)}>
         {commissions.map((commission, index) => {
           const delay = rise(index);
           return (

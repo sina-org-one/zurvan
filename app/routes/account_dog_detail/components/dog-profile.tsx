@@ -3,7 +3,6 @@ import { LockKeyholeIcon } from "lucide-react";
 
 import { MascotCut } from "~/components/mascot-cut";
 import { describeBreed, describeDogAge, describeWeight } from "~/lib/dog-format";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatDate, formatNumber } from "~/lib/locale-format";
 import {
   DOG_BREED_PURITY_LABELS,
@@ -21,7 +20,7 @@ import { m } from "~/paraglide/messages";
 /**
  * «مشخصات» (it was the shared `DogProfile`; this page was its only reader): the dog's identity and health as ruled
  * label and value rows on a grained plate, then the owner's behaviour and medical notes when there are any. Once the
- * dog is evaluated, the breed type, breed and birth date are locked to the head trainer (F2): a small lock beside each, and the line
+ * dog is evaluated, the breed type, breed and birth date are locked to the Admin (F2): a small lock beside each, and the line
  * under the rows says who can change them.
  *
  * The dog's bowls (dimmed scenery) stand on the plate's top edge: this is the everyday side of the file.
@@ -119,7 +118,7 @@ export function DogProfile({ dog }: { dog: Dog }) {
         {dog.isEvaluated && (
           <p className="flex items-start gap-2 border-t border-foreground/15 py-3 text-sm text-pretty text-muted-foreground">
             <LockKeyholeIcon aria-hidden className="mt-0.5 size-3.5 shrink-0 text-primary/70" />
-            {m.account_dog_detail_profile_lock_note({ trainer: HEAD_TRAINER.firstName })}
+            {m.account_dog_detail_profile_lock_note()}
           </p>
         )}
 

@@ -29,7 +29,7 @@ const FOCUS = "outline-none focus-visible:ring-3 focus-visible:ring-ring/60";
 
 /*===== Lineup =====*/
 /**
- * «What I learn with her»: the families that have courses, one dog each, standing on one long path, with the family's
+ * «What I learn at Zurvan»: the families that have courses, one dog each, standing on one long path, with the family's
  * name under him. Each dog is a link to the catalogue filtered to his family; a signpost at the path's end links to
  * all of them.
  *

@@ -10,7 +10,7 @@ The source of truth for how the app works. The course catalog's content comes fr
 
 ## The Business
 
-**Zurvann** (زروان) is a head trainer's private practice. She is the owner and the app's **Admin**. She is also the center's only trainer: the site introduces her alone (the two placeholder colleagues' cards are switched off since 2026-10-18 at the owner's request, but kept in the repo). Training is mostly private (one dog), at the client's place or at the center; the owner also plans group classes at the center and offers boarding by prior arrangement with a partner pension, but the app has no seats, schedule or booking for any of that.
+**Zurvann** (زروان) is a dog-training and behavior center, and since 2026-11-06 a part of a larger services platform (the owner's decision; the platform isn't named on the site yet). The site sells **the center**, not one person: it may have more than one trainer (`TRAINERS` in `app/lib/head-trainer.ts`; Tala Rasti, the head trainer, is the first), and the copy speaks as «زروان» / «ما» / «مربی زروان». The owner is the app's **Admin**. Training is mostly private (one dog), at the client's place or at the center; the owner also plans group classes at the center and offers boarding by prior arrangement with a partner pension, but the app has no seats, schedule or booking for any of that.
 
 The app is a **small shop with locked items**. A new dog starts with a **free evaluation**, a first checkup where she gets to know the dog. Once a dog is evaluated, its owner can **buy courses** for it, as long as it has passed each course's prerequisites. Courses have a **fixed price** and are **paid upfront**. After a purchase the Admin calls the customer, and when the training is over she marks the enrollment **done**, which unlocks the next courses. **Partners** (clinics, groomers, pet shops) bring in customers and earn a commission on every purchase those customers make, at a percent that climbs with the number of paying customers the partner has brought.
 
@@ -18,11 +18,11 @@ The app is a **small shop with locked items**. A new dog starts with a **free ev
 
 ## Roles
 
-| Role                            | Who                                                                      |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| **Admin** (owner, head trainer) | Runs everything. The only staff account, and the only trainer.           |
-| **Partner**                     | A clinic, groomer or pet shop that brings in customers for a commission. |
-| **Customer** (dog owner)        | Manages their dogs, requests evaluations, buys courses.                  |
+| Role                     | Who                                                                      |
+| ------------------------ | ------------------------------------------------------------------------ |
+| **Admin** (owner)        | Runs everything. The only staff account.                                 |
+| **Partner**              | A clinic, groomer or pet shop that brings in customers for a commission. |
+| **Customer** (dog owner) | Manages their dogs, requests evaluations, buys courses.                  |
 
 | Feature                             | Customer |  Partner  |       Admin        |
 | ----------------------------------- | :------: | :-------: | :----------------: |
@@ -43,7 +43,8 @@ The app is a **small shop with locked items**. A new dog starts with a **free ev
 **Who:** everyone.
 
 - Sign in with a phone number and an SMS code. Already built: 5-digit code, valid for 2 minutes, resend after 60 seconds, invalidated after 5 wrong attempts, rate-limited per phone and per IP.
-- One role per phone number. Only customers self-register; the Admin creates partner accounts.
+- One role per phone number. Only customers self-register; a partner account is made by the Admin, by hand or by approving an application ([F7](#f7-partners), "Becoming a partner").
+- **Two doors** (the owner, 2026-11-06): the header and the sign-in page have «ورود مشتری» and «ورود همکار» (`/auth?as=partner`). The customer door works as above. The partner door sends a code only to a partner's number (it asks `partner.isPartnerPhone` first), because a code verified for an unknown number would make a customer account, and one role per number would then shut that person out of partnering; anyone else is pointed to the application.
 - Blocked users can't sign in: the Admin blocks and unblocks from the Users page, which signs the user out everywhere at once. She can't block herself or any admin. Blocking a partner closes his sign-in only; his link and commissions are switched off by deactivating him ([F7](#f7-partners)).
 - Each user edits their name. Partners also enter their Sheba number, so the Admin knows where to send commissions ([F7](#f7-partners)).
 - **Password (optional).** After signing in, a customer or partner can set a password in Profile Settings and then sign in with their number and that password; the code stays, and is also how a forgotten password is fixed (sign in with a code, then set a new one there; the card asks for no "current password"). A password can be set or replaced only within 30 minutes of signing in, and doing so signs the other devices out. It is stored only as a hash. A wrong password, an unknown number and a number that never set one all read the same, 5 wrong passwords in 15 minutes pause password sign-in for that number (the code still works), and password sign-in is rate-limited per IP. While the sign-in code is the public showcase code, this adds convenience, not security.
@@ -195,13 +196,25 @@ An enrollment is created **only by a successful payment** ([F5](#f5-cart-and-che
 
 ### F7. Partners
 
-**Who:** partners bring customers; the Admin manages partners and pays their commissions outside the app.
+**Who:** partners bring customers; the Admin manages partners and pays their referral gifts outside the app.
+
+**The words** (the owner, 2026-11-06): what a partner earns is a **referral gift** («هدیه‌ی معرفی») everywhere a person reads it, never «پورسانت» or «کمیسیون». The code and the tables keep `commission`. A gift is earned **only by a paid course purchase**: signing up, an evaluation or a call earn nothing, and a customer who buys no course earns their partner nothing.
+
+**Becoming a partner** (the owner, 2026-11-06). Three ways, all ending in an Admin's approval:
+
+1. The business **applies** on `/join/partner` (the Partner Enquiry page's form): first and last name, mobile number (the one they will sign in with), business name and kind (clinic, groomer, pet shop, kennel, other), city and address, and optionally the marketer who visited them and a note. A number that already has an account, or already has an application waiting, is refused.
+2. A **marketer** visits the business and helps them fill in the same form (the marketer's name is recorded on it).
+3. The business **calls**, and the Admin either fills the form in for them or creates the account by hand («همکار تازه»).
+
+The Admin sees the applications on the Partners page («درخواست‌ها»): **«تأیید و ساخت حساب»** creates the partner account (the application's name, number and business, a generated link code) and texts the applicant to sign in from «ورود همکار»; **«رد»** asks for a reason, which is texted. Both are final; a rejected business may apply again. Applications are never deleted.
+
+**The terms.** Every partner accepts the partnership terms (`app/lib/partner-terms.ts`, a **draft** until the owner approves its wording) by ticking «قوانین و ضوابط همکاری رو خوندم و قبول دارم»: on the application form, or, for a partner made by hand or after the wording changes (a new `PARTNER_TERMS_VERSION`), on his dashboard, which shows only the terms until he accepts. The acceptance is a `consent` row (`partner-terms`, with the version and time; an approval copies the application's). Until he has accepted the version in force, the server refuses his new customers.
 
 **Attribution.** Partners bring in customers through:
 
 1. a **referral link** with their code,
 2. a **QR code** of that link, for their shop,
-3. **phone leads:** a phone number entered in their dashboard before the customer signs up.
+3. **phone leads:** a customer entered in their dashboard before they sign up: the mobile number **and** the guardian's name, the dog's name, breed and age (all required, the owner, 2026-11-06), so a lead is a real person the partner talked to and not a bank of numbers hoping someone buys. The details are the partner's own words, shown to him and the Admin, never matched against the customer's profile.
 
 - A customer is attributed to **one partner, permanently**, when they register.
 - A referral link wins over a phone lead.
@@ -220,7 +233,7 @@ An enrollment is created **only by a successful payment** ([F5](#f5-cart-and-che
 - The partner sees the steps, their paying-customer count and the percent their next customer earns. The Partner Enquiry page shows the steps.
 - «پورسانت ویژه ۱۸٪» in the notes is the top step, not a deal for one partner.
 - The Admin pays partners **outside the app**, by bank, and presses **«پرداخت شد»** on each commission. The partner sees each commission as paid or unpaid, both in the commissions list and on the row of the person it came from in Leads and Customers (the amount and the state; never the purchase's price, the course or the dog).
-- **The enrollment is cancelled afterwards:** the partner keeps the commission.
+- **The enrollment is cancelled afterwards:** the commission already written stays (the code doesn't void it). The pages no longer promise this to partners; whether a refunded purchase should take its gift back is the owner's to decide.
 
 **Pages:** Partner Dashboard (referral link, QR code, commissions) · Leads and Customers · Partners and Leads (Admin)
 
@@ -230,7 +243,7 @@ An enrollment is created **only by a successful payment** ([F5](#f5-cart-and-che
 
 **Who:** the public browses; the Admin manages the catalogue.
 
-- The catalogue and its course pages sell the head trainer and her courses, as today. Course Detail adds «افزودن به سبد» ([F5](#f5-cart-and-checkout)), and the catalogue's header has a «خرید دوره» button that starts the purchase from the dog.
+- The catalogue and its course pages sell Zurvann's courses. Course Detail adds «افزودن به سبد» ([F5](#f5-cart-and-checkout)), and the catalogue's header has a «خرید دوره» button that starts the purchase from the dog.
 - Only the Admin creates and edits courses. Every course in this version has a **fixed price**, an age range and prerequisites. Its length is its **session count**, shown to customers as a description («حدوداً ۵ جلسه»); the app doesn't track lessons.
 - **The course settings were settled on 2026-10-26**, from the owner's course card («حداقل سن، تعداد جلسات، محل آموزش، شرایط آموزش، دستورات»): the ages, the session count, the places, the prerequisites (a test passed instead is the Admin's mark on the dog, [F2](#f2-dog-profiles)) and the commands. They all existed already except the places.
 - **Places.** The Admin ticks where a course can be taught: **at the client's place** («منزل»), **at the center** («مرکز»), **outside** («بیرون») and **boarding** («پانسیون»), in that order, and may mark one of the ticked ones **recommended**. None ticked means the place is settled after the evaluation («بعد از ارزیابی»). Course Detail lists the places (the recommended one under them, «پیشنهاد طلا: …») and shows the boarding card only when boarding is offered, without a price: boarding's extra cost is agreed on the phone ([F5](#f5-cart-and-checkout)). Group classes are not a place: they aren't running.

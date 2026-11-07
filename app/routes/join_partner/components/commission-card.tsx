@@ -2,7 +2,6 @@ import { CommissionStairs } from "~/components/commission-stairs";
 import { MascotCut } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import type { CommissionTier } from "~/lib/business-rules";
 import { m } from "~/paraglide/messages";
 
@@ -48,8 +47,8 @@ export function CommissionCard({ tiers }: { tiers: readonly CommissionTier[] }) 
         <ul className="mt-6 flex flex-1 flex-col">
           <CommissionItem>{m.join_partner_commission_rule_total()}</CommissionItem>
           <CommissionItem>{m.join_partner_commission_rule_steps()}</CommissionItem>
-          <CommissionItem>{m.join_partner_commission_rule_paid({ name: HEAD_TRAINER.firstName })}</CommissionItem>
-          <CommissionItem>{m.join_partner_commission_rule_cancel()}</CommissionItem>
+          <CommissionItem>{m.join_partner_commission_rule_paid()}</CommissionItem>
+          <CommissionItem>{m.join_partner_commission_rule_no_purchase()}</CommissionItem>
         </ul>
       </div>
     </section>

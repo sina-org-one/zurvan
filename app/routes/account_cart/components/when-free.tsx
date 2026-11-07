@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { ChalkBubble } from "~/components/chalk-bubble";
 import { DISPLAY_HEADING } from "~/lib/display-heading";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import {
   EVALUATION_PERIOD_LABELS,
   EVALUATION_PERIODS,
@@ -62,7 +61,7 @@ export function WhenFree({
               tail="end"
               className="answer-pop absolute bottom-[94%] left-[26%] w-max max-w-[min(13rem,calc(100vw-9rem))] text-pretty [--pop-origin:1.75rem_100%] lg:max-w-[15rem] ltr:right-[26%] ltr:left-auto ltr:[--pop-origin:calc(100%-1.75rem)_100%]"
             >
-              {m.account_cart_free_bubble({ trainer: HEAD_TRAINER.firstName })}
+              {m.account_cart_free_bubble()}
             </ChalkBubble>
           )}
         </EdgeDog>
@@ -77,7 +76,7 @@ export function WhenFree({
         }}
       >
         <p className="max-w-xl text-sm leading-relaxed text-pretty text-muted-foreground">
-          {m.account_cart_free_intro({ trainer: HEAD_TRAINER.firstName })}
+          {m.account_cart_free_intro()}
         </p>
 
         <div className="mt-6 flex flex-col gap-6">

@@ -1,9 +1,8 @@
 import type { MascotCutName } from "~/components/mascot-cut";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { m } from "~/paraglide/messages";
 
 /*===== Guide Moods =====*/
-// The center's dog takes the request to the head trainer. He walks beside the form and his pose follows how far it has
+// The center's dog takes the request to the center's trainer. He walks beside the form and his pose follows how far it has
 // got; when it is sent he lies down by the phone to wait for the call. Each mood is one pose and one line, in his first
 // person, informal spoken Persian (app-spec F3; the brief, Batch 5 §2). The lines are messages, so they are read when asked for
 // (`guideFor`), never held in a module-level constant that would freeze the language it first loaded in.
@@ -79,16 +78,15 @@ const POSES = {
  * must be read while rendering.
  */
 export function guideFor(mood: GuideMood): { pose: Pose; line: string } {
-  const trainer = HEAD_TRAINER.firstName;
   switch (mood) {
     case "pick":
-      return { pose: POSES.wave, line: m.assessment_guide_pick({ trainer }) };
+      return { pose: POSES.wave, line: m.assessment_guide_pick() };
     case "when":
-      return { pose: POSES.calendar, line: m.assessment_guide_when({ trainer }) };
+      return { pose: POSES.calendar, line: m.assessment_guide_when() };
     case "ready":
       return { pose: POSES.envelope, line: m.assessment_guide_ready() };
     case "photos":
-      return { pose: POSES.camera, line: m.assessment_guide_photos({ trainer }) };
+      return { pose: POSES.camera, line: m.assessment_guide_photos() };
     case "sending":
       return { pose: POSES.envelope, line: m.assessment_guide_sending() };
     case "failed":
@@ -96,7 +94,7 @@ export function guideFor(mood: GuideMood): { pose: Pose; line: string } {
     case "serverFailed":
       return { pose: POSES.listen, line: m.assessment_guide_server_failed() };
     case "sent":
-      return { pose: POSES["wait-phone"], line: m.assessment_guide_sent({ trainer }) };
+      return { pose: POSES["wait-phone"], line: m.assessment_guide_sent() };
     case "noDogs":
       return { pose: POSES.sniff, line: m.assessment_guide_no_dogs() };
     case "nothing":
@@ -108,10 +106,9 @@ export function guideFor(mood: GuideMood): { pose: Pose; line: string } {
 // What happens after the request, from the FAQ's «ارزیابی رایگان چیه؟» and «بعد از خرید» answers (app-spec F3, F5,
 // F6). `label` is the stop's short name on the receipt's road; `line` the plain sentence.
 export function nextSteps(): readonly { label: string; line: string }[] {
-  const trainer = HEAD_TRAINER.firstName;
   return [
-    { label: m.assessment_next_call_label({ trainer }), line: m.assessment_next_call_line({ trainer }) },
+    { label: m.assessment_next_call_label(), line: m.assessment_next_call_line() },
     { label: m.assessment_next_courses_label(), line: m.assessment_next_courses_line() },
-    { label: m.assessment_next_buy_label(), line: m.assessment_next_buy_line({ trainer }) },
+    { label: m.assessment_next_buy_label(), line: m.assessment_next_buy_line() },
   ];
 }

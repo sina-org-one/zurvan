@@ -23,7 +23,7 @@ import { spokenName } from "~/routes/admin_users/people";
 
 /*===== Constants =====*/
 /** Blocking a partner closes his sign-in only (F1, F7); his link and commission are switched off on Partners. */
-const PARTNER_NOTE = "فقط ورودش بسته می‌شه؛ لینک و پورسانتش روشن می‌مونه. برای خاموش کردنشون توی";
+const PARTNER_NOTE = "فقط ورودش بسته می‌شه؛ لینک و هدیه‌ش روشن می‌مونه. برای خاموش کردنشون توی";
 
 const OUTLINE_DESTRUCTIVE =
   "h-11 w-full border-destructive/45 bg-transparent text-destructive hover:bg-destructive/10 hover:text-destructive sm:h-10 sm:w-fit dark:bg-transparent";
@@ -155,7 +155,7 @@ export function DangerZone({
               همین الان از همه‌جا بیرون می‌ره و دیگه کد ورود نمی‌گیره. سگ‌ها و خریدهاش می‌مونن و هر وقت بخوای دوباره
               بازش می‌کنی.
               {user.role === "partner" &&
-                " لینک و پورسانتش روشن می‌مونه؛ برای خاموش کردنشون توی صفحه‌ی همکارا غیرفعالش کن."}
+                " لینک و هدیه‌ش روشن می‌مونه؛ برای خاموش کردنشون توی صفحه‌ی همکارا غیرفعالش کن."}
             </AlertDialogDescription>
           </AlertDialogHeader>
 

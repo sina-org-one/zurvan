@@ -3,7 +3,6 @@ import { CircleCheckBig, ClipboardList, LockOpen, Phone, ShoppingBasket } from "
 import { ChalkBubble } from "~/components/chalk-bubble";
 import { MascotCut } from "~/components/mascot-cut";
 import { NightSky } from "~/components/night-sky";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { formatNumber } from "~/lib/locale-format";
 import { m } from "~/paraglide/messages";
 import { ChalkDefs, SketchedEdge, TrailSegment, WindingTrail } from "~/routes/help/components/chalk-trail";
@@ -13,18 +12,17 @@ import { ChalkDefs, SketchedEdge, TrailSegment, WindingTrail } from "~/routes/he
 // is the start of the FAQ group with the same number (`faq-data.tsx`).
 const STOP_ICONS = [ClipboardList, LockOpen, ShoppingBasket, Phone, CircleCheckBig];
 
-/** The stops in the page's language (a function: the messages and the trainer's name follow the locale). */
+/** The stops in the page's language (a function: the messages follow the locale). */
 function getStops() {
-  const trainer = HEAD_TRAINER.firstName;
   return [
     {
       id: "evaluation",
       title: m.help_road_stop_evaluation_title(),
-      line: m.help_road_stop_evaluation_line({ trainer }),
+      line: m.help_road_stop_evaluation_line(),
     },
     { id: "courses", title: m.help_road_stop_courses_title(), line: m.help_road_stop_courses_line() },
     { id: "paying", title: m.help_road_stop_paying_title(), line: m.help_road_stop_paying_line() },
-    { id: "training", title: m.help_road_stop_training_title(), line: m.help_road_stop_training_line({ trainer }) },
+    { id: "training", title: m.help_road_stop_training_title(), line: m.help_road_stop_training_line() },
     { id: "done", title: m.help_road_stop_done_title(), line: m.help_road_stop_done_line() },
   ].map((stop, index) => ({ ...stop, icon: STOP_ICONS[index] }));
 }
@@ -67,7 +65,7 @@ function StopRing({ index, icon: Icon }: { index: number; icon: (typeof STOP_ICO
  * The five stops from the free evaluation to a finished course, on one chalk board with the home page's trail. It
  * answers "how does buying work here?" at a glance and is also the index of the FAQ below.
  *
- * The dog sits on the board's top edge above stop 4 and tells the page's key fact: after the request, the trainer calls.
+ * The dog sits on the board's top edge above stop 4 and tells the page's key fact: after the request, the center calls.
  * The signpost stands where the trail starts, the key lies by stop 2 (courses open) and the flag is planted at stop 5
  * (done).
  *
@@ -124,7 +122,7 @@ export function Road() {
           tail="left"
           className="absolute bottom-[calc(100%+6.5rem)] left-3 z-10 w-[17rem] max-w-[calc(100%-1.5rem)] text-pretty md:bottom-[calc(100%+8.5rem)] md:left-[calc(var(--pad)+(100%-2*var(--pad))*0.3-1.75rem-8px)] md:w-72 lg:bottom-[calc(100%+10.25rem)] ltr:md:left-[calc(var(--pad)+(100%-2*var(--pad))*0.7-1.75rem-8px)]"
         >
-          {m.help_road_bubble({ trainer: HEAD_TRAINER.firstName })}
+          {m.help_road_bubble()}
         </ChalkBubble>
 
         {/*------ The stops ------*/}

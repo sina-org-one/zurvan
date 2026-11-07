@@ -5,7 +5,6 @@ import { useId } from "react";
 import { FieldError } from "~/components/ui/field";
 import { describeBreed, describeDogAge } from "~/lib/dog-format";
 import { formatDate } from "~/lib/locale-format";
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { DOG_BREED_PURITY_LABELS } from "~/orpc/dog/constants";
 import type { Dog } from "~/orpc/dog/contract";
 import { m } from "~/paraglide/messages";
@@ -76,7 +75,7 @@ export function LockedFields({
       {/*------ Shared Note ------*/}
       <p id={noteId} className="flex items-start gap-2 text-sm text-pretty text-muted-foreground">
         <LockKeyholeIcon aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
-        {m.account_dog_form_locked_note({ trainer: HEAD_TRAINER.firstName })}
+        {m.account_dog_form_locked_note()}
       </p>
     </div>
   );

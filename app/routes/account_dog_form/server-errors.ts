@@ -1,7 +1,6 @@
 import { ORPCError } from "@orpc/client";
 import type { UseFormSetError } from "react-hook-form";
 
-import { HEAD_TRAINER } from "~/lib/head-trainer";
 import { errorDataSchema } from "~/orpc/errors";
 import { m } from "~/paraglide/messages";
 import { type DogFormInput, SERVER_FIELD_TO_FORM } from "~/routes/account_dog_form/schema";
@@ -70,7 +69,7 @@ export function applyServerError({
       // Only reachable when the dog was evaluated after this form opened, so the fields were still editable. The page
       // is stale, and the locked version shows after a refresh.
       setError("root", {
-        message: m.account_dog_form_err_stale_lock({ trainer: HEAD_TRAINER.firstName }),
+        message: m.account_dog_form_err_stale_lock(),
       });
     }
     return targets;

@@ -18,6 +18,16 @@ export function PersonRow({ person }: { person: PartnerPerson }) {
     person.boughtAt ? `خرید ${formatJalaliTimestamp(person.boughtAt)}` : null,
   ].filter(Boolean);
 
+  // What the partner wrote with the number (the owner, 2026-11-06): the guardian, and the dog's name, breed and age.
+  const details = person.details
+    ? [
+        person.details.guardianName,
+        [person.details.dogName, person.details.dogBreed, person.details.dogAge].filter(Boolean).join("، "),
+      ]
+        .filter(Boolean)
+        .join(" · ")
+    : "";
+
   return (
     <li className="py-2.5">
       <p className="flex flex-wrap items-baseline gap-x-2 text-sm font-bold">
@@ -33,6 +43,11 @@ export function PersonRow({ person }: { person: PartnerPerson }) {
         )}
         {person.source === "link" && <span className="text-xs font-normal text-muted-foreground">از لینک</span>}
       </p>
+      {details && (
+        <p className="mt-0.5 text-xs text-foreground/80">
+          <bdi>{details}</bdi>
+        </p>
+      )}
       <p className="mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground tabular-nums">
         {dates.map((date) => (
           <span key={date} className="whitespace-nowrap">
