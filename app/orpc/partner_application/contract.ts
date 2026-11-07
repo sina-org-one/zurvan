@@ -59,7 +59,7 @@ const adminErrors = { ...commonErrors, ...authErrors, ...roleErrors };
  * Refusals are `INVALID_INPUT` with `fields.<name>`: a missing value, a bad number, a number that already has an account
  * (one role per number) or one with an application waiting, and `fields.acceptTerms` when the terms weren't ticked.
  */
-export const applyContract = oc
+export const submitApplicationContract = oc
   .errors(commonErrors)
   .input(
     z.strictObject({
@@ -95,7 +95,8 @@ export const adminRejectApplicationContract = oc
   .output(adminPartnerApplicationSchema);
 
 export const partnerApplicationContract = {
-  apply: applyContract,
+  // Not `apply`: the browser client is a function proxy, and `apply` would resolve to `Function.prototype.apply`.
+  submit: submitApplicationContract,
   admin: {
     list: adminListApplicationsContract,
     approve: adminApproveApplicationContract,

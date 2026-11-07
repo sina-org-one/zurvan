@@ -10,7 +10,7 @@ Clone/update GitHub, build, and deploy the showcase with Docker Compose.
 On the first run, use --db-push --seed. Later, run without flags to update.
 
   --dir PATH        Checkout directory (this script's repo, otherwise /opt/k9training)
-  --repo URL        Git remote (default: https://github.com/SinaTZ0/zurvan.git)
+  --repo URL        Git remote (default: https://github.com/sina-org-one/zurvan.git)
   --branch NAME     Branch to deploy (default: main)
   --domain HOST     Domain on first setup (default: k9training.zurvann.ir)
   --ip ADDRESS      Also serve HTTP on this IPv4 address (saved in .env)
@@ -49,7 +49,7 @@ main() {
   if [[ -d "$script_dir/.git" && -f "$script_dir/compose.server.yaml" ]]; then
     deploy_dir="$script_dir"
   fi
-  repo=https://github.com/SinaTZ0/zurvan.git
+  repo=https://github.com/sina-org-one/zurvan.git
   branch=main
   domain=k9training.zurvann.ir
   domain_requested=false

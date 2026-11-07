@@ -15,7 +15,7 @@ const ALREADY_ANSWERED_MESSAGE = "این درخواست قبلاً جواب دا
 
 /*===== Apply =====*/
 // Public: the form on `/join/partner` is for people who have no account yet.
-export const applyProcedure = base.partnerApplication.apply
+export const submitApplicationProcedure = base.partnerApplication.submit
   .use(provideDbMiddleware)
   .handler(async ({ context, input, errors }) => {
     const result = await applyForPartnership({ db: context.db, input });

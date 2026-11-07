@@ -60,7 +60,7 @@ function textLabel(field: (typeof TEXT_FIELDS)[number]): string {
  * After sending, the plate turns into the celebrating dog and what happens next.
  */
 export function ApplyForm() {
-  const apply = useMutation(orpc.partnerApplication.apply.mutationOptions());
+  const apply = useMutation(orpc.partnerApplication.submit.mutationOptions());
   const {
     register,
     control,

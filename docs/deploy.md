@@ -17,11 +17,11 @@ Caddy obtains and renews HTTPS certificates and redirects the domain's HTTP requ
 First commit and push the deployment files to the public GitHub repository. Then run on the **server**:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SinaTZ0/zurvan/main/deploy.sh -o /tmp/k9training-deploy.sh
+curl -fsSL https://raw.githubusercontent.com/sina-org-one/zurvan/main/deploy.sh -o /tmp/k9training-deploy.sh
 sudo bash /tmp/k9training-deploy.sh --db-push --seed
 ```
 
-The script clones `https://github.com/SinaTZ0/zurvan.git`, branch `main`, into `/opt/k9training`. It creates a private `.env` once, builds the images, starts storage, creates the media bucket if missing, saves a database dump, pushes the schema, seeds the showcase, and starts the app and proxy. It waits for the app's home page to respond successfully; that page reads the database. Initial HTTPS issuance may take another minute.
+The script clones `https://github.com/sina-org-one/zurvan.git`, branch `main`, into `/opt/k9training`. It creates a private `.env` once, builds the images, starts storage, creates the media bucket if missing, saves a database dump, pushes the schema, seeds the showcase, and starts the app and proxy. It waits for the app's home page to respond successfully; that page reads the database. Initial HTTPS issuance may take another minute.
 
 The generated `.env` contains these Compose settings:
 
@@ -48,7 +48,7 @@ Pass the VPS's public IPv4 address once to enable `http://YOUR_SERVER_IP` alongs
 
 ```bash
 # Download the latest script so an older checkout can recognize --ip.
-curl -fsSL https://raw.githubusercontent.com/SinaTZ0/zurvan/main/deploy.sh -o /tmp/k9training-deploy.sh
+curl -fsSL https://raw.githubusercontent.com/sina-org-one/zurvan/main/deploy.sh -o /tmp/k9training-deploy.sh
 
 # Existing deployment: no schema push or reseeding needed.
 sudo bash /tmp/k9training-deploy.sh --dir /opt/k9training --ip YOUR_SERVER_IP

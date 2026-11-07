@@ -102,7 +102,7 @@ import {
   adminApproveApplicationProcedure,
   adminListApplicationsProcedure,
   adminRejectApplicationProcedure,
-  applyProcedure,
+  submitApplicationProcedure,
 } from "~/orpc/partner_application/procedure";
 import { passwordStatusProcedure, setPasswordProcedure } from "~/orpc/password/procedure";
 import {
@@ -258,7 +258,7 @@ export const router = implementer.router({
     },
   },
   partnerApplication: {
-    apply: applyProcedure,
+    submit: submitApplicationProcedure,
     admin: {
       list: adminListApplicationsProcedure,
       approve: adminApproveApplicationProcedure,
